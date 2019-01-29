@@ -1,0 +1,14 @@
+{
+	"ReportDirectory": "C:\\Self\\AAASportReports\\",
+	"StudentCanLateMin": 15,
+	"SessionDurationMin": 60,
+	"Subscribe_MaxHoursList": [ 1, 2, 4, 6, 8, 12, 24, 999 ],
+	"Subscribe_DurationList": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+	
+	"DataSource": "VEDRO\\SQLEXPRESSxx",
+	"DatabaseName": "Sport",
+	"ConnectionTimeout": 5,
+	"IsIntegratedSecurity": true,
+	"UserId": "user",
+	"Password": "password",
+}
