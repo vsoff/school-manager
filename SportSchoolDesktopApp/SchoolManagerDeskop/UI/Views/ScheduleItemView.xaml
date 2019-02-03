@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="SchoolManagerDeskop.UI.Views.ScheduleItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignWidth="600"
+             Height="30">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="Time" Width="50"/>
+            <ColumnDefinition Name="Hall" Width="30"/>
+            <ColumnDefinition Name="StudentsCount" Width="30"/>
+            <ColumnDefinition Name="GroupName" Width="*"/>
+            <ColumnDefinition Name="OpenButton" Width="90"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Path=Time}"
+                   TextAlignment="Right"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1"
+                   Text="{Binding Path=Hall}"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="2"
+                   Text="{Binding Path=StudentsCount}"
+                   Foreground="Green"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="3" FontSize="18"
+                   FontWeight="Medium"
+                   Margin="26,1,2,1"
+                   Text="{Binding Path=GroupName}"
+                   VerticalAlignment="Center" />
+        <Button Grid.Column="4"
+                FontSize="12">
+            Регистрация...
+        </Button>
+    </Grid>
+</UserControl>
