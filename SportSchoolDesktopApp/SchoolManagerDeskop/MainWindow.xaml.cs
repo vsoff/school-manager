@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolManagerDeskop
+namespace SchoolManagerDeskop.UI.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -28,7 +28,7 @@ namespace SchoolManagerDeskop
         {
             InitializeComponent();
 
-            DataContext = new ScheduleViewModel();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

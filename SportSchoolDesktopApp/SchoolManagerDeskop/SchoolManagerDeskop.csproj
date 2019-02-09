@@ -54,10 +54,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\DisplayRegisters\DialogsDisplayRegistry.cs" />
+    <Compile Include="Common\DisplayRegisters\IDisplayRegistry.cs" />
+    <Compile Include="Common\DisplayRegisters\IDisplayWindow.cs" />
+    <Compile Include="Common\DisplayRegisters\WindowsDisplayRegistry.cs" />
+    <Compile Include="UI\Common\Commands\RelayCommand.cs" />
+    <Compile Include="UI\Common\WpfDisplayWindow.cs" />
     <Compile Include="UI\Enums\ScheduleColor.cs" />
     <Compile Include="UI\Models\ScheduleItemModel.cs" />
+    <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
-    <Compile Include="UI\ViewModels\SheduleItemViewModel.cs" />
     <Compile Include="UI\Views\ScheduleItemView.xaml.cs">
       <DependentUpon>ScheduleItemView.xaml</DependentUpon>
     </Compile>
@@ -86,7 +92,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\Base\PropertyChangedNotifier.cs" />
+    <Compile Include="UI\Common\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

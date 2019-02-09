@@ -15,27 +15,34 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <!--<StackPanel Grid.Row="0" Margin="2" Orientation="Horizontal">
-            <TextBlock Text="Время"
-                           Width="50"
-                           Margin="4,1,4,1"
-                           TextAlignment="Right"
-                           VerticalAlignment="Center" />
-            <TextBlock Text="№1"
-                           Margin="4,1,4,1"
-                           TextAlignment="Center"
-                           VerticalAlignment="Center" />
-            <TextBlock Text="10"
-                           Foreground="Green"
-                           Margin="4,1,4,1"
-                           TextAlignment="Center"
-                           VerticalAlignment="Center" />
-            <TextBlock FontSize="18"
-                           FontWeight="Medium"
-                           Margin="26,1,2,1"
-                           Text="Супер гр32131уппа" />
-        </StackPanel>-->
-        <ListView  Grid.Row="1"
+        <Border BorderBrush="Gray"
+                BorderThickness="1,1,1,1"
+                Background="#f0f0f0"
+                Grid.RowSpan="2"/>
+        <!-- Верхняя панель -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding OnCommand}" CommandParameter="0" />
+            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding OnCommand}" CommandParameter="1" />
+            <RadioButton Grid.Column="2" Content="СР" Command="{Binding OnCommand}" CommandParameter="2" />
+            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding OnCommand}" CommandParameter="3" />
+            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding OnCommand}" CommandParameter="4" />
+            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding OnCommand}" CommandParameter="5" />
+            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding OnCommand}" CommandParameter="6" />
+        </Grid>
+        <!-- Список расписания -->
+        <ListView Grid.Row="1"
                  ItemsSource="{Binding ScheduleItems}" 
                  HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
@@ -47,7 +54,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <local:ScheduleItemView Style="{StaticResource ScheduleItem}" />
+                    <local:ScheduleItemView Grid.Column="0" Style="{StaticResource ScheduleItem}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>

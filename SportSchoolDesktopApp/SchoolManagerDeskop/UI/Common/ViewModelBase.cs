@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolManagerDeskop.UI.Base
+namespace SchoolManagerDeskop.UI.Common
 {
-    public class PropertyChangedNotifier : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged(
             string propertyName)

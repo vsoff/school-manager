@@ -39,6 +39,7 @@
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.системаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonSubscription = new System.Windows.Forms.Button();
             this.buttonGroups = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_WeekDay = new System.Windows.Forms.ComboBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid_Schedule)).BeginInit();
             this.panel1.SuspendLayout();
@@ -136,7 +136,7 @@
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.выходToolStripMenuItem.Text = "Выход";
             // 
             // системаToolStripMenuItem
@@ -150,9 +150,16 @@
             // cardEditToolStripMenuItem
             // 
             this.cardEditToolStripMenuItem.Name = "cardEditToolStripMenuItem";
-            this.cardEditToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cardEditToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.cardEditToolStripMenuItem.Text = "Выдать карту";
             this.cardEditToolStripMenuItem.Click += new System.EventHandler(this.cardEditToolStripMenuItem_Click);
+            // 
+            // оПрограммеToolStripMenuItem
+            // 
+            this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
+            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.оПрограммеToolStripMenuItem.Text = "О программе";
+            this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
             // 
             // buttonSubscription
             // 
@@ -319,13 +326,6 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // оПрограммеToolStripMenuItem
-            // 
-            this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
-            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
-            this.оПрограммеToolStripMenuItem.Text = "О программе";
-            this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
             // 
             // MainForm
             // 

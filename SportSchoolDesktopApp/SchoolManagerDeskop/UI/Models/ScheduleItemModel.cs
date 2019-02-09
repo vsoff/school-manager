@@ -9,9 +9,10 @@ namespace SchoolManagerDeskop.UI.Models
 {
     public class ScheduleItemModel
     {
+        public int Hall { get; set; }
+        public int GroupId { get; set; }
         public TimeSpan Time { get; set; }
         public string GroupName { get; set; }
-        public int Hall { get; set; }
         public int StudentsCount { get; set; }
         public ScheduleColor ItemColor { get; set; }
     }

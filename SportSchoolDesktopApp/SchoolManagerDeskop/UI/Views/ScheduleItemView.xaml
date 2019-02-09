@@ -13,7 +13,6 @@
             <ColumnDefinition Name="Hall" Width="30"/>
             <ColumnDefinition Name="StudentsCount" Width="30"/>
             <ColumnDefinition Name="GroupName" Width="*"/>
-            <ColumnDefinition Name="OpenButton" Width="90"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0"
                    Text="{Binding Path=Time}"
@@ -33,9 +32,5 @@
                    Margin="26,1,2,1"
                    Text="{Binding Path=GroupName}"
                    VerticalAlignment="Center" />
-        <Button Grid.Column="4"
-                FontSize="12">
-            Регистрация...
-        </Button>
     </Grid>
 </UserControl>
