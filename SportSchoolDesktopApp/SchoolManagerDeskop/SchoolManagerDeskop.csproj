@@ -74,6 +74,7 @@
     <Compile Include="UI\Common\Commands\RelayCommand.cs" />
     <Compile Include="UI\Common\WpfDisplayWindow.cs" />
     <Compile Include="UI\Enums\ScheduleColor.cs" />
+    <Compile Include="UI\Enums\WeekDay.cs" />
     <Compile Include="UI\Models\ScheduleItemModel.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />

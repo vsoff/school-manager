@@ -16,30 +16,52 @@ using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
+    public delegate void WeekDayChangedEventHandler(WeekDay weekDay);
+    public delegate void ScheduleItemSelectedEventHandler(ScheduleItemModel selectedScheduleItem);
+
     public class ScheduleViewModel : ViewModelBase
     {
+        private WeekDay _currentWeekDay;
+
+        public event WeekDayChangedEventHandler SelectedWeekDayChanged;
+        public event ScheduleItemSelectedEventHandler ScheduleItemSelected;
+
+        public ICommand WeekDaySelectCommand { get; }
+
         public ObservableCollection<ScheduleItemModel> ScheduleItems { get; set; }
 
         public ScheduleViewModel()
         {
-            ScheduleItems = new ObservableCollection<ScheduleItemModel>
-            {
-                new ScheduleItemModel { Time = TimeSpan.FromHours(1), Hall = 1, GroupName = "Группа 1", StudentsCount = -5, ItemColor = ScheduleColor.Gray},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(2), Hall = 2, GroupName = "Группа 2", StudentsCount = 55, ItemColor = ScheduleColor.Green},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(3), Hall = 3, GroupName = "Группа 4", StudentsCount = 10, ItemColor = ScheduleColor.Red},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(4), Hall = 4, GroupName = "Группа 7", StudentsCount = 20, ItemColor = ScheduleColor.Yellow},
-            };
+            ScheduleItems = new ObservableCollection<ScheduleItemModel>();
 
-            OnCommand = new RelayCommand(o => DoStuff(o));
-            RegisterCommand = new RelayCommand(o => DoStuff(o));
+            _currentWeekDay = WeekDay.Undefined;
+            WeekDaySelectCommand = new RelayCommand(o =>
+            {
+                var weekDay = (WeekDay)o;
+                if (weekDay != _currentWeekDay)
+                {
+                    _currentWeekDay = weekDay;
+                    SelectedWeekDayChanged?.Invoke(weekDay);
+                }
+            });
         }
 
-        public ICommand RegisterCommand { get; }
-        public ICommand OnCommand { get; }
-
-        private void DoStuff(object obj)
+        public void SetScheduleItems(ScheduleItemModel[] scheduleItems)
         {
-            Debug.WriteLine($"Element clicked. Object: {obj ?? "NULL"}");
+            foreach (var item in scheduleItems)
+                ScheduleItems.Add(item);
+        }
+
+        private ScheduleItemModel _selectedScheduleItem;
+        public ScheduleItemModel SelectedScheduleItem
+        {
+            get { return _selectedScheduleItem; }
+            set
+            {
+                _selectedScheduleItem = value;
+                ScheduleItemSelected?.Invoke(value);
+                OnPropertyChanged(nameof(SelectedScheduleItem));
+            }
         }
     }
 }

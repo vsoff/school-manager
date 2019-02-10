@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views"
+             xmlns:enums="clr-namespace:SchoolManagerDeskop.UI.Enums"
              xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="600">
@@ -108,17 +109,18 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding OnCommand}" CommandParameter="0" />
-            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding OnCommand}" CommandParameter="1" />
-            <RadioButton Grid.Column="2" Content="СР" Command="{Binding OnCommand}" CommandParameter="2" />
-            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding OnCommand}" CommandParameter="3" />
-            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding OnCommand}" CommandParameter="4" />
-            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding OnCommand}" CommandParameter="5" />
-            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding OnCommand}" CommandParameter="6" />
+            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Monday}" />
+            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Tuesday}" />
+            <RadioButton Grid.Column="2" Content="СР" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Wednesday}" />
+            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Thursday}" />
+            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Friday}" />
+            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Saturday}" />
+            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Sunday}" />
         </Grid>
         <!-- Список расписания -->
         <ListView Grid.Row="1"
                  ItemsSource="{Binding ScheduleItems}" 
+                 SelectedItem="{Binding SelectedScheduleItem}"
                  HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style>

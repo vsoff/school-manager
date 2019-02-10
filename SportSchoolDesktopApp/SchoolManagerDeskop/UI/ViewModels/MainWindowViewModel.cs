@@ -2,6 +2,8 @@
 using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
+using SchoolManagerDeskop.UI.Enums;
+using SchoolManagerDeskop.UI.Models;
 using SchoolManagerDeskop.UI.Windows;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,15 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public MainWindowViewModel(IWindowsDisplayRegistry s)
         {
             ScheduleViewModel = new ScheduleViewModel();
+            ScheduleViewModel.SelectedWeekDayChanged += SelectedWeekDayChanged;
+            ScheduleViewModel.ScheduleItemSelected += ScheduleItemSelected;
+            ScheduleViewModel.SetScheduleItems(new ScheduleItemModel[]
+            {
+                new ScheduleItemModel { Time = TimeSpan.FromHours(1), Hall = 1, GroupName = "Группа 1", StudentsCount = -5, ItemColor = ScheduleColor.Gray},
+                new ScheduleItemModel { Time = TimeSpan.FromHours(2), Hall = 2, GroupName = "Группа 2", StudentsCount = 55, ItemColor = ScheduleColor.Green},
+                new ScheduleItemModel { Time = TimeSpan.FromHours(3), Hall = 3, GroupName = "Группа 4", StudentsCount = 10, ItemColor = ScheduleColor.Red},
+                new ScheduleItemModel { Time = TimeSpan.FromHours(4), Hall = 4, GroupName = "Группа 7", StudentsCount = 20, ItemColor = ScheduleColor.Yellow},
+            });
 
             OnCommand = new RelayCommand(_ => MessageBox.Show("Test element clicked."));
             StudentsEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования учеников."));
@@ -28,6 +39,16 @@ namespace SchoolManagerDeskop.UI.ViewModels
             GroupsEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования групп."));
             OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
             OpenSubscriptionsCommand = new RelayCommand(_ => MessageBox.Show("Окно абонементов."));
+        }
+
+        private void ScheduleItemSelected(ScheduleItemModel selectedScheduleItem)
+        {
+            MessageBox.Show($"Окно регистрации на занятие `{selectedScheduleItem.GroupName}` в {selectedScheduleItem.Time}.");
+        }
+
+        private void SelectedWeekDayChanged(WeekDay weekDay)
+        {
+            MessageBox.Show($"Выбран день недели: {weekDay}");
         }
 
         public ICommand OnCommand { get; }
