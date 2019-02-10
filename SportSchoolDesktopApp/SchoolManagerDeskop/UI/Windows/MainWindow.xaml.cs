@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolManagerDeskop.UI.Views
+namespace SchoolManagerDeskop.UI.Windows
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -27,8 +27,6 @@ namespace SchoolManagerDeskop.UI.Views
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainWindowViewModel();
         }
     }
 }

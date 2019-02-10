@@ -1,6 +1,8 @@
 ﻿
+using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
+using SchoolManagerDeskop.UI.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
     {
         public ScheduleViewModel ScheduleViewModel { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IWindowsDisplayRegistry s)
         {
             ScheduleViewModel = new ScheduleViewModel();
 

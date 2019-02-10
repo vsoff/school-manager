@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.UI.Common
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged, IViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,5 +16,10 @@ namespace SchoolManagerDeskop.UI.Common
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public interface IViewModel
+    {
+
     }
 }
