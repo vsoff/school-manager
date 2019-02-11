@@ -16,43 +16,83 @@ using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
+    /// <summary>
+    /// Предоставляет метод, обрабатывающий событие, возникающее при изменении выбранного дня недели.
+    /// </summary>
+    /// <param name="weekDay">День недели.</param>
     public delegate void WeekDayChangedEventHandler(WeekDay weekDay);
+
+    /// <summary>
+    /// Предоставляет метод, обрабатывающий событие, возникающее при выборе занятия из списка.
+    /// </summary>
+    /// <param name="selectedScheduleItem">Объект занятия из списка.</param>
     public delegate void ScheduleItemSelectedEventHandler(ScheduleItemModel selectedScheduleItem);
 
+    /// <summary>
+    /// ViewModel расписания.
+    /// </summary>
     public class ScheduleViewModel : ViewModelBase
     {
-        private WeekDay _currentWeekDay;
+        /// <summary>
+        /// Выбранный день недели.
+        /// </summary>
+        private WeekDay _selectedWeekDay;
 
+        /// <summary>
+        /// Событие возникающее при выборе дня недели.
+        /// </summary>
         public event WeekDayChangedEventHandler SelectedWeekDayChanged;
+
+        /// <summary>
+        /// Событие возникающее при выборе занятия из списка.
+        /// </summary>
         public event ScheduleItemSelectedEventHandler ScheduleItemSelected;
 
+        /// <summary>
+        /// Команда вызываемая при выборе дня недели.
+        /// </summary>
         public ICommand WeekDaySelectCommand { get; }
 
+        /// <summary>
+        /// Коллекция занятий.
+        /// </summary>
         public ObservableCollection<ScheduleItemModel> ScheduleItems { get; set; }
 
         public ScheduleViewModel()
         {
             ScheduleItems = new ObservableCollection<ScheduleItemModel>();
 
-            _currentWeekDay = WeekDay.Undefined;
-            WeekDaySelectCommand = new RelayCommand(o =>
-            {
-                var weekDay = (WeekDay)o;
-                if (weekDay != _currentWeekDay)
-                {
-                    _currentWeekDay = weekDay;
-                    SelectedWeekDayChanged?.Invoke(weekDay);
-                }
-            });
+            _selectedWeekDay = WeekDay.Undefined;
+            WeekDaySelectCommand = new RelayCommand(o => WeekDaySelect((WeekDay)o));
         }
 
+        /// <summary>
+        /// Меняет текущий день недели.
+        /// </summary>
+        /// <param name="weekDay">День недели.</param>
+        private void WeekDaySelect(WeekDay weekDay)
+        {
+            if (weekDay != _selectedWeekDay)
+            {
+                _selectedWeekDay = weekDay;
+                SelectedWeekDayChanged?.Invoke(weekDay);
+            }
+        }
+
+        /// <summary>
+        /// Устанавливает новый список занятий.
+        /// </summary>
+        /// <param name="scheduleItems">Список занятий.</param>
         public void SetScheduleItems(ScheduleItemModel[] scheduleItems)
         {
+            ScheduleItems.Clear();
             foreach (var item in scheduleItems)
                 ScheduleItems.Add(item);
         }
 
-        private ScheduleItemModel _selectedScheduleItem;
+        /// <summary>
+        /// Выбранное занятие.
+        /// </summary>
         public ScheduleItemModel SelectedScheduleItem
         {
             get { return _selectedScheduleItem; }
@@ -63,5 +103,6 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 OnPropertyChanged(nameof(SelectedScheduleItem));
             }
         }
+        private ScheduleItemModel _selectedScheduleItem;
     }
 }
