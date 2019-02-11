@@ -24,9 +24,9 @@ namespace SchoolManagerDeskop.UI.Common
         }
 
         /// <inheritdoc />
-        public ViewModelBase ViewModel
+        public IViewModel ViewModel
         {
-            get => (ViewModelBase)_window.DataContext;
+            get => (IViewModel)_window.DataContext;
             set => _window.DataContext = value;
         }
 

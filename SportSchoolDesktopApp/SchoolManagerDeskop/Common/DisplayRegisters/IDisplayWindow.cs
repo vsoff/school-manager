@@ -13,7 +13,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         /// ViewModel окна.
         /// </summary>
         /// <remarks>Покрывает DataContext в классе Window.</remarks>
-        ViewModelBase ViewModel { get; set; }
+        IViewModel ViewModel { get; set; }
 
         /// <summary>
         /// Открывает окно.

@@ -14,25 +14,25 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         /// </summary>
         /// <typeparam name="TViewModel">Тип ViewModel.</typeparam>
         /// <typeparam name="TWin">Тип окна.</typeparam>
-        void AddWindowType<TViewModel, TWin>() where TWin : IDisplayWindow, new() where TViewModel : ViewModelBase;
+        void AddWindowType<TViewModel, TWin>() where TWin : IDisplayWindow, new() where TViewModel : IViewModel;
 
         /// <summary>
         /// Удаляет регистрацию ViewModel.
         /// </summary>
         /// <typeparam name="TViewModel">Тип ViewModel.</typeparam>
-        void DeleteWindowType<TViewModel>() where TViewModel : ViewModelBase;
+        void DeleteWindowType<TViewModel>() where TViewModel : IViewModel;
 
         /// <summary>
         /// Открывает окно для переданного объекта ViewModel.
         /// </summary>
         /// <param name="viewModel">ViewModel окна.</param>
-        void ShowWindow(ViewModelBase viewModel);
+        void ShowWindow(IViewModel viewModel);
 
         /// <summary>
         /// Закрывает окно для переданного объекта ViewModel.
         /// </summary>
         /// <param name="viewModel">ViewModel окна.</param>
-        void CloseWindow(ViewModelBase viewModel);
+        void CloseWindow(IViewModel viewModel);
     }
 
     public class WindowsDisplayRegistry : IWindowsDisplayRegistry
@@ -40,7 +40,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         /// <summary>
         /// Карта открытых окон.
         /// </summary>
-        private readonly Dictionary<ViewModelBase, IDisplayWindow> _openedWindowsMap;
+        private readonly Dictionary<IViewModel, IDisplayWindow> _openedWindowsMap;
 
         /// <summary>
         /// Карта зарегистрированных окон.
@@ -50,11 +50,11 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         public WindowsDisplayRegistry()
         {
             _registeredWindowsMap = new Dictionary<Type, Type>();
-            _openedWindowsMap = new Dictionary<ViewModelBase, IDisplayWindow>();
+            _openedWindowsMap = new Dictionary<IViewModel, IDisplayWindow>();
         }
 
         /// <inheritdoc />
-        public void AddWindowType<TViewModel, TWin>() where TWin : IDisplayWindow, new() where TViewModel : ViewModelBase
+        public void AddWindowType<TViewModel, TWin>() where TWin : IDisplayWindow, new() where TViewModel : IViewModel
         {
             Type vmType = typeof(TViewModel);
 
@@ -68,7 +68,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         }
 
         /// <inheritdoc />
-        public void DeleteWindowType<TViewModel>() where TViewModel : ViewModelBase
+        public void DeleteWindowType<TViewModel>() where TViewModel : IViewModel
         {
             Type vmType = typeof(TViewModel);
 
@@ -82,7 +82,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         }
 
         /// <inheritdoc />
-        public void ShowWindow(ViewModelBase viewModel)
+        public void ShowWindow(IViewModel viewModel)
         {
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
@@ -96,7 +96,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         }
 
         /// <inheritdoc />
-        public void CloseWindow(ViewModelBase viewModel)
+        public void CloseWindow(IViewModel viewModel)
         {
             IDisplayWindow window;
             if (!_openedWindowsMap.TryGetValue(viewModel, out window))
@@ -111,7 +111,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         /// </summary>
         /// <param name="viewModel">ViewModel окна.</param>
         /// <returns>Окно.</returns>
-        private IDisplayWindow CreateWindowInstance(ViewModelBase viewModel)
+        private IDisplayWindow CreateWindowInstance(IViewModel viewModel)
         {
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));

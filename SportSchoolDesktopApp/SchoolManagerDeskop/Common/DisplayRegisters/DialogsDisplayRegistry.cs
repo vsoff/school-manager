@@ -11,7 +11,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
     {
         void AddWindowType<TViewModel, TWin, TResult, TParams>();
         void DeleteWindowType<Win>();
-        TResult ShowDialog<TArgs, TResult>(ViewModelBase viewModel, TArgs dialogArgs);
+        TResult ShowDialog<TArgs, TResult>(IViewModel viewModel, TArgs dialogArgs);
     }
 
     public class DialogsDisplayRegistry : IDialogsDisplayRegistry
@@ -26,7 +26,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
             throw new NotImplementedException();
         }
 
-        public TResult ShowDialog<TArgs, TResult>(ViewModelBase viewModel, TArgs dialogArgs)
+        public TResult ShowDialog<TArgs, TResult>(IViewModel viewModel, TArgs dialogArgs)
         {
             throw new NotImplementedException();
         }
