@@ -72,18 +72,34 @@
     <Compile Include="Common\DisplayRegisters\IDisplayWindow.cs" />
     <Compile Include="Common\DisplayRegisters\WindowsDisplayRegistry.cs" />
     <Compile Include="UI\Common\Commands\RelayCommand.cs" />
+    <Compile Include="UI\Common\ItemsList\ItemsListData.cs" />
+    <Compile Include="UI\Common\ItemsList\ItemsListRequest.cs" />
     <Compile Include="UI\Common\WpfDisplayWindow.cs" />
     <Compile Include="UI\Enums\ScheduleColor.cs" />
     <Compile Include="UI\Enums\WeekDay.cs" />
     <Compile Include="UI\Models\ScheduleItemModel.cs" />
+    <Compile Include="UI\Models\StudentModel.cs" />
+    <Compile Include="UI\ViewModels\ItemsListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\ItemsListViewModel.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
+    <Compile Include="UI\Views\ItemListView.xaml.cs">
+      <DependentUpon>ItemListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\ScheduleItemView.xaml.cs">
       <DependentUpon>ScheduleItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
+    <Page Include="UI\Views\ItemListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\ItemsListEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +107,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Windows\ItemsListEditWindow.xaml.cs">
+      <DependentUpon>ItemsListEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -121,7 +140,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -133,6 +152,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Dao\Entities\" />
+    <Folder Include="Core\Dao\Repositories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

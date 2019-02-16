@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.UI.Common;
+using SchoolManagerDeskop.UI.Models;
 using SchoolManagerDeskop.UI.ViewModels;
 using SchoolManagerDeskop.UI.Windows;
 using System;
@@ -27,9 +28,13 @@ namespace SchoolManagerDeskop.Common
         private static void RegisterViewModels(IUnityContainer container)
         {
             container.RegisterType<MainWindow>(new TransientLifetimeManager());
+            container.RegisterType<ItemsListEditWindow>(new TransientLifetimeManager());
 
             container.RegisterInstance(new MainWindowViewModel(
                 container.Resolve<IWindowsDisplayRegistry>()
+            ));
+            container.RegisterInstance(new ItemsListEditWindowViewModel<StudentModel>(
+            //container.Resolve<IWindowsDisplayRegistry>()
             ));
         }
 
@@ -37,6 +42,10 @@ namespace SchoolManagerDeskop.Common
         {
             var windowsRegistry = container.Resolve<IWindowsDisplayRegistry>();
             windowsRegistry.AddWindowType<MainWindowViewModel, WpfDisplayWindow<MainWindow>>();
+            windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<StudentModel>, WpfDisplayWindow<ItemsListEditWindow>>();
+
+            //ItemsListEditWindowViewModel<StudentModel>
+            //windowsRegistry.ShowWindow();
         }
     }
 }
