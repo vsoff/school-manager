@@ -1,4 +1,6 @@
-﻿using SchoolManagerDeskop.UI.Common;
+﻿using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Repositories.Pagination;
+using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.ItemsList;
 using SchoolManagerDeskop.UI.Models;
 using System;
@@ -13,40 +15,34 @@ namespace SchoolManagerDeskop.UI.ViewModels
     {
     }
 
-    public class ItemsListEditWindowViewModel<T> : ViewModelBase, IItemsListEditWindowViewModel<T> where T : IDisplayableModel, new()
+    public class ItemsListEditWindowViewModel<T> : ViewModelBase, IItemsListEditWindowViewModel<T> where T : IDisplayableModel
     {
+        private readonly IPaginationSearchableRepository<T> _searchableRepository;
         public ItemsListViewModel<T> ItemsListViewModel { get; set; }
 
-        public ItemsListEditWindowViewModel()
+        public ItemsListEditWindowViewModel(IPaginationSearchableRepository<T> searchableRepository)
         {
+            _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
+
             ItemsListViewModel = new ItemsListViewModel<T>();
-            ItemsListViewModel.SetResult(new ItemsListData<T>
-            {
-                Items = new T[]
-                {
-                    new T {ItemCaption = "1"},
-                    new T {ItemCaption = "1223232"},
-                    new T {ItemCaption = "1fdsfdsfds"},
-                },
-                CurrentPageIndex = 1,
-                PagesCount = 5
-            });
+            ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
-            ItemsListViewModel.NewDataRequested += ItemsListNewDataRequested;
+            ItemsListViewModel.GoToPage(0);
         }
 
-        private void ItemsListNewDataRequested(ItemsListRequest request)
+        private void ItemsListUpdateData(ItemsListRequest request)
         {
+            var response = _searchableRepository.GetPage(new PaginationRequest
+            {
+                ItemsPerPage = request.Take,
+                PageIndex = request.PageIndex
+            });
+
             ItemsListViewModel.SetResult(new ItemsListData<T>
             {
-                Items = new T[]
-                {
-                    new T {ItemCaption = "1 " + request.PageCurrentIndex},
-                    new T {ItemCaption = "1223232 " + request.PageCurrentIndex},
-                    new T {ItemCaption = "1fdsfdsfds " + request.PageCurrentIndex},
-                },
-                CurrentPageIndex = request.PageCurrentIndex,
-                PagesCount = 5
+                Items = response.Items,
+                PagesCount = response.PagesCount,
+                CurrentPageIndex = response.CurrentPageIndex
             });
         }
 

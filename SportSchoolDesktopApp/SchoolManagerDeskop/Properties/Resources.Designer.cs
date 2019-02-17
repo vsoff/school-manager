@@ -77,5 +77,14 @@ namespace SchoolManagerDeskop.Properties {
                 return ResourceManager.GetString("ItemsList_PaginationCaption", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет страниц.
+        /// </summary>
+        public static string ItemsList_PaginationEmptyCaption {
+            get {
+                return ResourceManager.GetString("ItemsList_PaginationEmptyCaption", resourceCulture);
+            }
+        }
     }
 }

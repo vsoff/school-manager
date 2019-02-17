@@ -18,11 +18,14 @@ namespace SchoolManagerDeskop.UI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IWindowsDisplayRegistry _windowsDisplayRegistry;
+        private readonly ItemsListEditWindowViewModel<StudentModel> _itemsListEditWindowViewModel;
         public ScheduleViewModel ScheduleViewModel { get; }
 
-        public MainWindowViewModel(IWindowsDisplayRegistry windowsDisplayRegistry)
+        public MainWindowViewModel(IWindowsDisplayRegistry windowsDisplayRegistry,
+            ItemsListEditWindowViewModel<StudentModel> itemsListEditWindowViewModel)
         {
             _windowsDisplayRegistry = windowsDisplayRegistry ?? throw new ArgumentNullException(nameof(windowsDisplayRegistry));
+            _itemsListEditWindowViewModel = itemsListEditWindowViewModel ?? throw new ArgumentNullException(nameof(itemsListEditWindowViewModel));
 
             ScheduleViewModel = new ScheduleViewModel();
             ScheduleViewModel.SelectedWeekDayChanged += SelectedWeekDayChanged;
@@ -36,7 +39,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             });
 
             OnCommand = new RelayCommand(_ => MessageBox.Show("Test element clicked."));
-            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(new ItemsListEditWindowViewModel<StudentModel>()));
+            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_itemsListEditWindowViewModel));
             TrainersEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования тренеров."));
             ScheduleEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования расписания."));
             GroupsEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования групп."));

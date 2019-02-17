@@ -33,13 +33,14 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ItemsListViewModel()
         {
             Items = new ObservableCollection<T>();
-            ItemsPerPageList = new int[] { 10, 25, 50, 100 };
+            ItemsPerPageList = new int[] { 4, 10, 25, 50, 100 };
             ItemsPerPage = ItemsPerPageList.First();
 
             FirstPageCommand = new RelayCommand(o => GoToPage(0), o => CurrentPageIndex > 0);
             PrevPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex - 1), o => CurrentPageIndex > 0);
             NextPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex + 1), o => CurrentPageIndex < PagesCount - 1);
             LastPageCommand = new RelayCommand(o => GoToPage(PagesCount - 1), o => CurrentPageIndex < PagesCount - 1);
+            ItemLeftDoubleClick = new RelayCommand(o => { var a = 1; });
         }
 
         /// <summary>
@@ -57,16 +58,16 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         /// <summary>
-        /// Отправляет запрос на получение данных другой страницы.
+        /// Осуществляет переход на указанную страницу.
         /// </summary>
         /// <param name="pageIndex">Индекс страницы.</param>
-        private void GoToPage(int pageIndex)
+        public void GoToPage(int pageIndex)
         {
             //CurrentPageIndex = pageIndex;
             NewDataRequested?.Invoke(new ItemsListRequest
             {
                 Take = ItemsPerPage,
-                PageCurrentIndex = pageIndex
+                PageIndex = pageIndex
             });
         }
 
@@ -79,7 +80,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             NewDataRequested?.Invoke(new ItemsListRequest
             {
                 Take = newItemsPerPage,
-                PageCurrentIndex = 0
+                PageIndex = 0
             });
         }
 
@@ -119,7 +120,11 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// </summary>
         public string CurrentPageText
         {
-            get { return string.Format(Resources.ItemsList_PaginationCaption, CurrentPageIndex + 1, PagesCount); }
+            get
+            {
+                return PagesCount == 0 ? Resources.ItemsList_PaginationEmptyCaption
+                    : string.Format(Resources.ItemsList_PaginationCaption, CurrentPageIndex + 1, PagesCount);
+            }
         }
 
         /// <summary>
@@ -175,6 +180,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ICommand PrevPageCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand LastPageCommand { get; }
+        public ICommand ItemLeftDoubleClick { get; }
 
         #endregion
     }

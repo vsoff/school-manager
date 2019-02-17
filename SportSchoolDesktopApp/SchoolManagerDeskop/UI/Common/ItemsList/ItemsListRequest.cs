@@ -8,7 +8,7 @@ namespace SchoolManagerDeskop.UI.Common.ItemsList
 {
     public class ItemsListRequest
     {
-        public int PageCurrentIndex { get; set; }
+        public int PageIndex { get; set; }
         public int Take { get; set; }
     }
 }

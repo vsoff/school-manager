@@ -123,4 +123,7 @@
   <data name="ItemsList_PaginationCaption" xml:space="preserve">
     <value>Страница {0} из {1}</value>
   </data>
+  <data name="ItemsList_PaginationEmptyCaption" xml:space="preserve">
+    <value>Нет страниц</value>
+  </data>
 </root>

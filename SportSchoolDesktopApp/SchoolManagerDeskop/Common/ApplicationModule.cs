@@ -1,4 +1,9 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
+using SchoolManagerDeskop.Common.Repositories;
+using SchoolManagerDeskop.Core.Dao;
+using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Repositories;
+using SchoolManagerDeskop.Core.Repositories.Pagination;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Models;
 using SchoolManagerDeskop.UI.ViewModels;
@@ -18,8 +23,18 @@ namespace SchoolManagerDeskop.Common
         public static void Register(IUnityContainer container)
         {
             container.AddExtension(new Diagnostic());
+
+            // Регистрация регистров.
             container.RegisterType<IWindowsDisplayRegistry, WindowsDisplayRegistry>(new SingletonLifetimeManager());
             container.RegisterType<IDialogsDisplayRegistry, DialogsDisplayRegistry>(new SingletonLifetimeManager());
+
+            // Регистрация провайдеров.
+            container.RegisterType<ISportEntitiesContextProvider, SportEntitiesContextProvider>(new SingletonLifetimeManager());
+
+            // Регистрация репозиториев.
+            container.RegisterType<IStudentsRepository, StudentsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<Student>, StudentsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<StudentModel>, StudentsModelsRepository>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);
@@ -27,15 +42,13 @@ namespace SchoolManagerDeskop.Common
 
         private static void RegisterViewModels(IUnityContainer container)
         {
+            // Регистрация View.
             container.RegisterType<MainWindow>(new TransientLifetimeManager());
             container.RegisterType<ItemsListEditWindow>(new TransientLifetimeManager());
 
-            container.RegisterInstance(new MainWindowViewModel(
-                container.Resolve<IWindowsDisplayRegistry>()
-            ));
-            container.RegisterInstance(new ItemsListEditWindowViewModel<StudentModel>(
-            //container.Resolve<IWindowsDisplayRegistry>()
-            ));
+            // Регистрация ViewModel.
+            container.RegisterType<MainWindowViewModel>(new SingletonLifetimeManager());
+            container.RegisterType<ItemsListEditWindowViewModel<StudentModel>>(new SingletonLifetimeManager());
         }
 
         private static void ConfigureDisplayRegisters(IUnityContainer container)
@@ -43,9 +56,6 @@ namespace SchoolManagerDeskop.Common
             var windowsRegistry = container.Resolve<IWindowsDisplayRegistry>();
             windowsRegistry.AddWindowType<MainWindowViewModel, WpfDisplayWindow<MainWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<StudentModel>, WpfDisplayWindow<ItemsListEditWindow>>();
-
-            //ItemsListEditWindowViewModel<StudentModel>
-            //windowsRegistry.ShowWindow();
         }
     }
 }

@@ -24,8 +24,9 @@
         <ListView Grid.Row="0"
                   Grid.ColumnSpan="7"
                   Margin="3,3,3,2"
-                  ItemsSource="{Binding Items}" 
-                  SelectedItem="{Binding SelectedItem}"
+                  ItemsSource="{Binding Items,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"
+                  Name="List"
                   HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style>
