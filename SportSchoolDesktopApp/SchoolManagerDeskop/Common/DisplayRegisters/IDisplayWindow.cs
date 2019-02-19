@@ -21,6 +21,11 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         void Show();
 
         /// <summary>
+        /// Открывает окно как диалог.
+        /// </summary>
+        void ShowDialog();
+
+        /// <summary>
         /// Закрывает окно.
         /// </summary>
         void Close();

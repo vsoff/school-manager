@@ -1,4 +1,4 @@
-﻿using SchoolManagerDeskop.Common.DisplayRegisters;
+﻿using SchoolManagerDeskop.Common.Extensions;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using SchoolManagerDeskop.UI.Common;
@@ -10,22 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolManagerDeskop.UI.ViewModels
+namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 {
-    public interface IItemsListEditWindowViewModel<T> : IViewModel
+    public class StudentsEditWindowViewModel : ViewModelBase
     {
-    }
+        public ItemsListViewModel<StudentModel> ItemsListViewModel { get; set; }
+        internal IPaginationSearchableRepository<Student> _searchableRepository;
 
-    public abstract class ItemsListEditWindowViewModel<T> : ViewModelBase, IItemsListEditWindowViewModel<T> where T : IDisplayableModel
-    {
-        internal IPaginationSearchableRepository<T> _searchableRepository;
-        public ItemsListViewModel<T> ItemsListViewModel { get; set; }
-
-        public ItemsListEditWindowViewModel(IPaginationSearchableRepository<T> searchableRepository)
+        public StudentsEditWindowViewModel(IPaginationSearchableRepository<Student> searchableRepository)
         {
             _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
 
-            ItemsListViewModel = new ItemsListViewModel<T>();
+            ItemsListViewModel = new ItemsListViewModel<StudentModel>();
             ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
             ItemsListViewModel.GoToPage(0);
@@ -39,15 +35,15 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 PageIndex = request.PageIndex
             });
 
-            ItemsListViewModel.SetResult(new ItemsListData<T>
+            ItemsListViewModel.SetResult(new ItemsListData<StudentModel>
             {
-                Items = response.Items,
+                Items = response.Items.Select(x => x.ToModel()).ToArray(),
                 PagesCount = response.PagesCount,
                 CurrentPageIndex = response.CurrentPageIndex
             });
         }
 
-        internal virtual void ItemListItemSelected(T item)
+        private void ItemListItemSelected(StudentModel item)
         {
         }
     }

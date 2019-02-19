@@ -25,14 +25,14 @@ namespace SchoolManagerDeskop
             ApplicationModule.Register(_unityContainer);
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             // Вывод главного окна.
             var displayRegistry = _unityContainer.Resolve<IWindowsDisplayRegistry>();
             var mainWindowViewModel = _unityContainer.Resolve<MainWindowViewModel>();
-            displayRegistry.ShowWindow(mainWindowViewModel);
+            displayRegistry.ShowWindow(mainWindowViewModel, false);
         }
 
         /// <summary>

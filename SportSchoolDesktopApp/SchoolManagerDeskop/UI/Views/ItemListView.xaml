@@ -10,7 +10,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -20,9 +21,16 @@
             <ColumnDefinition Width="50"></ColumnDefinition>
             <ColumnDefinition Width="50"></ColumnDefinition>
             <ColumnDefinition Width="50"></ColumnDefinition>
-            <ColumnDefinition Width="70"></ColumnDefinition>
+            <ColumnDefinition Width="90"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Row="0"
+
+        <!-- Строка поиска -->
+        <TextBlock Visibility="Visible" Grid.Row="0" Grid.Column="0" Text="Поиск" Margin="2" TextAlignment="Center" VerticalAlignment="Center" />
+        <Button Visibility="Visible" Grid.Row="0" Grid.Column="6" Content="Найти" Margin="4" />
+        <TextBox Visibility="Visible" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Margin="2" VerticalAlignment="Center" />
+
+        <!-- Список айтемов -->
+        <ListView Grid.Row="1"
                   Grid.ColumnSpan="7"
                   Margin="3,3,3,2"
                   ItemsSource="{Binding Items, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -47,12 +55,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>
-        <Button Grid.Row="1" Grid.Column="0" Command="{Binding FirstPageCommand}" Content="&lt;&lt;" Margin="4"/>
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding PrevPageCommand}" Content="&lt;" Margin="4"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding CurrentPageText}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" />
-        <Button Grid.Row="1" Grid.Column="3" Command="{Binding NextPageCommand}" Content="&gt;" Margin="4"/>
-        <Button Grid.Row="1" Grid.Column="4" Command="{Binding LastPageCommand}" Content="&gt;&gt;" Margin="4"/>
-        <TextBlock Grid.Row="1" Grid.Column="5" Text="{x:Static resx:Resources.ItemsList_ItemsPerPageCaption}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" />
-        <ComboBox Grid.Row="1" Grid.Column="6" Margin="4" ItemsSource="{Binding ItemsPerPageList}" SelectedItem="{Binding ItemsPerPage}" />
+
+        <!-- Меню управления -->
+        <Button Grid.Row="2" Grid.Column="0" Command="{Binding FirstPageCommand}" Content="&lt;&lt;" Margin="4"/>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding PrevPageCommand}" Content="&lt;" Margin="4"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CurrentPageText}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" />
+        <Button Grid.Row="2" Grid.Column="3" Command="{Binding NextPageCommand}" Content="&gt;" Margin="4"/>
+        <Button Grid.Row="2" Grid.Column="4" Command="{Binding LastPageCommand}" Content="&gt;&gt;" Margin="4"/>
+        <TextBlock Grid.Row="2" Grid.Column="5" Text="{x:Static resx:Resources.ItemsList_ItemsPerPageCaption}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="2" Grid.Column="6" Margin="4" ItemsSource="{Binding LimitsList}" SelectedItem="{Binding Limit}" />
     </Grid>
 </UserControl>

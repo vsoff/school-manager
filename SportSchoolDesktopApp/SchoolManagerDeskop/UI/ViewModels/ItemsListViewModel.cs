@@ -27,14 +27,14 @@ namespace SchoolManagerDeskop.UI.ViewModels
 
     public class ItemsListViewModel<T> : ViewModelBase where T : IDisplayableModel
     {
-        public int[] ItemsPerPageList { get; }
+        public int[] LimitsList { get; }
         public ObservableCollection<T> Items { get; set; }
 
         public ItemsListViewModel()
         {
             Items = new ObservableCollection<T>();
-            ItemsPerPageList = new int[] { 4, 10, 25, 50, 100 };
-            ItemsPerPage = ItemsPerPageList.First();
+            LimitsList = new int[] { 4, 10, 25, 50, 100 };
+            Limit = LimitsList.First();
 
             FirstPageCommand = new RelayCommand(o => GoToPage(0), o => CurrentPageIndex > 0);
             PrevPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex - 1), o => CurrentPageIndex > 0);
@@ -63,10 +63,9 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// <param name="pageIndex">Индекс страницы.</param>
         public void GoToPage(int pageIndex)
         {
-            //CurrentPageIndex = pageIndex;
             NewDataRequested?.Invoke(new ItemsListRequest
             {
-                Take = ItemsPerPage,
+                Take = Limit,
                 PageIndex = pageIndex
             });
         }
@@ -159,17 +158,17 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// <summary>
         /// Количество выводимых элементов на странице.
         /// </summary>
-        public int ItemsPerPage
+        public int Limit
         {
-            get { return _responsesPerPage; }
+            get { return _limit; }
             set
             {
-                _responsesPerPage = value;
-                OnPropertyChanged(nameof(ItemsPerPage));
+                _limit = value;
+                OnPropertyChanged(nameof(Limit));
                 ItemsPerPageChanged(value);
             }
         }
-        private int _responsesPerPage;
+        private int _limit;
 
         #endregion
 

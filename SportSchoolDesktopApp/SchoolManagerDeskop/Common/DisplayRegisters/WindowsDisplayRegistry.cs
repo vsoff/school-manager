@@ -26,7 +26,8 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         /// Открывает окно для переданного объекта ViewModel.
         /// </summary>
         /// <param name="viewModel">ViewModel окна.</param>
-        void ShowWindow(IViewModel viewModel);
+        /// <param name="isDialog">Указывает нужно ли открыть окно как диалог.</param>
+        void ShowWindow(IViewModel viewModel, bool isDialog = false);
 
         /// <summary>
         /// Закрывает окно для переданного объекта ViewModel.
@@ -82,7 +83,7 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
         }
 
         /// <inheritdoc />
-        public void ShowWindow(IViewModel viewModel)
+        public void ShowWindow(IViewModel viewModel, bool isDialog = false)
         {
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
@@ -92,7 +93,11 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
 
             IDisplayWindow window = CreateWindowInstance(viewModel);
             _openedWindowsMap[viewModel] = window;
-            window.Show();
+
+            if (isDialog)
+                window.ShowDialog();
+            else
+                window.Show();
         }
 
         /// <inheritdoc />

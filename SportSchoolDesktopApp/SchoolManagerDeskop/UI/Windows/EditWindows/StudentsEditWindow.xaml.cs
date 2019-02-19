@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SchoolManagerDeskop.UI.Windows
+namespace SchoolManagerDeskop.UI.Windows.EditWindows
 {
     /// <summary>
-    /// Логика взаимодействия для ItemsListEditWindow.xaml
+    /// Логика взаимодействия для StudentsEditWindow.xaml
     /// </summary>
-    public partial class ItemsListEditWindow : Window
+    public partial class StudentsEditWindow : Window
     {
-        public ItemsListEditWindow()
+        public StudentsEditWindow()
         {
             InitializeComponent();
         }

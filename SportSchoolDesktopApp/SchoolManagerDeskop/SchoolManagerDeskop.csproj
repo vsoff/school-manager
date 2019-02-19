@@ -91,7 +91,6 @@
     <Compile Include="Core\Repositories\Pagination\PaginationRequest.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
     <Compile Include="Core\Repositories\Pagination\SearchPaginationRequest.cs" />
-    <Compile Include="Common\Repositories\StudentsModelsRepository.cs" />
     <Compile Include="Core\Repositories\StudentsRepository.cs" />
     <Compile Include="Core\Dao\SportEntitiesContext.cs" />
     <Compile Include="Core\Dao\Entities\Student.cs" />
@@ -107,6 +106,7 @@
     <Compile Include="UI\Enums\WeekDay.cs" />
     <Compile Include="UI\Models\ScheduleItemModel.cs" />
     <Compile Include="UI\Models\StudentModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\StudentsEditWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ItemsListEditWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ItemsListViewModel.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
@@ -124,7 +124,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Windows\ItemsListEditWindow.xaml">
+    <Page Include="UI\Windows\EditWindows\StudentsEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,8 +136,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Windows\ItemsListEditWindow.xaml.cs">
-      <DependentUpon>ItemsListEditWindow.xaml</DependentUpon>
+    <Compile Include="UI\Windows\EditWindows\StudentsEditWindow.xaml.cs">
+      <DependentUpon>StudentsEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -170,6 +170,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

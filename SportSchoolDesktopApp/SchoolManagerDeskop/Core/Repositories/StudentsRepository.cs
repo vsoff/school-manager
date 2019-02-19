@@ -31,7 +31,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                 var data = context.Students
                    .OrderBy(x => x.Id)
                    .Skip(request.Skip)
-                   .Take(request.ItemsPerPage)
+                   .Take(request.Limit)
                    .ToArray();
 
                 var count = context.Students.Count();
@@ -40,7 +40,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                 {
                     Items = data,
                     TotalItemsCount = count,
-                    ItemsPerPage = request.ItemsPerPage,
+                    Limit = request.Limit,
                     CurrentPageIndex = request.PageIndex
                 };
             }
@@ -64,7 +64,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                     .Where(expression)
                     .OrderBy(x => x.Id)
                     .Skip(request.Pagination.Skip)
-                    .Take(request.Pagination.ItemsPerPage)
+                    .Take(request.Pagination.Limit)
                     .ToArray();
 
                 var count = context.Students.Where(expression).Count();
@@ -73,7 +73,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                 {
                     Items = data,
                     TotalItemsCount = count,
-                    ItemsPerPage = request.Pagination.ItemsPerPage,
+                    Limit = request.Pagination.Limit,
                     CurrentPageIndex = request.Pagination.PageIndex
                 };
             }

@@ -37,6 +37,12 @@ namespace SchoolManagerDeskop.UI.Common
         }
 
         /// <inheritdoc />
+        public void ShowDialog()
+        {
+            _window.ShowDialog();
+        }
+
+        /// <inheritdoc />
         public void Close()
         {
             _window.Close();

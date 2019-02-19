@@ -54,6 +54,11 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ICommand WeekDaySelectCommand { get; }
 
         /// <summary>
+        /// Команда вызываемая при двойном клике на занятии в расписании.
+        /// </summary>
+        public ICommand ScheduleItemClickedCommand { get; }
+
+        /// <summary>
         /// Коллекция занятий.
         /// </summary>
         public ObservableCollection<ScheduleItemModel> ScheduleItems { get; set; }
@@ -64,6 +69,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
 
             _selectedWeekDay = WeekDay.Undefined;
             WeekDaySelectCommand = new RelayCommand(o => WeekDaySelect((WeekDay)o));
+            ScheduleItemClickedCommand = new RelayCommand(o => ScheduleItemSelected?.Invoke((ScheduleItemModel)o));
         }
 
         /// <summary>
@@ -99,7 +105,6 @@ namespace SchoolManagerDeskop.UI.ViewModels
             set
             {
                 _selectedScheduleItem = value;
-                ScheduleItemSelected?.Invoke(value);
                 OnPropertyChanged(nameof(SelectedScheduleItem));
             }
         }

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views"
              xmlns:enums="clr-namespace:SchoolManagerDeskop.UI.Enums"
              xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="600">
     <UserControl.Resources>
@@ -122,6 +123,11 @@
                  ItemsSource="{Binding ScheduleItems}" 
                  SelectedItem="{Binding SelectedScheduleItem}"
                  HorizontalContentAlignment="Stretch">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ScheduleItemClickedCommand}" CommandParameter="{Binding SelectedScheduleItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemContainerStyle>
                 <Style>
                     <Setter Property="ListBoxItem.BorderThickness" Value="0"/>

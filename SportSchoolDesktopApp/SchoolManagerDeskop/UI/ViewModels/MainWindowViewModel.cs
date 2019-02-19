@@ -4,6 +4,7 @@ using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
 using SchoolManagerDeskop.UI.Enums;
 using SchoolManagerDeskop.UI.Models;
+using SchoolManagerDeskop.UI.ViewModels.EditWindows;
 using SchoolManagerDeskop.UI.Windows;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace SchoolManagerDeskop.UI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IWindowsDisplayRegistry _windowsDisplayRegistry;
-        private readonly ItemsListEditWindowViewModel<StudentModel> _itemsListEditWindowViewModel;
+        private readonly StudentsEditWindowViewModel _studentEditWindowViewModel;
         public ScheduleViewModel ScheduleViewModel { get; }
 
         public MainWindowViewModel(IWindowsDisplayRegistry windowsDisplayRegistry,
-            ItemsListEditWindowViewModel<StudentModel> itemsListEditWindowViewModel)
+            StudentsEditWindowViewModel studentEditWindowViewModel)
         {
             _windowsDisplayRegistry = windowsDisplayRegistry ?? throw new ArgumentNullException(nameof(windowsDisplayRegistry));
-            _itemsListEditWindowViewModel = itemsListEditWindowViewModel ?? throw new ArgumentNullException(nameof(itemsListEditWindowViewModel));
+            _studentEditWindowViewModel = studentEditWindowViewModel ?? throw new ArgumentNullException(nameof(studentEditWindowViewModel));
 
             ScheduleViewModel = new ScheduleViewModel();
             ScheduleViewModel.SelectedWeekDayChanged += SelectedWeekDayChanged;
@@ -39,7 +40,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             });
 
             OnCommand = new RelayCommand(_ => MessageBox.Show("Test element clicked."));
-            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_itemsListEditWindowViewModel));
+            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_studentEditWindowViewModel, true));
             TrainersEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования тренеров."));
             ScheduleEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования расписания."));
             GroupsEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования групп."));
