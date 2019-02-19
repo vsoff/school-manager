@@ -40,7 +40,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             PrevPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex - 1), o => CurrentPageIndex > 0);
             NextPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex + 1), o => CurrentPageIndex < PagesCount - 1);
             LastPageCommand = new RelayCommand(o => GoToPage(PagesCount - 1), o => CurrentPageIndex < PagesCount - 1);
-            ItemLeftDoubleClick = new RelayCommand(o => { var a = 1; });
+            ItemLeftDoubleClick = new RelayCommand(o => { ItemListItemSelected?.Invoke((T)o); });
         }
 
         /// <summary>
@@ -109,7 +109,6 @@ namespace SchoolManagerDeskop.UI.ViewModels
             set
             {
                 _selectedItem = value;
-                ItemListItemSelected?.Invoke(value);
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }

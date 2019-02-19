@@ -15,17 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCardPlayer", "Smartcar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastDatabaseCreator", "FastDatabaseCreator\FastDatabaseCreator.csproj", "{6AE1F1C5-5EB7-440B-BC84-DC0FCF901E0F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlTables", "SqlTables", "{42E03C7C-73FE-4D64-A928-BBB875064C8F}"
-	ProjectSection(SolutionItems) = preProject
-		SqlTables\Groups.sql = SqlTables\Groups.sql
-		SqlTables\Schedule.sql = SqlTables\Schedule.sql
-		SqlTables\Sessions.sql = SqlTables\Sessions.sql
-		SqlTables\Students.sql = SqlTables\Students.sql
-		SqlTables\StudentsInSessions.sql = SqlTables\StudentsInSessions.sql
-		SqlTables\Subscriptions.sql = SqlTables\Subscriptions.sql
-		SqlTables\Trainers.sql = SqlTables\Trainers.sql
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManagerDeskop", "SchoolManagerDeskop\SchoolManagerDeskop.csproj", "{B465FB01-D4F7-44A1-A52C-216208EAFE4C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{031FCFB5-267F-4326-AAD4-607CF0DEBEF6}"

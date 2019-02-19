@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:resx="clr-namespace:SchoolManagerDeskop.Properties"
              xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -24,10 +25,15 @@
         <ListView Grid.Row="0"
                   Grid.ColumnSpan="7"
                   Margin="3,3,3,2"
-                  ItemsSource="{Binding Items,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"
+                  ItemsSource="{Binding Items, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   Name="List"
                   HorizontalContentAlignment="Stretch">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ItemLeftDoubleClick}" CommandParameter="{Binding SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemContainerStyle>
                 <Style>
                     <Setter Property="ListBoxItem.BorderThickness" Value="0" />
