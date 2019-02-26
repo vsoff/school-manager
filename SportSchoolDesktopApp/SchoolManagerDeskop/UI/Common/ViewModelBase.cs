@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.UI.Common
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged, IViewModel
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
     public interface IViewModel
     {
+    }
 
+    public abstract class ViewModelBase : NotifyPropertyChanged, IViewModel
+    {
     }
 }

@@ -44,6 +44,22 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         /// <summary>
+        /// Сбрасывает выбранный элемент.
+        /// </summary>
+        public void ResetSelection()
+        {
+            SelectedItem = default(T);
+        }
+
+        /// <summary>
+        /// Обновляет список элементов.
+        /// </summary>
+        public void Refresh()
+        {
+            GoToPage(CurrentPageIndex);
+        }
+
+        /// <summary>
         /// Передаёт данные, которые должны быть установлены для этой ViewModel.
         /// </summary>
         /// <param name="data">Данные списка.</param>
@@ -108,6 +124,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             set
             {
                 _selectedItem = value;
+                ItemListItemSelected?.Invoke(value);
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }

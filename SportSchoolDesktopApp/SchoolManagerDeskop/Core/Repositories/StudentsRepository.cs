@@ -112,5 +112,50 @@ namespace SchoolManagerDeskop.Core.Repositories
 
             return Expression.Lambda<Func<Student, bool>>(multiExpression);
         }
+
+        public long Add(Student entity)
+        {
+            Student temp;
+            using (var context = _sportEntitiesContextProvider.GetContext())
+            {
+                temp = context.Students.Add(entity);
+                context.SaveChanges();
+            }
+            return temp.Id;
+        }
+
+        public Student Get(long entityId)
+        {
+            using (var context = _sportEntitiesContextProvider.GetContext())
+                return context.Students.Find(entityId);
+        }
+
+        public void Update(Student entity)
+        {
+            using (var context = _sportEntitiesContextProvider.GetContext())
+            {
+                var dbEntity = context.Students.Find(entity.Id);
+
+                if (dbEntity != null)
+                {
+                    context.Entry(dbEntity).CurrentValues.SetValues(entity);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Delete(long entityId)
+        {
+            using (var context = _sportEntitiesContextProvider.GetContext())
+            {
+                var dbEntity = context.Students.Find(entityId);
+
+                if (dbEntity != null)
+                {
+                    context.Students.Remove(dbEntity);
+                    context.SaveChanges();
+                }
+            }
+        }
     }
 }

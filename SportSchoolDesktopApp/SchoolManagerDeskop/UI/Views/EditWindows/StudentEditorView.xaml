@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="SchoolManagerDeskop.UI.Views.EditWindows.StudentEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views.EditWindows"
+             xmlns:converters="clr-namespace:SchoolManagerDeskop.UI.Common.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BoolEditorVisibilityConverter x:Key="BoolEditorVisibilityConverter"/>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="FieldName">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="WarningText">
+            <Setter Property="Margin" Value="5,2,5,2" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}" x:Key="FieldValue">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </UserControl.Resources>
+    <Border BorderThickness="1"
+                BorderBrush="LightGray"
+                Margin="3,3,3,2"
+                Grid.ColumnSpan="3"
+                Grid.Column="1"
+                Grid.Row="1">
+        <Grid Margin="0,5,0,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"></ColumnDefinition>
+                <ColumnDefinition Width="70*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!-- Поля для редактирования -->
+            <TextBlock Style="{StaticResource WarningText}"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding ErrorMessage}"  
+                       Visibility="{Binding IsValid, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="1" Grid.Column="0" Text="ИД"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="2" Grid.Column="0" Text="Фамилия"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="3" Grid.Column="0" Text="Имя"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="4" Grid.Column="0" Text="Отчество"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="5" Grid.Column="0" Text="Дата рождения"/>
+            <TextBlock Style="{StaticResource FieldName}" Grid.Row="6" Grid.Column="0" Text="Телефон"/>
+            <TextBox Style="{StaticResource FieldValue}" IsEnabled="False" Grid.Row="1" Grid.Column="1" Text="{Binding Model.Id}" />
+            <TextBox Style="{StaticResource FieldValue}" Grid.Row="2" Grid.Column="1" Text="{Binding Model.LastName}" />
+            <TextBox Style="{StaticResource FieldValue}" Grid.Row="3" Grid.Column="1" Text="{Binding Model.FirstName}" />
+            <TextBox Style="{StaticResource FieldValue}" Grid.Row="4" Grid.Column="1" Text="{Binding Model.MiddleName}" />
+            <DatePicker Margin="5,3,5,3" Grid.Row="5" Grid.Column="1" SelectedDate="{Binding Model.Birdth}" />
+            <TextBox Style="{StaticResource FieldValue}" Grid.Row="6" Grid.Column="1" Text="{Binding Model.Phone}" />
+            <!--<TextBox IsReadOnly="True" Text="{Binding totalAmount, Mode=OneWay, StringFormat={}{0:C2}}" TextAlignment="Right" />-->
+        </Grid>
+    </Border>
+</UserControl>

@@ -43,12 +43,14 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,14 +81,17 @@
     <Compile Include="Common\DisplayRegisters\IDisplayRegistry.cs" />
     <Compile Include="Common\DisplayRegisters\IDisplayWindow.cs" />
     <Compile Include="Common\DisplayRegisters\WindowsDisplayRegistry.cs" />
-    <Compile Include="Common\Extensions\CoreEntitiesExtension.cs" />
-    <Compile Include="Common\Extensions\ModelEntitiesExtension.cs" />
+    <Compile Include="Common\Mappers\IEntityMapper.cs" />
+    <Compile Include="Common\Mappers\StudentsMapper.cs" />
+    <Compile Include="Common\Validators\IEntityValidator.cs" />
+    <Compile Include="Common\Validators\StudentsValidator.cs" />
     <Compile Include="Core\Dao\Entities\Entity.cs" />
     <Compile Include="Core\Dao\Entities\Group.cs" />
     <Compile Include="Core\Dao\Entities\Schedule.cs" />
     <Compile Include="Core\Dao\Entities\Session.cs" />
     <Compile Include="Core\Dao\SportEntitiesContextProvider.cs" />
     <Compile Include="Core\Helpers\SearchHelper.cs" />
+    <Compile Include="Core\Repositories\IRepository.cs" />
     <Compile Include="Core\Repositories\Pagination\IPaginationSearchableRepository.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationRequest.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
@@ -99,18 +104,25 @@
     <Compile Include="Core\Dao\Entities\Trainer.cs" />
     <Compile Include="Core\Enums\WeekDayCore.cs" />
     <Compile Include="UI\Common\Commands\RelayCommand.cs" />
+    <Compile Include="UI\Common\Converters\EditorVisibilityConverter.cs" />
     <Compile Include="UI\Common\ItemsList\ItemsListData.cs" />
     <Compile Include="UI\Common\ItemsList\ItemsListRequest.cs" />
+    <Compile Include="UI\Common\NotifyPropertyChanged.cs" />
+    <Compile Include="UI\Common\ValidatingModel.cs" />
     <Compile Include="UI\Common\WpfDisplayWindow.cs" />
     <Compile Include="UI\Enums\ScheduleColor.cs" />
     <Compile Include="UI\Enums\WeekDay.cs" />
+    <Compile Include="UI\Common\IDisplayableModel.cs" />
     <Compile Include="UI\Models\ScheduleItemModel.cs" />
     <Compile Include="UI\Models\StudentModel.cs" />
-    <Compile Include="UI\ViewModels\EditWindows\StudentsEditWindowViewModel.cs" />
-    <Compile Include="UI\ViewModels\ItemsListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\EditorViewModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\ItemsListEditWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ItemsListViewModel.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
+    <Compile Include="UI\Views\EditWindows\StudentEditorView.xaml.cs">
+      <DependentUpon>StudentEditorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\ItemListView.xaml.cs">
       <DependentUpon>ItemListView.xaml</DependentUpon>
     </Compile>
@@ -120,6 +132,10 @@
     <Compile Include="UI\Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
+    <Page Include="UI\Views\EditWindows\StudentEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Views\ItemListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +197,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\Extensions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

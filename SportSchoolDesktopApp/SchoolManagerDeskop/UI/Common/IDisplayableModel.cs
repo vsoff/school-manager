@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolManagerDeskop.Common.Extensions
+namespace SchoolManagerDeskop.UI.Common
 {
-    public static class ModelEntitiesExtension
+    public interface IDisplayableModel
     {
+        string ItemCaption { get; }
     }
 }

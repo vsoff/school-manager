@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.Core.Repositories.Pagination
 {
-    public interface IPaginationSearchableRepository<T>
+    public interface IPaginationSearchableRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        T[] Search(string searchString);
-        PaginationResponse<T> GetPage(PaginationRequest request);
-        PaginationResponse<T> GetPageWithSearch(SearchPaginationRequest request);
+        TEntity[] Search(string searchString);
+        PaginationResponse<TEntity> GetPage(PaginationRequest request);
+        PaginationResponse<TEntity> GetPageWithSearch(SearchPaginationRequest request);
     }
 }

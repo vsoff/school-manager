@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows.EditWindows"
         xmlns:views="clr-namespace:SchoolManagerDeskop.UI.Views"
+        xmlns:converters="clr-namespace:SchoolManagerDeskop.UI.Common.Converters"
+        xmlns:editors="clr-namespace:SchoolManagerDeskop.UI.Views.EditWindows"
         mc:Ignorable="d"
-        Title="Окно редактирования учеников" Height="450" Width="800" WindowStyle="ToolWindow">
+        Title="Окно редактирования учеников"
+        Height="450"
+        Width="800"
+        MinHeight="450"
+        MinWidth="800"
+        WindowStyle="ToolWindow">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:EditorVisibilityConverter x:Key="EditorVisibilityConverter"/>
+        <converters:EditorEnabledConverter x:Key="EditorEnabledConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0"></RowDefinition>
@@ -16,8 +28,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="120"></ColumnDefinition>
-            <ColumnDefinition Width="90"></ColumnDefinition>
-            <ColumnDefinition Width="90"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="70"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!-- Заголовок -->
@@ -31,21 +43,24 @@
             DataContext="{Binding ItemsListViewModel}" />
 
         <!-- Зона редактирования -->
-        <Border BorderThickness="1"
-                BorderBrush="LightGray"
-                Margin="3,3,3,2"
-                Grid.ColumnSpan="3"
-                Grid.Column="1"
-                Grid.Row="1"/>
+        <Border Visibility="{Binding CurrentState, ValidatesOnExceptions=True, Converter={StaticResource EditorVisibilityConverter}}"
+                IsEnabled="{Binding CurrentState, ValidatesOnExceptions=True, Converter={StaticResource EditorEnabledConverter}}"
+            Grid.Column="1"
+            Grid.Row="1"
+            Grid.ColumnSpan="3">
+            <editors:StudentEditorView DataContext="{Binding EditorViewModel}"/>
+        </Border>
 
         <!-- Основные кнопки -->
         <Button Grid.Column="2"
                 Grid.Row="2"
                 Margin="4"
-                Content="Добавить"/>
+                Command="{Binding ActionCommand}"
+                Content="{Binding ActionButtonCaption}"/>
         <Button Grid.Column="3"
                 Grid.Row="2"
                 Margin="4"
-                Content="Закрыть"/>
+                Command="{Binding CancelCommand}"
+                Content="{Binding CancelButtonCaption}"/>
     </Grid>
 </Window>

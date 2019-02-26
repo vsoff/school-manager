@@ -14,6 +14,6 @@ namespace SchoolManagerDeskop.Core.Repositories.Pagination
         public int TotalItemsCount { get; set; }
         public int CurrentPageIndex { get; set; }
         public int Skip => CurrentPageIndex * Limit;
-        public int PagesCount => TotalItemsCount / Limit + 1;
+        public int PagesCount => (TotalItemsCount + Limit - 1) / Limit;
     }
 }
