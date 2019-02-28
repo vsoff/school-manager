@@ -9,9 +9,6 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 {
     public class Subscription : Entity
     {
-        [Key]
-        public long Id { get; set; }
-
         public long StudentId { get; set; }
 
         public long GroupId { get; set; }

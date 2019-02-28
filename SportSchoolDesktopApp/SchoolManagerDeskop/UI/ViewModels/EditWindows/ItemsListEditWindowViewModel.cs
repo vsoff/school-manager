@@ -60,8 +60,9 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         /// </summary>
         private void ItemsListUpdateData(ItemsListRequest request)
         {
-            var response = _searchableRepository.GetPage(new PaginationRequest
+            var response = _searchableRepository.GetPage(new SearchPaginationRequest
             {
+                SearchText = null,
                 Limit = request.Take,
                 PageIndex = request.PageIndex
             });

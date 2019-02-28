@@ -9,6 +9,8 @@ namespace SchoolManagerDeskop.Core.Repositories.Pagination
     public class SearchPaginationRequest
     {
         public string SearchText { get; set; }
-        public PaginationRequest Pagination { get; set; }
+        public int PageIndex { get; set; }
+        public int Limit { get; set; }
+        public int Skip => PageIndex * Limit;
     }
 }

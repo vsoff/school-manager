@@ -14,15 +14,16 @@ namespace SchoolManagerDeskop.Common.Validators
             List<string> warningsList = new List<string>();
 
             if (string.IsNullOrEmpty(entity.FirstName))
-                warningsList.Add("имя не должно быть пустым");
-            else if (entity.FirstName.Length < 2 || entity.FirstName.Length > 6)
-                warningsList.Add("имя не должно быть короче 2 или длиннее 6 символов");
+                warningsList.Add("имя должно быть заполнено");
+
+            if (string.IsNullOrEmpty(entity.LastName))
+                warningsList.Add("фамилия должна быть заполнена");
 
             if (string.IsNullOrEmpty(entity.Phone))
                 warningsList.Add("телефон должен быть заполнен");
 
             if (entity?.Birdth == null)
-                warningsList.Add("дата рождения должна быть заполнена");
+                warningsList.Add("не указана дата рождения");
 
             warnings = warningsList.ToArray();
             return warningsList.Count == 0;

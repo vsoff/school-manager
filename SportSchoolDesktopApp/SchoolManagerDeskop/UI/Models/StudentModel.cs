@@ -80,6 +80,6 @@ namespace SchoolManagerDeskop.UI.Models
             return this.MemberwiseClone();
         }
 
-        public override string ItemCaption => $"[{Id}] {FirstName} {MiddleName} {LastName}";
+        public override string ItemCaption => $"[{Id}] {FirstName} {LastName} {MiddleName}";
     }
 }

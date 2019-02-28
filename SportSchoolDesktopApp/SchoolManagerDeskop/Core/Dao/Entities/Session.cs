@@ -10,9 +10,6 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 {
     public class Session : Entity
     {
-        [Key]
-        public long Id { get; set; }
-
         public TimeSpan Time { get; set; }
 
         public DateTime Date { get; set; }

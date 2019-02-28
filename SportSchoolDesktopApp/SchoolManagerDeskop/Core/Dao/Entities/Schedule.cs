@@ -11,9 +11,6 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 {
     public class Schedule : Entity
     {
-        [Key]
-        public long Id { get; set; }
-
         [Required]
         public WeekDayCore WeekDays { get; set; }
 

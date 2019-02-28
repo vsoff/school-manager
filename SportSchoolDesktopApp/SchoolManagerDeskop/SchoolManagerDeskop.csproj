@@ -96,6 +96,7 @@
     <Compile Include="Core\Repositories\Pagination\PaginationRequest.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
     <Compile Include="Core\Repositories\Pagination\SearchPaginationRequest.cs" />
+    <Compile Include="Core\Repositories\SearchRepositoryHelper.cs" />
     <Compile Include="Core\Repositories\StudentsRepository.cs" />
     <Compile Include="Core\Dao\SportEntitiesContext.cs" />
     <Compile Include="Core\Dao\Entities\Student.cs" />
@@ -137,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Views\ItemListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\EditWindowsResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

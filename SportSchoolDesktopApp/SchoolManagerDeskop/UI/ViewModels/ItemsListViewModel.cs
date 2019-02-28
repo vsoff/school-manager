@@ -33,7 +33,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ItemsListViewModel()
         {
             Items = new ObservableCollection<T>();
-            LimitsList = new int[] { 4, 10, 25, 50, 100 };
+            LimitsList = new int[] { 20, 50, 100 };
             Limit = LimitsList.First();
 
             FirstPageCommand = new RelayCommand(o => GoToPage(0), o => CurrentPageIndex > 0);

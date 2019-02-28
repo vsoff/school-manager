@@ -9,9 +9,6 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 {
     public class Group : Entity
     {
-        [Key]
-        public long Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
