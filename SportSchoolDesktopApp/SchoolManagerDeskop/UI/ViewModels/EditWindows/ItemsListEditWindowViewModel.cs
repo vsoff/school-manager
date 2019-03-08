@@ -1,4 +1,5 @@
 ﻿using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Validators;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using SchoolManagerDeskop.UI.Common;
@@ -22,28 +23,24 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
     public class ItemsListEditWindowViewModel<TEntity, TModel>
         : ViewModelBase where TEntity : Entity, new() where TModel : ValidatingModel, new()
     {
-
-        private readonly IPaginationSearchableRepository<TEntity> _searchableRepository;
-        private readonly IEntityMapper<TEntity, TModel> _entityMapper;
+        internal readonly IPaginationSearchableRepository<TEntity> _searchableRepository;
+        internal readonly IModelMapper<TEntity, TModel> _entityMapper;
+        internal readonly IEntityValidator<TModel> _entityValidator;
 
         /// <summary>
         /// ViewModel списка сущностей.
         /// </summary>
         public ItemsListViewModel<TModel> ItemsListViewModel { get; set; }
 
-        /// <summary>
-        /// ViewModel редактирования сущности.
-        /// </summary>
-        public EditorViewModel<TEntity, TModel> EditorViewModel { get; set; }
-
-        public ItemsListEditWindowViewModel(IPaginationSearchableRepository<TEntity> searchableRepository,
-            EditorViewModel<TEntity, TModel> editorViewModel,
-            IEntityMapper<TEntity, TModel> entityMapper)
+        public ItemsListEditWindowViewModel(
+            IPaginationSearchableRepository<TEntity> searchableRepository,
+            IEntityValidator<TModel> entityValidator,
+            IModelMapper<TEntity, TModel> entityMapper)
         {
             _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
+            _entityValidator = entityValidator ?? throw new ArgumentNullException(nameof(entityValidator));
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
 
-            EditorViewModel = editorViewModel;
             ItemsListViewModel = new ItemsListViewModel<TModel>();
             ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
@@ -53,6 +50,17 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             CancelCommand = new RelayCommand(HandleCancel);
 
             CurrentState = ItemsListEditState.NoSelected;
+        }
+
+        private void ValidateModel()
+        {
+            string[] warnings;
+            _entityValidator.Validate(Model, out warnings);
+
+            bool isValid = warnings.Length == 0;
+
+            ErrorMessage = string.Join("\r\n", warnings.Select(x => $"*{x}"));
+            IsValid = isValid;
         }
 
         /// <summary>
@@ -83,13 +91,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         /// <param name="item">Выбранный элемент.</param>
         private void ItemListItemSelected(TModel item)
         {
-            EditorViewModel.Model = item;
+            Model = item;
             CurrentState = ItemsListEditState.Selected;
         }
 
         private bool ActionWasExecute(object o)
         {
-            return EditorViewModel.IsValid
+            return IsValid
                 || CurrentState == ItemsListEditState.NoSelected
                 || CurrentState == ItemsListEditState.Selected;
         }
@@ -103,7 +111,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             {
                 case ItemsListEditState.NoSelected:
                     {
-                        EditorViewModel.Model = new TModel();
+                        Model = new TModel();
                         CurrentState = ItemsListEditState.Creating;
                         break;
                     }
@@ -114,16 +122,14 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
                     }
                 case ItemsListEditState.Creating:
                     {
-                        TModel model = EditorViewModel.Model;
-                        _searchableRepository.Add(_entityMapper.ToCore(model));
+                        _searchableRepository.Add(_entityMapper.ToCore(Model));
                         ItemsListViewModel.Refresh();
                         CurrentState = ItemsListEditState.NoSelected;
                         break;
                     }
                 case ItemsListEditState.Editing:
                     {
-                        TModel model = EditorViewModel.Model;
-                        _searchableRepository.Update(_entityMapper.ToCore(model));
+                        _searchableRepository.Update(_entityMapper.ToCore(Model));
                         ItemsListViewModel.Refresh();
                         CurrentState = ItemsListEditState.NoSelected;
                         break;
@@ -233,5 +239,50 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             }
         }
         private string _cancelButtonCaption;
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+        private string _errorMessage;
+
+        public bool IsValid
+        {
+            get { return _isValid; }
+            set
+            {
+                _isValid = value;
+                OnPropertyChanged(nameof(IsValid));
+            }
+        }
+        private bool _isValid;
+
+        public TModel Model
+        {
+            get { return _model; }
+            set
+            {
+                TModel clone = (TModel)value?.Clone();
+
+                if (_model != null)
+                    _model.ModelChanged -= ValidateModel;
+
+                _model = clone;
+
+                if (_model != null)
+                {
+                    _model.ModelChanged += ValidateModel;
+                    ValidateModel();
+                }
+
+                OnPropertyChanged(nameof(Model));
+            }
+        }
+        private TModel _model;
     }
 }

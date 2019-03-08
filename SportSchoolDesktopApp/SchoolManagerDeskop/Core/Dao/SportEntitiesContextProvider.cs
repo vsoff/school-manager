@@ -21,7 +21,7 @@ namespace SchoolManagerDeskop.Core.Dao
         private static string GetConnectionString()
         {
             SqlConnectionStringBuilder bldr = new SqlConnectionStringBuilder();
-            bldr.InitialCatalog = "SportManagerReborn";
+            bldr.InitialCatalog = "SportManagerReborn5";
             bldr.DataSource = @"localhost";
             bldr.IntegratedSecurity = true;
             return bldr.ConnectionString;
@@ -29,7 +29,9 @@ namespace SchoolManagerDeskop.Core.Dao
 
         public SportEntitiesContext GetContext()
         {
-            return new SportEntitiesContext(GetConnectionString());
+            var context = new SportEntitiesContext(GetConnectionString());
+            context.Configuration.LazyLoadingEnabled = false;
+            return context;
         }
     }
 }

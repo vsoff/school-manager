@@ -86,5 +86,77 @@ namespace SchoolManagerDeskop.Properties {
                 return ResourceManager.GetString("ItemsList_PaginationEmptyCaption", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пт.
+        /// </summary>
+        public static string WeekDayCaption_Short_Friday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Friday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пн.
+        /// </summary>
+        public static string WeekDayCaption_Short_Monday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Monday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Никогда.
+        /// </summary>
+        public static string WeekDayCaption_Short_Never {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Never", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сб.
+        /// </summary>
+        public static string WeekDayCaption_Short_Saturday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Saturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Вс.
+        /// </summary>
+        public static string WeekDayCaption_Short_Sunday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Sunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Чт.
+        /// </summary>
+        public static string WeekDayCaption_Short_Thursday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Thursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Вт.
+        /// </summary>
+        public static string WeekDayCaption_Short_Tuesday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Tuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ср.
+        /// </summary>
+        public static string WeekDayCaption_Short_Wednesday {
+            get {
+                return ResourceManager.GetString("WeekDayCaption_Short_Wednesday", resourceCulture);
+            }
+        }
     }
 }

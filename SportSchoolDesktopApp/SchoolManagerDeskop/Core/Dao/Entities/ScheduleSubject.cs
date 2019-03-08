@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.Core.Dao.Entities
 {
-    public class Schedule : Entity
+    public class ScheduleSubject : Entity
     {
         [Required]
         public WeekDayCore WeekDays { get; set; }
 
-        public int StartTimeMinutes { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         public bool IsPeriodic { get; set; }
 
@@ -23,12 +23,5 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
         public long GroupId { get; set; }
 
         public virtual Group Group { get; set; }
-
-        [NotMapped]
-        public TimeSpan StartTime
-        {
-            get { return TimeSpan.FromMinutes(StartTimeMinutes); }
-            set { StartTimeMinutes = (int)(value.TotalMinutes % TimeSpan.FromDays(1).TotalMinutes); }
-        }
     }
 }

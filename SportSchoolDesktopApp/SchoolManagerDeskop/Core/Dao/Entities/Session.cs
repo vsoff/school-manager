@@ -10,12 +10,14 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 {
     public class Session : Entity
     {
-        public TimeSpan Time { get; set; }
-
         public DateTime Date { get; set; }
+
+        public TimeSpan Time { get; set; }
 
         public long GroupId { get; set; }
 
         public virtual Group Group { get; set; }
+
+        public virtual ICollection<Student> Students { get; set; }
     }
 }

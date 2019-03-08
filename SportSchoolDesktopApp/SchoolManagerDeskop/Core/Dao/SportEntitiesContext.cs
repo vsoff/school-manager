@@ -22,8 +22,8 @@ namespace SchoolManagerDeskop.Core.Dao
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Trainer> Trainers { get; set; }
-        public virtual DbSet<Schedule> Schedule { get; set; }
+        public virtual DbSet<ScheduleSubject> ScheduleSubjects { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
-        public virtual DbSet<StudentsInSessions> StudentsInSessions { get; set; }
+        public virtual DbSet<StudentInSession> StudentsInSessions { get; set; }
     }
 }

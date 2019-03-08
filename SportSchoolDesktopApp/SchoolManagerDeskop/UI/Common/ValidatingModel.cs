@@ -11,7 +11,7 @@ namespace SchoolManagerDeskop.UI.Common
     public delegate void ValidateModelHandler();
     public abstract class ValidatingModel : INotifyPropertyChanged, IDisplayableModel, ICloneable
     {
-        public virtual string ItemCaption => throw new NotImplementedException();
+        public abstract string ItemCaption { get; }
         public virtual object Clone() => throw new NotImplementedException();
 
         public event ValidateModelHandler ModelChanged;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.UI.Enums
 {
-    public enum ScheduleColor
+    public enum ScheduleSubjectColor
     {
         Gray = 0,
         Green = 1,

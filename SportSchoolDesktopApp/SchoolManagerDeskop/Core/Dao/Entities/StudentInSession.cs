@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.Core.Dao.Entities
 {
-    public class StudentsInSessions : Entity
+    public class StudentInSession : Entity
     {
         public long StudentId { get; set; }
 

@@ -95,9 +95,14 @@ namespace SchoolManagerDeskop.Common.DisplayRegisters
             _openedWindowsMap[viewModel] = window;
 
             if (isDialog)
+            {
                 window.ShowDialog();
+                _openedWindowsMap.Remove(viewModel);
+            }
             else
+            {
                 window.Show();
+            }
         }
 
         /// <inheritdoc />

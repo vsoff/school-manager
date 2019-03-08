@@ -3,6 +3,30 @@
                     xmlns:converters="clr-namespace:SchoolManagerDeskop.UI.Common.Converters"
                     xmlns:views="clr-namespace:SchoolManagerDeskop.UI.Views"
                     xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows.EditWindows">
+    <converters:BoolEditorVisibilityConverter x:Key="BoolEditorVisibilityConverter"/>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="FieldName">
+        <Setter Property="Margin" Value="0,5" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="Width" Value="100" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="WarningText">
+        <Setter Property="Margin" Value="5,2,5,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    
+    <Style TargetType="{x:Type CheckBox}" x:Key="FieldCheckBox">
+        <Setter Property="Margin" Value="5,2,5,2" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}" x:Key="FieldValue">
+        <Setter Property="Margin" Value="5" />
+    </Style>
 
     <!-- Конвертеры -->
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -13,6 +37,8 @@
     <!--<Style TargetType="{x:Type Window}" x:Key="EditWindowStyle">
         <Setter Property="MinWidth" Value="800"/>
         <Setter Property="MinHeight" Value="450"/>
+        <Setter Property="Width" Value="800px"/>
+        <Setter Property="Height" Value="450px"/>
         <Setter Property="WindowStyle" Value="ToolWindow"/>
     </Style>-->
 
@@ -47,7 +73,25 @@
             Grid.Column="1"
             Grid.Row="1"
             Grid.ColumnSpan="3">
-                <ContentPresenter RecognizesAccessKey="True"></ContentPresenter>
+                <Border BorderThickness="1"
+                BorderBrush="LightGray"
+                Margin="3,3,3,2"
+                Grid.ColumnSpan="3"
+                Grid.Column="1"
+                Grid.Row="1"
+                Padding="0,5,0,5">
+                    <ScrollViewer>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{StaticResource WarningText}"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding ErrorMessage}"  
+                       Visibility="{Binding IsValid, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"/>
+                            <ContentPresenter RecognizesAccessKey="True"></ContentPresenter>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
             </Border>
 
             <!-- Основные кнопки -->
