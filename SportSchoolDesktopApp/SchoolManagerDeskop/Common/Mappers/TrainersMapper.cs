@@ -8,26 +8,22 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.Common.Mappers
 {
-    public class StudentsMapper : IModelMapper<Student, StudentModel>
+    public class TrainersMapper : IModelMapper<Trainer, TrainerModel>
     {
-        public Student ToCore(StudentModel obj) => new Student
+        public Trainer ToCore(TrainerModel obj) => new Trainer
         {
             Id = obj.Id,
-            Phone = obj.Phone,
-            Birdth = obj.Birdth,
-            LastName = obj.LastName,
             FirstName = obj.FirstName,
             MiddleName = obj.MiddleName,
+            LastName = obj.LastName
         };
 
-        public StudentModel ToModel(Student obj) => new StudentModel
+        public TrainerModel ToModel(Trainer obj) => new TrainerModel
         {
             Id = obj.Id,
-            Phone = obj.Phone,
-            Birdth = obj.Birdth,
-            LastName = obj.LastName,
             FirstName = obj.FirstName,
             MiddleName = obj.MiddleName,
+            LastName = obj.LastName
         };
     }
 }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.Common.Mappers
 {
-    public interface IEntityMapper<TEntity, TModel> where TEntity : Entity, new() where TModel : IDisplayableModel
+    public interface IModelMapper<TEntity, TModel>
     {
-        TEntity ToCore(TModel model);
-        TModel ToModel(TEntity entity);
+        TEntity ToCore(TModel obj);
+        TModel ToModel(TEntity obj);
     }
 }
