@@ -39,8 +39,8 @@
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Text="Добавление и редактирование информации" />
             <Button Margin="2,2,2,2" Height="30" Content="Ученики" Command="{Binding StudentsEditCommand}" />
             <Button Margin="2,2,2,2" Height="30" Content="Тренеры" Command="{Binding TrainersEditCommand}" />
-            <Button Margin="2,2,2,2" Height="30" Content="Занятия" Command="{Binding ScheduleEditCommand}" />
             <Button Margin="2,2,2,2" Height="30" Content="Группы" Command="{Binding GroupsEditCommand}" />
+            <Button Margin="2,2,2,2" Height="30" Content="Занятия" Command="{Binding ScheduleEditCommand}" />
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Text="Другие функции" />
             <Button Margin="2,2,2,2" Height="30" Content="Отчётность" Command="{Binding OpenReportsCommand}" />
             <Button Margin="2,2,2,2" Height="30" Content="Продлить абонемент" Command="{Binding OpenSubscriptionsCommand}" />

@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolManagerDeskop.UI.Views.EditWindows
+namespace SchoolManagerDeskop.UI.Windows.EditWindows
 {
     /// <summary>
-    /// Логика взаимодействия для StudentEditorView.xaml
+    /// Логика взаимодействия для GroupsEditWindow.xaml
     /// </summary>
-    public partial class StudentEditorView : UserControl
+    public partial class GroupsEditWindow : Window
     {
-        public StudentEditorView()
+        public GroupsEditWindow()
         {
             InitializeComponent();
         }

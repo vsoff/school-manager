@@ -1,5 +1,4 @@
-﻿using SchoolManagerDeskop.UI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolManagerDeskop.UI.Views
+namespace SchoolManagerDeskop.UI.Windows.EditWindows
 {
     /// <summary>
-    /// Логика взаимодействия для ScheduleItemView.xaml
+    /// Логика взаимодействия для TrainersEditWindow.xaml
     /// </summary>
-    public partial class ScheduleItemView : UserControl
+    public partial class TrainersEditWindow : Window
     {
-        public ScheduleItemView()
+        public TrainersEditWindow()
         {
             InitializeComponent();
         }

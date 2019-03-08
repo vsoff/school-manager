@@ -1,4 +1,8 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
+using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Enums;
+using SchoolManagerDeskop.Core.Repositories;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
 using SchoolManagerDeskop.UI.Enums;
@@ -20,33 +24,27 @@ namespace SchoolManagerDeskop.UI.ViewModels
     /// Предоставляет метод, обрабатывающий событие, возникающее при изменении выбранного дня недели.
     /// </summary>
     /// <param name="weekDay">День недели.</param>
-    public delegate void WeekDayChangedEventHandler(WeekDay weekDay);
+    public delegate void WeekDayChangedEventHandler(WeekDayModel weekDay);
 
     /// <summary>
     /// Предоставляет метод, обрабатывающий событие, возникающее при выборе занятия из списка.
     /// </summary>
     /// <param name="selectedScheduleItem">Объект занятия из списка.</param>
-    public delegate void ScheduleItemSelectedEventHandler(ScheduleItemModel selectedScheduleItem);
+    public delegate void ScheduleItemSelectedEventHandler(ScheduleSubjectItemModel selectedScheduleItem);
 
     /// <summary>
     /// ViewModel расписания.
     /// </summary>
     public class ScheduleViewModel : ViewModelBase
     {
+        private readonly IModelMapper<ScheduleSubject, ScheduleSubjectItemModel> _scheduleItemsMapper;
+        private readonly IModelMapper<WeekDayCore, WeekDayModel> _weekDaysMapper;
+        private readonly IScheduleRepository _scheduleRepository;
+
         /// <summary>
         /// Выбранный день недели.
         /// </summary>
-        private WeekDay _selectedWeekDay;
-
-        /// <summary>
-        /// Событие возникающее при выборе дня недели.
-        /// </summary>
-        public event WeekDayChangedEventHandler SelectedWeekDayChanged;
-
-        /// <summary>
-        /// Событие возникающее при выборе занятия из списка.
-        /// </summary>
-        public event ScheduleItemSelectedEventHandler ScheduleItemSelected;
+        private WeekDayModel _selectedWeekDay;
 
         /// <summary>
         /// Команда вызываемая при выборе дня недели.
@@ -61,27 +59,45 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// <summary>
         /// Коллекция занятий.
         /// </summary>
-        public ObservableCollection<ScheduleItemModel> ScheduleItems { get; set; }
+        public ObservableCollection<ScheduleSubjectItemModel> ScheduleItems { get; set; }
 
-        public ScheduleViewModel()
+        public ScheduleViewModel(
+            IModelMapper<ScheduleSubject, ScheduleSubjectItemModel> scheduleItemsMapper,
+            IModelMapper<WeekDayCore, WeekDayModel> weekDaysMapper,
+            IScheduleRepository scheduleRepository)
         {
-            ScheduleItems = new ObservableCollection<ScheduleItemModel>();
+            _scheduleItemsMapper = scheduleItemsMapper ?? throw new ArgumentNullException(nameof(scheduleItemsMapper));
+            _scheduleRepository = scheduleRepository ?? throw new ArgumentNullException(nameof(scheduleRepository));
+            _weekDaysMapper = weekDaysMapper ?? throw new ArgumentNullException(nameof(weekDaysMapper));
 
-            _selectedWeekDay = WeekDay.Undefined;
-            WeekDaySelectCommand = new RelayCommand(o => WeekDaySelect((WeekDay)o));
-            ScheduleItemClickedCommand = new RelayCommand(o => ScheduleItemSelected?.Invoke((ScheduleItemModel)o));
+            ScheduleItems = new ObservableCollection<ScheduleSubjectItemModel>();
+
+            _selectedWeekDay = WeekDayModel.Undefined;
+            WeekDaySelectCommand = new RelayCommand(o => WeekDaySelect((WeekDayModel)o));
+            ScheduleItemClickedCommand = new RelayCommand(o =>
+            {
+                if ((ScheduleSubjectItemModel)o != null)
+                {
+                    var selectedScheduleItem = (ScheduleSubjectItemModel)o;
+                    MessageBox.Show($"Окно регистрации на занятие `{selectedScheduleItem.Item.GroupCaption}`(Id: {selectedScheduleItem.Item.GroupId}) в {selectedScheduleItem.Item.StartTime}.");
+                }
+            });
         }
 
         /// <summary>
         /// Меняет текущий день недели.
         /// </summary>
         /// <param name="weekDay">День недели.</param>
-        private void WeekDaySelect(WeekDay weekDay)
+        private void WeekDaySelect(WeekDayModel weekDay)
         {
             if (weekDay != _selectedWeekDay)
             {
                 _selectedWeekDay = weekDay;
-                SelectedWeekDayChanged?.Invoke(weekDay);
+
+                // Обновляем расписание.
+                ScheduleSubject[] schedueItems = _scheduleRepository.GetSchedulePerWeekDay(_weekDaysMapper.ToCore(weekDay));
+                ScheduleSubjectItemModel[] items = schedueItems.Select(x => _scheduleItemsMapper.ToModel(x)).OrderBy(x => x.Item.StartTime).ToArray();
+                SetScheduleItems(items);
             }
         }
 
@@ -89,17 +105,33 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// Устанавливает новый список занятий.
         /// </summary>
         /// <param name="scheduleItems">Список занятий.</param>
-        public void SetScheduleItems(ScheduleItemModel[] scheduleItems)
+        private void SetScheduleItems(ScheduleSubjectItemModel[] scheduleItems)
         {
+            // Устанавливаем новое расписание.
             ScheduleItems.Clear();
             foreach (var item in scheduleItems)
                 ScheduleItems.Add(item);
+
+            // Обновляем цвета расписания.
+            UpdateScheduleColors();
+        }
+
+        /// <summary>
+        /// Обновляет цвета в расписании.
+        /// </summary>
+        /// <remarks>Дополнительно должен происходить раз в N секунд.</remarks>
+        private void UpdateScheduleColors()
+        {
+            foreach (var item in ScheduleItems)
+            {
+                item.ItemColor = ScheduleSubjectColor.Green;
+            }
         }
 
         /// <summary>
         /// Выбранное занятие.
         /// </summary>
-        public ScheduleItemModel SelectedScheduleItem
+        public ScheduleSubjectItemModel SelectedScheduleItem
         {
             get { return _selectedScheduleItem; }
             set
@@ -108,6 +140,6 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 OnPropertyChanged(nameof(SelectedScheduleItem));
             }
         }
-        private ScheduleItemModel _selectedScheduleItem;
+        private ScheduleSubjectItemModel _selectedScheduleItem;
     }
 }

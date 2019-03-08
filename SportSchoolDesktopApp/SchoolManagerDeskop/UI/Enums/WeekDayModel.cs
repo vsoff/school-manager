@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace SchoolManagerDeskop.UI.Enums
 {
-    public enum WeekDay
+    [Flags]
+    public enum WeekDayModel : byte
     {
         Undefined = 0,
         Monday = 1,
         Tuesday = 2,
-        Wednesday = 3,
-        Thursday = 4,
-        Friday = 5,
-        Saturday = 6,
-        Sunday = 7
+        Wednesday = 4,
+        Thursday = 8,
+        Friday = 16,
+        Saturday = 32,
+        Sunday = 64
     }
 }

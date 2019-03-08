@@ -110,13 +110,13 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Monday}" />
-            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Tuesday}" />
-            <RadioButton Grid.Column="2" Content="СР" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Wednesday}" />
-            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Thursday}" />
-            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Friday}" />
-            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Saturday}" />
-            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDay.Sunday}" />
+            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Monday}" />
+            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Tuesday}" />
+            <RadioButton Grid.Column="2" Content="СР" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Wednesday}" />
+            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Thursday}" />
+            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Friday}" />
+            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Saturday}" />
+            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Sunday}" />
         </Grid>
         <!-- Список расписания -->
         <ListView Grid.Row="1"

@@ -1,10 +1,11 @@
-﻿<Window x:Class="SchoolManagerDeskop.UI.Windows.EditWindows.StudentsEditWindow"
+﻿<Window x:Class="SchoolManagerDeskop.UI.Windows.EditWindows.TrainersEditWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows.EditWindows"
         mc:Ignorable="d"
-        Title="Окно редактирования учеников"
+        Title="Окно редактирования тренеров"
         Height="450"
         Width="800"
         MinHeight="450"
@@ -30,14 +31,6 @@
             <DockPanel>
                 <TextBlock Style="{StaticResource FieldName}" Text="Отчество"/>
                 <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.MiddleName}" />
-            </DockPanel>
-            <DockPanel>
-                <TextBlock Style="{StaticResource FieldName}" Text="Дата рождения"/>
-                <DatePicker Margin="5,3,5,3" SelectedDate="{Binding Model.Birdth}" />
-            </DockPanel>
-            <DockPanel>
-                <TextBlock Style="{StaticResource FieldName}" Text="Телефон"/>
-                <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.Phone}" />
             </DockPanel>
         </StackPanel>
     </Page>

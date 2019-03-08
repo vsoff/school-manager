@@ -81,29 +81,39 @@
     <Compile Include="Common\DisplayRegisters\IDisplayRegistry.cs" />
     <Compile Include="Common\DisplayRegisters\IDisplayWindow.cs" />
     <Compile Include="Common\DisplayRegisters\WindowsDisplayRegistry.cs" />
+    <Compile Include="Common\Mappers\GroupsMapper.cs" />
     <Compile Include="Common\Mappers\IEntityMapper.cs" />
+    <Compile Include="Common\Mappers\ScheduleSubjectItemsMapper.cs" />
+    <Compile Include="Common\Mappers\ScheduleSubjectsMapper.cs" />
     <Compile Include="Common\Mappers\StudentsMapper.cs" />
+    <Compile Include="Common\Mappers\TrainersMapper.cs" />
+    <Compile Include="Common\Mappers\WeekDaysMapper.cs" />
+    <Compile Include="Common\Validators\ScheduleSubjectsValidator.cs" />
     <Compile Include="Common\Validators\IEntityValidator.cs" />
     <Compile Include="Common\Validators\StudentsValidator.cs" />
+    <Compile Include="Common\Validators\GroupsValidator.cs" />
+    <Compile Include="Common\Validators\TrainersValidator.cs" />
     <Compile Include="Core\Dao\Entities\Entity.cs" />
     <Compile Include="Core\Dao\Entities\Group.cs" />
-    <Compile Include="Core\Dao\Entities\Schedule.cs" />
+    <Compile Include="Core\Dao\Entities\ScheduleSubject.cs" />
     <Compile Include="Core\Dao\Entities\Session.cs" />
     <Compile Include="Core\Dao\SportEntitiesContextProvider.cs" />
-    <Compile Include="Core\Helpers\SearchHelper.cs" />
+    <Compile Include="Core\Repositories\GroupsRepository.cs" />
     <Compile Include="Core\Repositories\IRepository.cs" />
     <Compile Include="Core\Repositories\Pagination\IPaginationSearchableRepository.cs" />
-    <Compile Include="Core\Repositories\Pagination\PaginationRequest.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
     <Compile Include="Core\Repositories\Pagination\SearchPaginationRequest.cs" />
-    <Compile Include="Core\Repositories\SearchRepositoryHelper.cs" />
+    <Compile Include="Core\Helpers\SearchRepositoryHelper.cs" />
+    <Compile Include="Core\Repositories\ScheduleRepository.cs" />
+    <Compile Include="Core\Repositories\SessionsRepository.cs" />
     <Compile Include="Core\Repositories\StudentsRepository.cs" />
     <Compile Include="Core\Dao\SportEntitiesContext.cs" />
     <Compile Include="Core\Dao\Entities\Student.cs" />
-    <Compile Include="Core\Dao\Entities\StudentsInSessions.cs" />
+    <Compile Include="Core\Dao\Entities\StudentInSession.cs" />
     <Compile Include="Core\Dao\Entities\Subscription.cs" />
     <Compile Include="Core\Dao\Entities\Trainer.cs" />
     <Compile Include="Core\Enums\WeekDayCore.cs" />
+    <Compile Include="Core\Repositories\TrainersRepository.cs" />
     <Compile Include="UI\Common\Commands\RelayCommand.cs" />
     <Compile Include="UI\Common\Converters\EditorVisibilityConverter.cs" />
     <Compile Include="UI\Common\ItemsList\ItemsListData.cs" />
@@ -111,19 +121,25 @@
     <Compile Include="UI\Common\NotifyPropertyChanged.cs" />
     <Compile Include="UI\Common\ValidatingModel.cs" />
     <Compile Include="UI\Common\WpfDisplayWindow.cs" />
-    <Compile Include="UI\Enums\ScheduleColor.cs" />
-    <Compile Include="UI\Enums\WeekDay.cs" />
+    <Compile Include="UI\Enums\ScheduleSubjectColor.cs" />
+    <Compile Include="UI\Enums\WeekDayModel.cs" />
     <Compile Include="UI\Common\IDisplayableModel.cs" />
-    <Compile Include="UI\Models\ScheduleItemModel.cs" />
+    <Compile Include="UI\Helpers\WeekDayHelper.cs" />
+    <Compile Include="UI\Models\GroupModel.cs" />
+    <Compile Include="UI\Models\ScheduleSubjectItemModel.cs" />
+    <Compile Include="UI\Models\ScheduleSubjectModel.cs" />
     <Compile Include="UI\Models\StudentModel.cs" />
-    <Compile Include="UI\ViewModels\EditWindows\EditorViewModel.cs" />
+    <Compile Include="UI\Models\TrainerModel.cs" />
+    <Compile Include="UI\UserControls\DaysOfWeekControl.xaml.cs">
+      <DependentUpon>DaysOfWeekControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ViewModels\EditWindows\ScheduleListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\GroupsListEditWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\EditWindows\ItemsListEditWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ItemsListViewModel.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
-    <Compile Include="UI\Views\EditWindows\StudentEditorView.xaml.cs">
-      <DependentUpon>StudentEditorView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="UI\ViewModels\SelectEntityDialogViewModel.cs" />
     <Compile Include="UI\Views\ItemListView.xaml.cs">
       <DependentUpon>ItemListView.xaml</DependentUpon>
     </Compile>
@@ -133,7 +149,7 @@
     <Compile Include="UI\Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
-    <Page Include="UI\Views\EditWindows\StudentEditorView.xaml">
+    <Page Include="UI\UserControls\DaysOfWeekControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,11 +157,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\UserControls\TimeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\Dialogs\SelectEntityDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Windows\EditWindows\EditWindowsResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Windows\EditWindows\GroupsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\ScheduleEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Windows\EditWindows\StudentsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\TrainersEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,8 +193,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\TimeControl.xaml.cs">
+      <DependentUpon>TimeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\Dialogs\SelectEntityDialog.xaml.cs">
+      <DependentUpon>SelectEntityDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\GroupsEditWindow.xaml.cs">
+      <DependentUpon>GroupsEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\ScheduleEditWindow.xaml.cs">
+      <DependentUpon>ScheduleEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Windows\EditWindows\StudentsEditWindow.xaml.cs">
       <DependentUpon>StudentsEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\TrainersEditWindow.xaml.cs">
+      <DependentUpon>TrainersEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

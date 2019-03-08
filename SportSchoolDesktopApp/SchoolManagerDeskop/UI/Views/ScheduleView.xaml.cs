@@ -24,8 +24,6 @@ namespace SchoolManagerDeskop.UI.Views
         public ScheduleView()
         {
             InitializeComponent();
-            
-            //DataContext = new ScheduleViewModel();
         }
     }
 }

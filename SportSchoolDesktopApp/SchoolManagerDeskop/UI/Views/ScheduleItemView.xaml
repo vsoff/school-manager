@@ -15,22 +15,22 @@
             <ColumnDefinition Name="GroupName" Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0"
-                   Text="{Binding Path=Time}"
+                   Text="{Binding Item.StartTime}"
                    TextAlignment="Right"
                    VerticalAlignment="Center" />
         <TextBlock Grid.Column="1"
-                   Text="{Binding Path=Hall}"
+                   Text="{Binding Item.Hall}"
                    TextAlignment="Center"
                    VerticalAlignment="Center" />
         <TextBlock Grid.Column="2"
-                   Text="{Binding Path=StudentsCount}"
+                   Text="{Binding StudentsCount}"
                    Foreground="Green"
                    TextAlignment="Center"
                    VerticalAlignment="Center" />
         <TextBlock Grid.Column="3" FontSize="18"
                    FontWeight="Medium"
                    Margin="26,1,2,1"
-                   Text="{Binding Path=GroupName}"
+                   Text="{Binding Item.GroupCaption}"
                    VerticalAlignment="Center" />
     </Grid>
 </UserControl>

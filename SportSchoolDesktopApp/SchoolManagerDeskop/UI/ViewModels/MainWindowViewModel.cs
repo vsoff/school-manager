@@ -1,6 +1,9 @@
 ﻿
 using SchoolManagerDeskop.Common.DisplayRegisters;
+using SchoolManagerDeskop.Common.Mappers;
 using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Enums;
+using SchoolManagerDeskop.Core.Repositories;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
 using SchoolManagerDeskop.UI.Enums;
@@ -20,43 +23,33 @@ namespace SchoolManagerDeskop.UI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IWindowsDisplayRegistry _windowsDisplayRegistry;
-        private readonly ItemsListEditWindowViewModel<Student, StudentModel> _itemsListEditWindowViewModel;
-        public ScheduleViewModel ScheduleViewModel { get; }
+        private readonly ItemsListEditWindowViewModel<Group, GroupModel> _groupsEditWindowViewModel;
+        private readonly ItemsListEditWindowViewModel<Student, StudentModel> _studentsEditWindowViewModel;
+        private readonly ItemsListEditWindowViewModel<Trainer, TrainerModel> _trainersEditWindowViewModel;
+        private readonly ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel> _scheduleEditWindowViewModel;
+        public ScheduleViewModel ScheduleViewModel { get; private set; }
 
         public MainWindowViewModel(IWindowsDisplayRegistry windowsDisplayRegistry,
-            ItemsListEditWindowViewModel<Student, StudentModel> itemsListEditWindowViewModel)
+            ItemsListEditWindowViewModel<Group, GroupModel> groupsEditWindowViewModel,
+            ItemsListEditWindowViewModel<Student, StudentModel> studentsEditWindowViewModel,
+            ItemsListEditWindowViewModel<Trainer, TrainerModel> trainersEditWindowViewModel,
+            ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel> scheduleEditWindowViewModel,
+            ScheduleViewModel scheduleViewModel)
         {
             _windowsDisplayRegistry = windowsDisplayRegistry ?? throw new ArgumentNullException(nameof(windowsDisplayRegistry));
-            _itemsListEditWindowViewModel = itemsListEditWindowViewModel ?? throw new ArgumentNullException(nameof(itemsListEditWindowViewModel));
-
-            ScheduleViewModel = new ScheduleViewModel();
-            ScheduleViewModel.SelectedWeekDayChanged += SelectedWeekDayChanged;
-            ScheduleViewModel.ScheduleItemSelected += ScheduleItemSelected;
-            ScheduleViewModel.SetScheduleItems(new ScheduleItemModel[]
-            {
-                new ScheduleItemModel { Time = TimeSpan.FromHours(1), Hall = 1, GroupName = "Группа 1", StudentsCount = -5, ItemColor = ScheduleColor.Gray},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(2), Hall = 2, GroupName = "Группа 2", StudentsCount = 55, ItemColor = ScheduleColor.Green},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(3), Hall = 3, GroupName = "Группа 4", StudentsCount = 10, ItemColor = ScheduleColor.Red},
-                new ScheduleItemModel { Time = TimeSpan.FromHours(4), Hall = 4, GroupName = "Группа 7", StudentsCount = 20, ItemColor = ScheduleColor.Yellow},
-            });
+            _groupsEditWindowViewModel = groupsEditWindowViewModel ?? throw new ArgumentNullException(nameof(groupsEditWindowViewModel));
+            _studentsEditWindowViewModel = studentsEditWindowViewModel ?? throw new ArgumentNullException(nameof(studentsEditWindowViewModel));
+            _trainersEditWindowViewModel = trainersEditWindowViewModel ?? throw new ArgumentNullException(nameof(trainersEditWindowViewModel));
+            _scheduleEditWindowViewModel = scheduleEditWindowViewModel ?? throw new ArgumentNullException(nameof(scheduleEditWindowViewModel));
+            ScheduleViewModel = scheduleViewModel ?? throw new ArgumentNullException(nameof(scheduleViewModel));
 
             OnCommand = new RelayCommand(_ => MessageBox.Show("Test element clicked."));
-            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_itemsListEditWindowViewModel, true));
-            TrainersEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования тренеров."));
-            ScheduleEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования расписания."));
-            GroupsEditCommand = new RelayCommand(_ => MessageBox.Show("Окно редактирования групп."));
+            GroupsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_groupsEditWindowViewModel, true));
+            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_studentsEditWindowViewModel, true));
+            TrainersEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_trainersEditWindowViewModel, true));
+            ScheduleEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_scheduleEditWindowViewModel, true));
             OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
             OpenSubscriptionsCommand = new RelayCommand(_ => MessageBox.Show("Окно абонементов."));
-        }
-
-        private void ScheduleItemSelected(ScheduleItemModel selectedScheduleItem)
-        {
-            MessageBox.Show($"Окно регистрации на занятие `{selectedScheduleItem.GroupName}` в {selectedScheduleItem.Time}.");
-        }
-
-        private void SelectedWeekDayChanged(WeekDay weekDay)
-        {
-            MessageBox.Show($"Выбран день недели: {weekDay}");
         }
 
         public ICommand OnCommand { get; }
