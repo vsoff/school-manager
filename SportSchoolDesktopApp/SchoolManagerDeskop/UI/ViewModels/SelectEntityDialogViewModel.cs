@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
-    public class SelectEntityDialogViewModel<TEntity, TModel> : ViewModelBase, IDialogViewModel<object, TModel>
+    public class SelectEntityDialogViewModel<TEntity, TModel> : WindowViewModelBase, IDialogViewModel<object, TModel>
         where TEntity : Entity,
         new() where TModel : IDisplayableModel
     {
@@ -41,11 +41,21 @@ namespace SchoolManagerDeskop.UI.ViewModels
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
 
             ItemsListViewModel = new ItemsListViewModel<TModel>();
-            ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
-            ItemsListViewModel.GoToPage(0);
 
             ApplyCommand = new RelayCommand(_ => CloseAction(ItemsListViewModel.SelectedItem));
             CancelCommand = new RelayCommand(_ => CloseAction(default(TModel)));
+        }
+
+        public override void OnOpen()
+        {
+            ItemsListViewModel.Clear();
+            ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
+            ItemsListViewModel.GoToPage(0);
+        }
+
+        public override void OnClose()
+        {
+            ItemsListViewModel.NewDataRequested -= ItemsListUpdateData;
         }
 
         private void CloseAction(TModel model)

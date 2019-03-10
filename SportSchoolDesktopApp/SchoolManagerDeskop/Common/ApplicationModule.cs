@@ -1,6 +1,7 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
 using SchoolManagerDeskop.Common.Validators;
+using SchoolManagerDeskop.Common.Workers;
 using SchoolManagerDeskop.Core.Dao;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Enums;
@@ -65,6 +66,10 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<IModelMapper<ScheduleSubject, ScheduleSubjectModel>, ScheduleSubjectsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<ScheduleSubject, ScheduleSubjectItemModel>, ScheduleSubjectItemsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<WeekDayCore, WeekDayModel>, WeekDaysMapper>(new SingletonLifetimeManager());
+            container.RegisterType<IModelMapper<DayOfWeek, WeekDayModel>, DayOfWeekMapper>(new SingletonLifetimeManager());
+
+            // Другое.
+            container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);

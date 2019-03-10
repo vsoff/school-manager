@@ -20,7 +20,7 @@ using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : WindowViewModelBase
     {
         private readonly IWindowsDisplayRegistry _windowsDisplayRegistry;
         private readonly ItemsListEditWindowViewModel<Group, GroupModel> _groupsEditWindowViewModel;
@@ -43,16 +43,24 @@ namespace SchoolManagerDeskop.UI.ViewModels
             _scheduleEditWindowViewModel = scheduleEditWindowViewModel ?? throw new ArgumentNullException(nameof(scheduleEditWindowViewModel));
             ScheduleViewModel = scheduleViewModel ?? throw new ArgumentNullException(nameof(scheduleViewModel));
 
-            OnCommand = new RelayCommand(_ => MessageBox.Show("Test element clicked."));
-            GroupsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_groupsEditWindowViewModel, true));
-            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_studentsEditWindowViewModel, true));
-            TrainersEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_trainersEditWindowViewModel, true));
-            ScheduleEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowWindow(_scheduleEditWindowViewModel, true));
+            GroupsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_groupsEditWindowViewModel));
+            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_studentsEditWindowViewModel));
+            TrainersEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_trainersEditWindowViewModel));
+            ScheduleEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_scheduleEditWindowViewModel));
             OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
             OpenSubscriptionsCommand = new RelayCommand(_ => MessageBox.Show("Окно абонементов."));
         }
 
-        public ICommand OnCommand { get; }
+        public override void OnOpen()
+        {
+            ScheduleViewModel.OnOpen();
+        }
+
+        public override void OnClose()
+        {
+            ScheduleViewModel.OnClose();
+        }
+
         public ICommand StudentsEditCommand { get; }
         public ICommand TrainersEditCommand { get; }
         public ICommand ScheduleEditCommand { get; }

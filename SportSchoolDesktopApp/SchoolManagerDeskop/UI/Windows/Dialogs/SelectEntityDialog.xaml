@@ -4,9 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows.Dialogs"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:views="clr-namespace:SchoolManagerDeskop.UI.Views"
         mc:Ignorable="d"
         Title="SelectEntityDialog" Height="450" Width="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=WindowOpenCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Path=WindowCloseCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>

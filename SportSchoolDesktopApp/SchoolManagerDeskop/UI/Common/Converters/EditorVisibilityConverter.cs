@@ -1,4 +1,4 @@
-﻿using SchoolManagerDeskop.UI.ViewModels.EditWindows;
+﻿using SchoolManagerDeskop.UI.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

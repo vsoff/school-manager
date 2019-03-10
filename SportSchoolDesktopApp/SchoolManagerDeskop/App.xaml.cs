@@ -32,7 +32,7 @@ namespace SchoolManagerDeskop
             // Вывод главного окна.
             var displayRegistry = _unityContainer.Resolve<IWindowsDisplayRegistry>();
             var mainWindowViewModel = _unityContainer.Resolve<MainWindowViewModel>();
-            displayRegistry.ShowWindow(mainWindowViewModel, false);
+            displayRegistry.ShowWindow(mainWindowViewModel);
         }
 
         /// <summary>

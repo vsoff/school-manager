@@ -5,6 +5,7 @@ using SchoolManagerDeskop.Core.Repositories.Pagination;
 using SchoolManagerDeskop.UI.Common;
 using SchoolManagerDeskop.UI.Common.Commands;
 using SchoolManagerDeskop.UI.Common.ItemsList;
+using SchoolManagerDeskop.UI.Enums;
 using System;
 using System.Linq;
 using System.Windows;
@@ -12,16 +13,8 @@ using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 {
-    public enum ItemsListEditState : byte
-    {
-        NoSelected = 0,
-        Selected = 1,
-        Creating = 2,
-        Editing = 3
-    }
-
     public class ItemsListEditWindowViewModel<TEntity, TModel>
-        : ViewModelBase where TEntity : Entity, new() where TModel : ValidatingModel, new()
+        : WindowViewModelBase where TEntity : Entity, new() where TModel : ValidatingModel, new()
     {
         internal readonly IPaginationSearchableRepository<TEntity> _searchableRepository;
         internal readonly IModelMapper<TEntity, TModel> _entityMapper;
@@ -42,14 +35,24 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
 
             ItemsListViewModel = new ItemsListViewModel<TModel>();
-            ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
-            ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
-            ItemsListViewModel.GoToPage(0);
 
             ActionCommand = new RelayCommand(HandleAction, ActionWasExecute);
             CancelCommand = new RelayCommand(HandleCancel);
 
             CurrentState = ItemsListEditState.NoSelected;
+        }
+
+        public override void OnOpen()
+        {
+            ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
+            ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
+            ItemsListViewModel.GoToPage(0);
+        }
+
+        public override void OnClose()
+        {
+            ItemsListViewModel.NewDataRequested -= ItemsListUpdateData;
+            ItemsListViewModel.ItemListItemSelected -= ItemListItemSelected;
         }
 
         private void ValidateModel()
@@ -203,6 +206,8 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         /// </summary>
         public ICommand CancelCommand { get; }
 
+        #region Properties
+
         /// <summary>
         /// Текущий статус ViewModel.
         /// </summary>
@@ -284,5 +289,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             }
         }
         private TModel _model;
+
+        #endregion
     }
 }

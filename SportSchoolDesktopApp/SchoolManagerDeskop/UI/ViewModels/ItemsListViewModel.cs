@@ -44,6 +44,17 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         /// <summary>
+        /// Очищает список.
+        /// </summary>
+        public void Clear()
+        {
+            ResetSelection();
+            Items.Clear();
+            PagesCount = 0;
+            CurrentPageIndex = 0;
+        }
+
+        /// <summary>
         /// Сбрасывает выбранный элемент.
         /// </summary>
         public void ResetSelection()

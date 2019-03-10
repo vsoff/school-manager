@@ -15,7 +15,7 @@ namespace SchoolManagerDeskop.UI.Helpers
             if (weekDay == WeekDayModel.Undefined)
                 return Resources.WeekDayCaption_Short_Never;
 
-            List<string> days = new List<string>();
+            List<string> days = new List<string>(7);
 
             if (weekDay.HasFlag(WeekDayModel.Monday))
                 days.Add(Resources.WeekDayCaption_Short_Monday);
