@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using SchoolManagerDeskop.UI.Common;
@@ -21,6 +22,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private readonly IPaginationSearchableRepository<TEntity> _searchableRepository;
         private readonly IDialogsDisplayRegistry _dialogsDisplayRegistry;
         private readonly IModelMapper<TEntity, TModel> _entityMapper;
+        private readonly IDisplayService _displayService;
 
         /// <summary>
         /// ViewModel списка сущностей.
@@ -34,10 +36,12 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public SelectEntityDialogViewModel(
             IPaginationSearchableRepository<TEntity> searchableRepository,
             IDialogsDisplayRegistry dialogsDisplayRegistry,
-            IModelMapper<TEntity, TModel> entityMapper)
+            IModelMapper<TEntity, TModel> entityMapper,
+            IDisplayService displayService)
         {
             _dialogsDisplayRegistry = dialogsDisplayRegistry ?? throw new ArgumentNullException(nameof(dialogsDisplayRegistry));
             _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
 
             ItemsListViewModel = new ItemsListViewModel<TModel>();
@@ -61,7 +65,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private void CloseAction(TModel model)
         {
             DialogResult = model;
-            _dialogsDisplayRegistry.CloseDialog(this);
+            _displayService.Close((IDialogViewModel<object, TModel>)this);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Common.Validators;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
@@ -19,6 +20,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         internal readonly IPaginationSearchableRepository<TEntity> _searchableRepository;
         internal readonly IModelMapper<TEntity, TModel> _entityMapper;
         internal readonly IEntityValidator<TModel> _entityValidator;
+        private readonly IDisplayService _displayService;
 
         /// <summary>
         /// ViewModel списка сущностей.
@@ -27,11 +29,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 
         public ItemsListEditWindowViewModel(
             IPaginationSearchableRepository<TEntity> searchableRepository,
+            IModelMapper<TEntity, TModel> entityMapper,
             IEntityValidator<TModel> entityValidator,
-            IModelMapper<TEntity, TModel> entityMapper)
+            IDisplayService displayService)
         {
             _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
             _entityValidator = entityValidator ?? throw new ArgumentNullException(nameof(entityValidator));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
 
             ItemsListViewModel = new ItemsListViewModel<TModel>();
@@ -149,7 +153,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             {
                 case ItemsListEditState.NoSelected:
                     {
-                        MessageBox.Show("Закрытие окна");
+                        _displayService.Close(this);
                         break;
                     }
                 default:

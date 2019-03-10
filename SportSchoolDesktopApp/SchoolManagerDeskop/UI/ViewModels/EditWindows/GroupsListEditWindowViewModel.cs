@@ -18,12 +18,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
     public class GroupsListEditWindowViewModel : ItemsListEditWindowViewModel<Group, GroupModel>
     {
         private readonly IDisplayService _displayService;
+
         public GroupsListEditWindowViewModel(
             IPaginationSearchableRepository<Group> searchableRepository,
             IEntityValidator<GroupModel> entityValidator,
             IModelMapper<Group, GroupModel> entityMapper,
             IDisplayService displayService)
-            : base(searchableRepository, entityValidator, entityMapper)
+            : base(searchableRepository, entityMapper, entityValidator, displayService)
         {
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 

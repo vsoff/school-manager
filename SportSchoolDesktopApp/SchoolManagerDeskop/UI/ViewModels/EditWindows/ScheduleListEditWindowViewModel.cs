@@ -18,12 +18,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
     public class ScheduleListEditWindowViewModel : ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>
     {
         private readonly IDisplayService _displayService;
+
         public ScheduleListEditWindowViewModel(
             IPaginationSearchableRepository<ScheduleSubject> searchableRepository,
             IModelMapper<ScheduleSubject, ScheduleSubjectModel> entityMapper,
             IEntityValidator<ScheduleSubjectModel> entityValidator,
             IDisplayService displayService)
-            : base(searchableRepository, entityValidator, entityMapper)
+            : base(searchableRepository, entityMapper, entityValidator, displayService)
         {
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 

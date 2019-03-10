@@ -13,8 +13,9 @@ namespace SchoolManagerDeskop.Common.Services
     {
         TViewModel ShowWindow<TViewModel>() where TViewModel : IViewModel;
         void ShowDialog<TViewModel>() where TViewModel : IViewModel;
-        void CloseWindow<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel;
         TResult ShowDialog<TViewModel, TArg, TResult>(TArg arg = default(TArg)) where TViewModel : IDialogViewModel<TArg, TResult>;
+        void Close<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel;
+        void Close<TArg, TResult>(IDialogViewModel<TArg, TResult> viewModel);
     }
 
     public class DisplayService : IDisplayService
@@ -46,7 +47,7 @@ namespace SchoolManagerDeskop.Common.Services
             _windowsDisplayRegistry.ShowDialog(viewModel);
         }
 
-        public void CloseWindow<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel
+        public void Close<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel
         {
             _windowsDisplayRegistry.CloseWindow(viewModel);
         }
@@ -55,6 +56,11 @@ namespace SchoolManagerDeskop.Common.Services
         {
             TViewModel viewModel = _unityContainer.Resolve<TViewModel>();
             return _dialogsDisplayRegistry.ShowDialog(viewModel, arg);
+        }
+
+        public void Close<TArg, TResult>(IDialogViewModel<TArg, TResult> viewModel)
+        {
+            _dialogsDisplayRegistry.CloseDialog(viewModel);
         }
     }
 }
