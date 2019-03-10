@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Common.Validators;
 using SchoolManagerDeskop.Common.Workers;
 using SchoolManagerDeskop.Core.Dao;
@@ -70,6 +71,7 @@ namespace SchoolManagerDeskop.Common
 
             // Другое.
             container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
+            container.RegisterType<IDisplayService, DisplayService>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);

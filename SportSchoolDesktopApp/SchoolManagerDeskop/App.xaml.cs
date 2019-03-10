@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common;
 using SchoolManagerDeskop.Common.DisplayRegisters;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.UI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,9 @@ namespace SchoolManagerDeskop
             base.OnStartup(e);
 
             // Вывод главного окна.
-            var displayRegistry = _unityContainer.Resolve<IWindowsDisplayRegistry>();
-            var mainWindowViewModel = _unityContainer.Resolve<MainWindowViewModel>();
-            displayRegistry.ShowWindow(mainWindowViewModel);
+            _unityContainer
+                .Resolve<IDisplayService>()
+                .ShowWindow<MainWindowViewModel>();
         }
 
         /// <summary>

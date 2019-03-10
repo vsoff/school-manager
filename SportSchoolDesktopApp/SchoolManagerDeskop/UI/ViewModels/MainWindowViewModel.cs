@@ -1,6 +1,7 @@
 ﻿
 using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Enums;
 using SchoolManagerDeskop.Core.Repositories;
@@ -22,31 +23,20 @@ namespace SchoolManagerDeskop.UI.ViewModels
 {
     public class MainWindowViewModel : WindowViewModelBase
     {
-        private readonly IWindowsDisplayRegistry _windowsDisplayRegistry;
-        private readonly ItemsListEditWindowViewModel<Group, GroupModel> _groupsEditWindowViewModel;
-        private readonly ItemsListEditWindowViewModel<Student, StudentModel> _studentsEditWindowViewModel;
-        private readonly ItemsListEditWindowViewModel<Trainer, TrainerModel> _trainersEditWindowViewModel;
-        private readonly ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel> _scheduleEditWindowViewModel;
+        private readonly IDisplayService _displayService;
         public ScheduleViewModel ScheduleViewModel { get; private set; }
 
-        public MainWindowViewModel(IWindowsDisplayRegistry windowsDisplayRegistry,
-            ItemsListEditWindowViewModel<Group, GroupModel> groupsEditWindowViewModel,
-            ItemsListEditWindowViewModel<Student, StudentModel> studentsEditWindowViewModel,
-            ItemsListEditWindowViewModel<Trainer, TrainerModel> trainersEditWindowViewModel,
-            ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel> scheduleEditWindowViewModel,
+        public MainWindowViewModel(IDisplayService displayService,
             ScheduleViewModel scheduleViewModel)
         {
-            _windowsDisplayRegistry = windowsDisplayRegistry ?? throw new ArgumentNullException(nameof(windowsDisplayRegistry));
-            _groupsEditWindowViewModel = groupsEditWindowViewModel ?? throw new ArgumentNullException(nameof(groupsEditWindowViewModel));
-            _studentsEditWindowViewModel = studentsEditWindowViewModel ?? throw new ArgumentNullException(nameof(studentsEditWindowViewModel));
-            _trainersEditWindowViewModel = trainersEditWindowViewModel ?? throw new ArgumentNullException(nameof(trainersEditWindowViewModel));
-            _scheduleEditWindowViewModel = scheduleEditWindowViewModel ?? throw new ArgumentNullException(nameof(scheduleEditWindowViewModel));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             ScheduleViewModel = scheduleViewModel ?? throw new ArgumentNullException(nameof(scheduleViewModel));
 
-            GroupsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_groupsEditWindowViewModel));
-            StudentsEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_studentsEditWindowViewModel));
-            TrainersEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_trainersEditWindowViewModel));
-            ScheduleEditCommand = new RelayCommand(_ => _windowsDisplayRegistry.ShowDialog(_scheduleEditWindowViewModel));
+            GroupsEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<Group, GroupModel>>());
+            StudentsEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<Student, StudentModel>>());
+            TrainersEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<Trainer, TrainerModel>>());
+            ScheduleEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>>());
+
             OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
             OpenSubscriptionsCommand = new RelayCommand(_ => MessageBox.Show("Окно абонементов."));
         }

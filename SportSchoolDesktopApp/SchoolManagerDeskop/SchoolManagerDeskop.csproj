@@ -89,7 +89,7 @@
     <Compile Include="Common\Mappers\StudentsMapper.cs" />
     <Compile Include="Common\Mappers\TrainersMapper.cs" />
     <Compile Include="Common\Mappers\WeekDaysMapper.cs" />
-    <Compile Include="Common\Services\IDisplayService.cs" />
+    <Compile Include="Common\Services\DisplayService.cs" />
     <Compile Include="Common\Validators\ScheduleSubjectsValidator.cs" />
     <Compile Include="Common\Validators\IEntityValidator.cs" />
     <Compile Include="Common\Validators\StudentsValidator.cs" />
