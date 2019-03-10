@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="SchoolManagerDeskop.UI.Views.ScheduleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Views"
+             xmlns:enums="clr-namespace:SchoolManagerDeskop.UI.Enums"
+             xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="600">
+    <UserControl.Resources>
+        <SolidColorBrush Color="#d6d6d6" x:Key="ColorNone" />
+        <SolidColorBrush Color="#e6e6e6" x:Key="ColorNoneOver" />
+        <SolidColorBrush Color="#95e695" x:Key="ColorActive" />
+        <SolidColorBrush Color="#aaf3aa" x:Key="ColorActiveOver" />
+        <SolidColorBrush Color="#faf88e" x:Key="ColorWarning" />
+        <SolidColorBrush Color="#fffeb3" x:Key="ColorWarningOver" />
+        <SolidColorBrush Color="#ffa799" x:Key="ColorError" />
+        <SolidColorBrush Color="#ffc0b6" x:Key="ColorErrorOver" />
+
+        <Style TargetType="{x:Type local:ScheduleItemView}" x:Key="ScheduleItem">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,1,0,1"/>
+            <Style.Triggers>
+                <!-- Другой день -->
+                <DataTrigger Binding="{Binding Path=ItemColor}" Value="0">
+                    <Setter Property="Background" Value="{StaticResource ColorNone}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorNoneOver}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=ItemColor}" Value="0"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="true"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource ColorNoneOver}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=ItemColor}" Value="0"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="true"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource ColorNoneOver}"/>
+                </MultiDataTrigger>
+
+                <!-- Будет сегодня -->
+                <DataTrigger Binding="{Binding Path=ItemColor}" Value="1">
+                    <Setter Property="Background" Value="{StaticResource ColorActive}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorActiveOver}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=ItemColor}" Value="1"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="true"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource ColorActiveOver}"/>
+                </MultiDataTrigger>
+
+                <!-- Регистрация открыта -->
+                <DataTrigger Binding="{Binding Path=ItemColor}" Value="2">
+                    <Setter Property="Background" Value="{StaticResource ColorWarning}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorWarningOver}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=ItemColor}" Value="2"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="true"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource ColorWarningOver}"/>
+                </MultiDataTrigger>
+
+                <!-- Регистрация завершена -->
+                <DataTrigger Binding="{Binding Path=ItemColor}" Value="3">
+                    <Setter Property="Background" Value="{StaticResource ColorError}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorErrorOver}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=ItemColor}" Value="3"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="true"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource ColorErrorOver}"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Gray"
+                BorderThickness="1,1,1,1"
+                Background="#f0f0f0"
+                Grid.RowSpan="2"/>
+        <!-- Верхняя панель -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" Content="ПН" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Monday}" />
+            <RadioButton Grid.Column="1" Content="ВТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Tuesday}" />
+            <RadioButton Grid.Column="2" Content="СР" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Wednesday}" />
+            <RadioButton Grid.Column="3" Content="ЧТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Thursday}" />
+            <RadioButton Grid.Column="4" Content="ПТ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Friday}" />
+            <RadioButton Grid.Column="5" Content="СБ" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Saturday}" />
+            <RadioButton Grid.Column="6" Content="ВС" Command="{Binding WeekDaySelectCommand}" CommandParameter="{x:Static enums:WeekDayModel.Sunday}" />
+        </Grid>
+        <!-- Список расписания -->
+        <ListView Grid.Row="1"
+                 ItemsSource="{Binding ScheduleItems}" 
+                 SelectedItem="{Binding SelectedScheduleItem}"
+                 HorizontalContentAlignment="Stretch">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ScheduleItemClickedCommand}" CommandParameter="{Binding SelectedScheduleItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemContainerStyle>
+                <Style>
+                    <Setter Property="ListBoxItem.BorderThickness" Value="0"/>
+                    <Setter Property="ListBoxItem.Padding" Value="0"/>
+                    <Setter Property="ListBoxItem.Margin" Value="0"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:ScheduleItemView Grid.Column="0" Style="{StaticResource ScheduleItem}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

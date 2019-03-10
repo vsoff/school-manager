@@ -16,9 +16,9 @@ namespace MyApp
             {
                 SmartReaderController src = new SmartReaderController(SmartReaderType.Reader, PublicThings);
             }
-            catch (Exception xe)
+            catch (Exception ex)
             {
-
+                Console.WriteLine($"SmartReaderController initializing exception: {ex}");
             }
             Console.ReadLine();
             //src.DestroyObject();

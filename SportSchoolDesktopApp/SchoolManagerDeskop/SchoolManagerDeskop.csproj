@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B465FB01-D4F7-44A1-A52C-216208EAFE4C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SchoolManagerDeskop</RootNamespace>
+    <AssemblyName>SchoolManagerDeskop</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=4.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.3\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.9.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.3\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Common\ApplicationModule.cs" />
+    <Compile Include="Common\DisplayRegisters\DialogsDisplayRegistry.cs" />
+    <Compile Include="Common\DisplayRegisters\IDisplayRegistry.cs" />
+    <Compile Include="Common\DisplayRegisters\IDisplayWindow.cs" />
+    <Compile Include="Common\DisplayRegisters\WindowsDisplayRegistry.cs" />
+    <Compile Include="Common\Mappers\DayOfWeekMapper.cs" />
+    <Compile Include="Common\Mappers\GroupsMapper.cs" />
+    <Compile Include="Common\Mappers\IEntityMapper.cs" />
+    <Compile Include="Common\Mappers\ScheduleSubjectItemsMapper.cs" />
+    <Compile Include="Common\Mappers\ScheduleSubjectsMapper.cs" />
+    <Compile Include="Common\Mappers\StudentsMapper.cs" />
+    <Compile Include="Common\Mappers\TrainersMapper.cs" />
+    <Compile Include="Common\Mappers\WeekDaysMapper.cs" />
+    <Compile Include="Common\Services\IDisplayService.cs" />
+    <Compile Include="Common\Validators\ScheduleSubjectsValidator.cs" />
+    <Compile Include="Common\Validators\IEntityValidator.cs" />
+    <Compile Include="Common\Validators\StudentsValidator.cs" />
+    <Compile Include="Common\Validators\GroupsValidator.cs" />
+    <Compile Include="Common\Validators\TrainersValidator.cs" />
+    <Compile Include="Common\Workers\DefaultWorker.cs" />
+    <Compile Include="Common\Workers\DefaultWorkerController.cs" />
+    <Compile Include="Common\Workers\IWorker.cs" />
+    <Compile Include="Common\Workers\IWorkerController.cs" />
+    <Compile Include="Core\Dao\Entities\Entity.cs" />
+    <Compile Include="Core\Dao\Entities\Group.cs" />
+    <Compile Include="Core\Dao\Entities\ScheduleSubject.cs" />
+    <Compile Include="Core\Dao\Entities\Session.cs" />
+    <Compile Include="Core\Dao\SportEntitiesContextProvider.cs" />
+    <Compile Include="Core\Repositories\GroupsRepository.cs" />
+    <Compile Include="Core\Repositories\IRepository.cs" />
+    <Compile Include="Core\Repositories\Pagination\IPaginationSearchableRepository.cs" />
+    <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
+    <Compile Include="Core\Repositories\Pagination\SearchPaginationRequest.cs" />
+    <Compile Include="Core\Helpers\SearchRepositoryHelper.cs" />
+    <Compile Include="Core\Repositories\ScheduleRepository.cs" />
+    <Compile Include="Core\Repositories\SessionsRepository.cs" />
+    <Compile Include="Core\Repositories\StudentsRepository.cs" />
+    <Compile Include="Core\Dao\SportEntitiesContext.cs" />
+    <Compile Include="Core\Dao\Entities\Student.cs" />
+    <Compile Include="Core\Dao\Entities\StudentInSession.cs" />
+    <Compile Include="Core\Dao\Entities\Subscription.cs" />
+    <Compile Include="Core\Dao\Entities\Trainer.cs" />
+    <Compile Include="Core\Enums\WeekDayCore.cs" />
+    <Compile Include="Core\Repositories\TrainersRepository.cs" />
+    <Compile Include="UI\Common\Commands\RelayCommand.cs" />
+    <Compile Include="UI\Common\Converters\EditorVisibilityConverter.cs" />
+    <Compile Include="UI\Common\IDialogViewModel.cs" />
+    <Compile Include="UI\Common\ItemsList\ItemsListData.cs" />
+    <Compile Include="UI\Common\ItemsList\ItemsListRequest.cs" />
+    <Compile Include="UI\Common\NotifyPropertyChanged.cs" />
+    <Compile Include="UI\Common\ValidatingModel.cs" />
+    <Compile Include="UI\Common\WpfDisplayWindow.cs" />
+    <Compile Include="UI\Enums\ItemsListEditState.cs" />
+    <Compile Include="UI\Enums\ScheduleSubjectColor.cs" />
+    <Compile Include="UI\Enums\WeekDayModel.cs" />
+    <Compile Include="UI\Common\IDisplayableModel.cs" />
+    <Compile Include="UI\Helpers\WeekDayHelper.cs" />
+    <Compile Include="UI\Models\GroupModel.cs" />
+    <Compile Include="UI\Models\ScheduleSubjectItemModel.cs" />
+    <Compile Include="UI\Models\ScheduleSubjectModel.cs" />
+    <Compile Include="UI\Models\StudentModel.cs" />
+    <Compile Include="UI\Models\TrainerModel.cs" />
+    <Compile Include="UI\UserControls\DaysOfWeekControl.xaml.cs">
+      <DependentUpon>DaysOfWeekControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ViewModels\EditWindows\ScheduleListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\GroupsListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\EditWindows\ItemsListEditWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\ItemsListViewModel.cs" />
+    <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
+    <Compile Include="UI\ViewModels\SelectEntityDialogViewModel.cs" />
+    <Compile Include="UI\Views\ItemListView.xaml.cs">
+      <DependentUpon>ItemListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\ScheduleItemView.xaml.cs">
+      <DependentUpon>ScheduleItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\ScheduleView.xaml.cs">
+      <DependentUpon>ScheduleView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UI\UserControls\DaysOfWeekControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\ItemListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\TimeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\Dialogs\SelectEntityDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\EditWindowsResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\GroupsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\ScheduleEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\StudentsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\EditWindows\TrainersEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TimeControl.xaml.cs">
+      <DependentUpon>TimeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\Dialogs\SelectEntityDialog.xaml.cs">
+      <DependentUpon>SelectEntityDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\GroupsEditWindow.xaml.cs">
+      <DependentUpon>GroupsEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\ScheduleEditWindow.xaml.cs">
+      <DependentUpon>ScheduleEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\StudentsEditWindow.xaml.cs">
+      <DependentUpon>StudentsEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\EditWindows\TrainersEditWindow.xaml.cs">
+      <DependentUpon>TrainersEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UI\Views\ScheduleItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\ScheduleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\Common\ViewModelBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\Extensions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
