@@ -140,7 +140,8 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// <remarks>Дополнительно должен происходить раз в N секунд.</remarks>
         private void UpdateScheduleColors()
         {
-            WeekDayModel currentWeekDay = _dayOfWeekMapper.ToModel(DateTime.Now.DayOfWeek);
+            DateTime now = DateTime.Now;
+            WeekDayModel currentWeekDay = _dayOfWeekMapper.ToModel(now.DayOfWeek);
             foreach (var item in ScheduleItems)
             {
                 if (_selectedWeekDay != currentWeekDay)
@@ -148,8 +149,12 @@ namespace SchoolManagerDeskop.UI.ViewModels
                     item.ItemColor = ScheduleSubjectColor.Gray;
                     continue;
                 }
-
-                item.ItemColor = ScheduleSubjectColor.Green;
+                if (now.TimeOfDay < item.Item.StartTime)
+                    item.ItemColor = ScheduleSubjectColor.Green;
+                else if (now.TimeOfDay >= item.Item.StartTime && now.TimeOfDay < item.Item.StartTime + TimeSpan.FromHours(1))
+                    item.ItemColor = ScheduleSubjectColor.Yellow;
+                else
+                    item.ItemColor = ScheduleSubjectColor.Red;
             }
         }
 
