@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Common.Validators;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
@@ -16,25 +17,22 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 {
     public class GroupsListEditWindowViewModel : ItemsListEditWindowViewModel<Group, GroupModel>
     {
-        private readonly IDialogsDisplayRegistry _dialogsDisplayRegistry;
-        private readonly SelectEntityDialogViewModel<Trainer, TrainerModel> _trainerSelectDialogViewModel;
+        private readonly IDisplayService _displayService;
         public GroupsListEditWindowViewModel(
             IPaginationSearchableRepository<Group> searchableRepository,
             IEntityValidator<GroupModel> entityValidator,
             IModelMapper<Group, GroupModel> entityMapper,
-            IDialogsDisplayRegistry dialogsDisplayRegistry,
-            SelectEntityDialogViewModel<Trainer, TrainerModel> trainerSelectDialogViewModel)
+            IDisplayService displayService)
             : base(searchableRepository, entityValidator, entityMapper)
         {
-            _trainerSelectDialogViewModel = trainerSelectDialogViewModel ?? throw new ArgumentNullException(nameof(trainerSelectDialogViewModel));
-            _dialogsDisplayRegistry = dialogsDisplayRegistry ?? throw new ArgumentNullException(nameof(dialogsDisplayRegistry));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 
             ChooseTrainerCommand = new RelayCommand(SelectTrainerAction);
         }
 
         private void SelectTrainerAction(object o)
         {
-            TrainerModel trainer = _dialogsDisplayRegistry.ShowDialog(_trainerSelectDialogViewModel);
+            TrainerModel trainer = _displayService.ShowDialog<SelectEntityDialogViewModel<Trainer, TrainerModel>, object, TrainerModel>();
             if (trainer == null)
                 return;
 

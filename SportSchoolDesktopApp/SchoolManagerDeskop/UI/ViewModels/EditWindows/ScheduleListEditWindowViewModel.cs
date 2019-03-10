@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Common.Validators;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
@@ -16,25 +17,22 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 {
     public class ScheduleListEditWindowViewModel : ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>
     {
-        private readonly IDialogsDisplayRegistry _dialogsDisplayRegistry;
-        private readonly SelectEntityDialogViewModel<Group, GroupModel> _groupSelectDialogViewModel;
+        private readonly IDisplayService _displayService;
         public ScheduleListEditWindowViewModel(
             IPaginationSearchableRepository<ScheduleSubject> searchableRepository,
-            IEntityValidator<ScheduleSubjectModel> entityValidator,
             IModelMapper<ScheduleSubject, ScheduleSubjectModel> entityMapper,
-            IDialogsDisplayRegistry dialogsDisplayRegistry,
-            SelectEntityDialogViewModel<Group, GroupModel> groupSelectDialogViewModel)
+            IEntityValidator<ScheduleSubjectModel> entityValidator,
+            IDisplayService displayService)
             : base(searchableRepository, entityValidator, entityMapper)
         {
-            _groupSelectDialogViewModel = groupSelectDialogViewModel ?? throw new ArgumentNullException(nameof(groupSelectDialogViewModel));
-            _dialogsDisplayRegistry = dialogsDisplayRegistry ?? throw new ArgumentNullException(nameof(dialogsDisplayRegistry));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 
             ChooseGroupCommand = new RelayCommand(SelectGroupAction);
         }
 
         private void SelectGroupAction(object o)
         {
-            GroupModel group = _dialogsDisplayRegistry.ShowDialog(_groupSelectDialogViewModel);
+            GroupModel group = _displayService.ShowDialog<SelectEntityDialogViewModel<Group, GroupModel>, object, GroupModel>();
             if (group == null)
                 return;
 
