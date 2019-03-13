@@ -61,7 +61,7 @@
             <TextBlock Text="Заголовок" FontSize="22" Margin="4,0,4,0" Grid.ColumnSpan="4"/>
 
             <!-- Список -->
-            <views:ItemListView
+            <views:ItemSearchListView
             Grid.Column="0"
             Grid.Row="1"
             Grid.RowSpan="2"

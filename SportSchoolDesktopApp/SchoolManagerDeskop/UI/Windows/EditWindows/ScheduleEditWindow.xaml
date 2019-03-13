@@ -37,22 +37,10 @@
             </DockPanel>
             <DockPanel>
                 <TextBlock Style="{StaticResource FieldName}" Text="Время начала"/>
-                <!--<TextBox Width="25" TextAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource FieldValue}" Text="10" />
-                <TextBlock Width="6" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Text=":" />
-                <TextBox Width="25" TextAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource FieldValue}" Text="00" />-->
                 <ctrl:TimeControl HorizontalAlignment="Left" Width="60" Height="20" Padding="5,0" Value="{Binding Model.StartTime}" />
             </DockPanel>
             <DockPanel Height="Auto">
                 <TextBlock Style="{StaticResource FieldName}" Text="Дни недели"/>
-                <!--<WrapPanel>
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Пн" IsChecked="{Binding WeekDayChecker[0]}" />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Вт" IsChecked="{Binding WeekDayChecker[1]}"  />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Ср" IsChecked="{Binding WeekDayChecker[2]}"  />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Чт" IsChecked="{Binding WeekDayChecker[3]}"  />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Пт" IsChecked="{Binding WeekDayChecker[4]}"  />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Сб" IsChecked="{Binding WeekDayChecker[5]}"  />
-                    <CheckBox Style="{StaticResource FieldCheckBox}" Content="Вс" IsChecked="{Binding WeekDayChecker[6]}"  />
-                </WrapPanel>-->
                 <ctrl:DaysOfWeekControl Padding="5,1" Value="{Binding Model.WeekDays}" />
             </DockPanel>
             <DockPanel>

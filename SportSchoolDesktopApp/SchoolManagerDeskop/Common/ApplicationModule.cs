@@ -91,6 +91,7 @@ namespace SchoolManagerDeskop.Common
 
             // Регистрация ViewModel для окон.
             container.RegisterType<MainWindowViewModel>(new SingletonLifetimeManager());
+            container.RegisterType<SubscriptionWindowViewModel>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Group, GroupModel>, GroupsListEditWindowViewModel>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Student, StudentModel>>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Trainer, TrainerModel>>(new SingletonLifetimeManager());
@@ -109,6 +110,7 @@ namespace SchoolManagerDeskop.Common
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Student, StudentModel>, WpfDisplayWindow<StudentsEditWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Trainer, TrainerModel>, WpfDisplayWindow<TrainersEditWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>, WpfDisplayWindow<ScheduleEditWindow>>();
+            windowsRegistry.AddWindowType<SubscriptionWindowViewModel, WpfDisplayWindow<SubscriptionsWindow>>();
 
             // Заносим записи в реестр о связях диалоговых окон с ViewModel, типом аргумента и типом результата.
             var dialogsRegistry = container.Resolve<IDialogsDisplayRegistry>();
