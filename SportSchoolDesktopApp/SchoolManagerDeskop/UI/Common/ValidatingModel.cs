@@ -12,7 +12,7 @@ namespace SchoolManagerDeskop.UI.Common
     public abstract class ValidatingModel : INotifyPropertyChanged, IDisplayableModel, ICloneable
     {
         public abstract string ItemCaption { get; }
-        public virtual object Clone() => throw new NotImplementedException();
+        public object Clone() => this.MemberwiseClone();
 
         public event ValidateModelHandler ModelChanged;
         public event PropertyChangedEventHandler PropertyChanged;

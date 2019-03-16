@@ -72,7 +72,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\ViewModels\SubscriptionWindowViewModel.cs" />
+    <Compile Include="Common\Mappers\SubscriptionsMapper.cs" />
+    <Compile Include="Common\Validators\SubscriptionsValidator.cs" />
+    <Compile Include="Core\Repositories\SubscriptionsRepository.cs" />
+    <Compile Include="UI\Models\SubscriptionModel.cs" />
+    <Compile Include="UI\ViewModels\SubscriptionsWindowViewModel.cs" />
     <Compile Include="UI\Views\ItemListView.xaml.cs">
       <DependentUpon>ItemListView.xaml</DependentUpon>
     </Compile>

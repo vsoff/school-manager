@@ -75,11 +75,6 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        public override object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
         public override string ItemCaption => $"[{Id}] {FirstName} {LastName} {MiddleName}";
     }
 }
