@@ -40,30 +40,20 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<ISportEntitiesContextProvider, SportEntitiesContextProvider>(new SingletonLifetimeManager());
 
             // Регистрация репозиториев.
-            container.RegisterType<IPaginationSearchableRepository<Group>, GroupsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IPaginationSearchableRepository<Student>, StudentsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IPaginationSearchableRepository<Trainer>, TrainersRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IPaginationSearchableRepository<ScheduleSubject>, ScheduleRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IRepository<Group>, GroupsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IRepository<Student>, StudentsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IRepository<Trainer>, TrainersRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IRepository<ScheduleSubject>, ScheduleRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IGroupsRepository, GroupsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IStudentsRepository, StudentsRepository>(new SingletonLifetimeManager());
-            container.RegisterType<ITrainersRepository, TrainersRepository>(new SingletonLifetimeManager());
-            container.RegisterType<IScheduleRepository, ScheduleRepository>(new SingletonLifetimeManager());
-            container.RegisterType<ISessionsRepository, SessionsRepository>(new SingletonLifetimeManager());
+            RegisterRepositories(container);
 
             // Валидаторы.
             container.RegisterType<IEntityValidator<GroupModel>, GroupsValidator>(new SingletonLifetimeManager());
             container.RegisterType<IEntityValidator<StudentModel>, StudentsValidator>(new SingletonLifetimeManager());
             container.RegisterType<IEntityValidator<TrainerModel>, TrainersValidator>(new SingletonLifetimeManager());
+            container.RegisterType<IEntityValidator<SubscriptionModel>, SubscriptionsValidator>(new SingletonLifetimeManager());
             container.RegisterType<IEntityValidator<ScheduleSubjectModel>, ScheduleSubjectsValidator>(new SingletonLifetimeManager());
 
             // Мапперы.
             container.RegisterType<IModelMapper<Group, GroupModel>, GroupsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<Student, StudentModel>, StudentsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<Trainer, TrainerModel>, TrainersMapper>(new SingletonLifetimeManager());
+            container.RegisterType<IModelMapper<Subscription, SubscriptionModel>, SubscriptionsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<ScheduleSubject, ScheduleSubjectModel>, ScheduleSubjectsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<ScheduleSubject, ScheduleSubjectItemModel>, ScheduleSubjectItemsMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<WeekDayCore, WeekDayModel>, WeekDaysMapper>(new SingletonLifetimeManager());
@@ -75,6 +65,28 @@ namespace SchoolManagerDeskop.Common
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);
+        }
+
+        private static void RegisterRepositories(IUnityContainer container)
+        {
+            container.RegisterType<IPaginationSearchableRepository<Group>, GroupsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<Student>, StudentsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<Trainer>, TrainersRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<Subscription>, SubscriptionsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IPaginationSearchableRepository<ScheduleSubject>, ScheduleRepository>(new SingletonLifetimeManager());
+
+            container.RegisterType<IRepository<Group>, GroupsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IRepository<Student>, StudentsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IRepository<Trainer>, TrainersRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IRepository<Subscription>, SubscriptionsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IRepository<ScheduleSubject>, ScheduleRepository>(new SingletonLifetimeManager());
+
+            container.RegisterType<IGroupsRepository, GroupsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IStudentsRepository, StudentsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<ITrainersRepository, TrainersRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IScheduleRepository, ScheduleRepository>(new SingletonLifetimeManager());
+            container.RegisterType<ISessionsRepository, SessionsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<ISubscriptionsRepository, SubscriptionsRepository>(new SingletonLifetimeManager());
         }
 
         private static void RegisterViewModels(IUnityContainer container)
@@ -91,12 +103,14 @@ namespace SchoolManagerDeskop.Common
 
             // Регистрация ViewModel для окон.
             container.RegisterType<MainWindowViewModel>(new SingletonLifetimeManager());
+            container.RegisterType<SubscriptionsWindowViewModel>(new TransientLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Group, GroupModel>, GroupsListEditWindowViewModel>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Student, StudentModel>>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Trainer, TrainerModel>>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>, ScheduleListEditWindowViewModel>(new SingletonLifetimeManager());
 
             // Регистрация ViewModels для диалогов.
+            container.RegisterType<SelectEntityDialogViewModel<Group, GroupModel>>(new TransientLifetimeManager());
             container.RegisterType<SelectEntityDialogViewModel<Trainer, TrainerModel>>(new TransientLifetimeManager());
         }
 
@@ -105,6 +119,7 @@ namespace SchoolManagerDeskop.Common
             // Заносим записи в реестр о связях окон с ViewModel.
             var windowsRegistry = container.Resolve<IWindowsDisplayRegistry>();
             windowsRegistry.AddWindowType<MainWindowViewModel, WpfDisplayWindow<MainWindow>>();
+            windowsRegistry.AddWindowType<SubscriptionsWindowViewModel, WpfDisplayWindow<SubscriptionsWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Group, GroupModel>, WpfDisplayWindow<GroupsEditWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Student, StudentModel>, WpfDisplayWindow<StudentsEditWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Trainer, TrainerModel>, WpfDisplayWindow<TrainersEditWindow>>();

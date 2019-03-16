@@ -72,6 +72,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Mappers\SubscriptionsMapper.cs" />
+    <Compile Include="Common\Validators\SubscriptionsValidator.cs" />
+    <Compile Include="Core\Repositories\SubscriptionsRepository.cs" />
+    <Compile Include="UI\Models\SubscriptionModel.cs" />
+    <Compile Include="UI\ViewModels\SubscriptionsWindowViewModel.cs" />
+    <Compile Include="UI\Views\ItemListView.xaml.cs">
+      <DependentUpon>ItemListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\SubscriptionsWindow.xaml.cs">
+      <DependentUpon>SubscriptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -148,8 +159,8 @@
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\ScheduleViewModel.cs" />
     <Compile Include="UI\ViewModels\SelectEntityDialogViewModel.cs" />
-    <Compile Include="UI\Views\ItemListView.xaml.cs">
-      <DependentUpon>ItemListView.xaml</DependentUpon>
+    <Compile Include="UI\Views\ItemSearchListView.xaml.cs">
+      <DependentUpon>ItemSearchListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\ScheduleItemView.xaml.cs">
       <DependentUpon>ScheduleItemView.xaml</DependentUpon>
@@ -162,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Views\ItemListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Views\ItemSearchListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,6 +243,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Views\ScheduleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\SubscriptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

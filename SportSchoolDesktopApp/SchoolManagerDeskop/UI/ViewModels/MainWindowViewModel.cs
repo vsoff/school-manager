@@ -38,7 +38,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
             ScheduleEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>>());
 
             OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
-            OpenSubscriptionsCommand = new RelayCommand(_ => MessageBox.Show("Окно абонементов."));
+            OpenSubscriptionsCommand = new RelayCommand(_ => _displayService.ShowDialog<SubscriptionsWindowViewModel>());
         }
 
         public override void OnOpen()

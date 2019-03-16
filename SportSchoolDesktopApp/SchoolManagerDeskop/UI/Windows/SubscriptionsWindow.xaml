@@ -1,0 +1,154 @@
+﻿<Window x:Class="SchoolManagerDeskop.UI.Windows.SubscriptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:converters="clr-namespace:SchoolManagerDeskop.UI.Common.Converters"
+        xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows"
+        xmlns:views="clr-namespace:SchoolManagerDeskop.UI.Views"
+        mc:Ignorable="d"
+        Title="Окно абонементов"
+        Height="450"
+        Width="800"
+        MinHeight="450"
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=WindowOpenCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Path=WindowCloseCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="EditWindows/EditWindowsResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:SubscriptionAddButtonEnabledConverter x:Key="SubscriptionAddButtonEnabledConverter"/>
+
+            <Style TargetType="DockPanel" x:Key="FieldLine">
+                <Setter Property="Margin" Value="0,3"/>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="FieldName">
+                <Setter Property="Width" Value="120"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="TextBox" x:Key="FieldValue">
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="50"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <!-- Заголовок выбора ученика -->
+        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Center" Text="Выбор ученика" FontSize="18" Margin="4,0,4,0" />
+
+        <!-- Выбор ученика -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="3,3">
+            <Border BorderThickness="1" BorderBrush="#846505" Background="#fff3ce" Margin="0,0,0,6">
+                <TextBlock Grid.Row="0" Grid.Column="0" Foreground="#846505" TextAlignment="Justify" TextWrapping="Wrap" FontStyle="Italic" Text="Необходимо поднести карту к смарт-ридеру, либо нажать на кнопку «Выбрать ученика»" Margin="3"/>
+            </Border>
+            <DockPanel>
+                <Button Width="120" Content="Выбрать ученика..." Padding="4,0,4,0" Command="{Binding SelectStudentCommand}" />
+                <TextBox Width="Auto" Grid.Row="0" Grid.Column="0" Margin="4,0,0,0" IsReadOnly="True" Text="{Binding SelectedStudentCaption}" />
+            </DockPanel>
+        </StackPanel>
+
+        <!-- Заголовок списка -->
+        <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Center" Text="Абонементы ученика" FontSize="18" Margin="4,0,4,0" />
+
+        <!-- Список -->
+        <views:ItemListView
+            Grid.Column="0"
+            Grid.Row="3"
+            Grid.RowSpan="2"
+            DataContext="{Binding ItemsListViewModel}" />
+
+        <!-- Заголовок выбора ученика -->
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" TextAlignment="Center" Text="Подробная информация об абонементе" FontSize="18" Margin="4,0,4,0" />
+
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" BorderThickness="1" BorderBrush="Gray" Margin="2" Padding="4">
+            <StackPanel Visibility="{Binding CurrentState, ValidatesOnExceptions=True, Converter={StaticResource EditorVisibilityConverter}}"
+                IsEnabled="{Binding CurrentState, ValidatesOnExceptions=True, Converter={StaticResource EditorEnabledConverter}}"
+                Orientation="Vertical">
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="ID" />
+                    <TextBlock Text="{Binding Model.Id}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Дата покупки" />
+                    <TextBlock Text="{Binding Model.BuyTime}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Группа" />
+                    <Button Width="60" Margin="5" Content="Выбрать..." Command="{Binding SelectGroupCommand}"/>
+                    <TextBox Style="{StaticResource FieldValue}" IsReadOnly="True" Text="{Binding Model.GroupCaption}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Тренер" />
+                    <TextBlock Text="{Binding Model.TrainerCaption}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Тип карты" />
+                    <CheckBox IsChecked="{Binding Model.IsUnlimited}" Margin="2" Content="{Binding Model.SubscriptionTypeCaption}"/>
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Дата активации" />
+                    <DatePicker SelectedDate="{Binding Model.DateStart}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Дата деактивации" />
+                    <DatePicker SelectedDate="{Binding Model.DateEnd}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Походов всего" />
+                    <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.SubHoursMax}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Походов осталось" />
+                    <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.SubHoursLeft}" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопки управления -->
+        <!--<Button Grid.Row="4" Grid.Column="2" Content="Изменить..." Margin="3" />-->
+        <Button Grid.Column="1"
+                Grid.Row="4"
+                Margin="4"
+                Command="{Binding ActionCommand}"
+                Content="{Binding ActionButtonCaption}"
+                IsEnabled="{Binding SelectedStudentId, ValidatesOnExceptions=True, Converter={StaticResource SubscriptionAddButtonEnabledConverter}}"/>
+        <Button Grid.Column="4"
+                Grid.Row="4"
+                Margin="4"
+                Command="{Binding CancelCommand}"
+                Content="{Binding CancelButtonCaption}"/>
+    </Grid>
+</Window>

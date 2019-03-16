@@ -28,7 +28,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         {
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 
-            ChooseTrainerCommand = new RelayCommand(SelectTrainerAction);
+            SelectTrainerCommand = new RelayCommand(SelectTrainerAction);
         }
 
         private void SelectTrainerAction(object o)
@@ -41,6 +41,6 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             Model.TrainerCaption = trainer.FullName;
         }
 
-        public ICommand ChooseTrainerCommand { get; }
+        public ICommand SelectTrainerCommand { get; }
     }
 }

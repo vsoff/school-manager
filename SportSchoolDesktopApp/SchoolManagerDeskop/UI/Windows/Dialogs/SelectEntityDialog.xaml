@@ -28,7 +28,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Список -->
-        <views:ItemListView
+        <views:ItemSearchListView
             Grid.Column="0"
             Grid.Row="0"
             Grid.ColumnSpan="3"

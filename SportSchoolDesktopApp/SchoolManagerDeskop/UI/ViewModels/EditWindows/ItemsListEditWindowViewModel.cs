@@ -73,7 +73,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         /// <summary>
         /// Метод обрабатывающий запрос на обновление списка сущностей.
         /// </summary>
-        private void ItemsListUpdateData(ItemsListRequest request)
+        internal virtual void ItemsListUpdateData(ItemsListRequest request)
         {
             var response = _searchableRepository.GetPage(new SearchPaginationRequest
             {
@@ -129,6 +129,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
                     }
                 case ItemsListEditState.Creating:
                     {
+                        BeforeCreate();
                         _searchableRepository.Add(_entityMapper.ToCore(Model));
                         ItemsListViewModel.Refresh();
                         CurrentState = ItemsListEditState.NoSelected;
@@ -142,6 +143,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
                         break;
                     }
             }
+        }
+
+        /// <summary>
+        /// Метод вызываемый перед записью нового экземпляра в БД.
+        /// </summary>
+        internal virtual void BeforeCreate()
+        {
         }
 
         /// <summary>
@@ -218,7 +226,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         public ItemsListEditState CurrentState
         {
             get { return _currentState; }
-            private set
+            internal set
             {
                 _currentState = value;
                 ViewModelStateChanged(value);

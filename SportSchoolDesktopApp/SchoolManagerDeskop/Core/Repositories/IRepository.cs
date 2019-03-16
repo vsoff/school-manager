@@ -81,7 +81,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                 return GetPageWithSearch(context, request, GetSearchExpression(request.SearchText));
         }
 
-        private PaginationResponse<TEntity> GetPageWithSearch(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, bool>> expression = null)
+        internal PaginationResponse<TEntity> GetPageWithSearch(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, bool>> expression = null)
         {
             IQueryable<TEntity> pageEntities = GetObjectWithIncludes(context)
                     .OrderBy(x => x.Id)

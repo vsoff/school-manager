@@ -89,11 +89,6 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        public override object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
         public string WeekDaysCaption => WeekDayHelper.GetWeekDayCaption(_weekDays);
 
         public override string ItemCaption => $"[{Id}] {GroupCaption} [{WeekDaysCaption}]";

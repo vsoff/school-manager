@@ -28,7 +28,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         {
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 
-            ChooseGroupCommand = new RelayCommand(SelectGroupAction);
+            SelectGroupCommand = new RelayCommand(SelectGroupAction);
         }
 
         private void SelectGroupAction(object o)
@@ -41,6 +41,6 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
             Model.GroupCaption = group.ItemCaption;
         }
 
-        public ICommand ChooseGroupCommand { get; }
+        public ICommand SelectGroupCommand { get; }
     }
 }

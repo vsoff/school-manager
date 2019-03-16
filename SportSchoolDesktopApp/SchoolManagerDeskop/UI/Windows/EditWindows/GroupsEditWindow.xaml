@@ -39,7 +39,7 @@
             </DockPanel>
             <DockPanel>
                 <TextBlock Style="{StaticResource FieldName}" Text="Тренер"/>
-                <Button Width="60" Margin="5,5,0,5" Content="Выбрать..." Command="{Binding ChooseTrainerCommand}"/>
+                <Button Width="60" Margin="5,5,0,5" Content="Выбрать..." Command="{Binding SelectTrainerCommand}"/>
                 <TextBox Style="{StaticResource FieldValue}" IsReadOnly="True" Text="{Binding Model.TrainerCaption}" />
             </DockPanel>
         </StackPanel>

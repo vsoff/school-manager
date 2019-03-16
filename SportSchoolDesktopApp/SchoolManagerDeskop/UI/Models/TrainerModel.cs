@@ -55,11 +55,6 @@ namespace SchoolManagerDeskop.UI.Models
 
         public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();
 
-        public override object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
         public override string ItemCaption => $"[{Id}] {FullName}";
     }
 }
