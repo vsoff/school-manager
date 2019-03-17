@@ -106,19 +106,6 @@
                     <TextBlock Text="{Binding Model.BuyTime}" />
                 </DockPanel>
                 <DockPanel Style="{StaticResource FieldLine}">
-                    <TextBlock Style="{StaticResource FieldName}" Text="Группа" />
-                    <Button Width="60" Margin="5" Content="Выбрать..." Command="{Binding SelectGroupCommand}"/>
-                    <TextBox Style="{StaticResource FieldValue}" IsReadOnly="True" Text="{Binding Model.GroupCaption}" />
-                </DockPanel>
-                <DockPanel Style="{StaticResource FieldLine}">
-                    <TextBlock Style="{StaticResource FieldName}" Text="Тренер" />
-                    <TextBlock Text="{Binding Model.TrainerCaption}" />
-                </DockPanel>
-                <DockPanel Style="{StaticResource FieldLine}">
-                    <TextBlock Style="{StaticResource FieldName}" Text="Тип карты" />
-                    <CheckBox IsChecked="{Binding Model.IsUnlimited}" Margin="2" Content="{Binding Model.SubscriptionTypeCaption}"/>
-                </DockPanel>
-                <DockPanel Style="{StaticResource FieldLine}">
                     <TextBlock Style="{StaticResource FieldName}" Text="Дата активации" />
                     <DatePicker SelectedDate="{Binding Model.DateStart}" />
                 </DockPanel>
@@ -127,10 +114,31 @@
                     <DatePicker SelectedDate="{Binding Model.DateEnd}" />
                 </DockPanel>
                 <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Тип карты" />
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Model.HasUnlimitedGroup}" Margin="2" Content="Безлимитная"/>
+                </DockPanel>
+                <DockPanel Visibility="{Binding Model.HasUnlimitedGroup, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"
+                           Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Группа" />
+                    <Button Width="60" Margin="5" Content="Выбрать..." Command="{Binding SelectGroupCommand}"/>
+                    <TextBox Style="{StaticResource FieldValue}" IsReadOnly="True" Text="{Binding Model.GroupCaption}" />
+                </DockPanel>
+                <DockPanel Visibility="{Binding Model.HasUnlimitedGroup, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"
+                           Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Тренер" />
+                    <TextBlock Text="{Binding Model.TrainerCaption}" />
+                </DockPanel>
+                <DockPanel Style="{StaticResource FieldLine}">
+                    <TextBlock Style="{StaticResource FieldName}" Text="Ограничение по часам" />
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Model.HasUnlimitedHours}" Margin="2" Content="Без ограничений"/>
+                </DockPanel>
+                <DockPanel Visibility="{Binding Model.HasUnlimitedHours, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"
+                           Style="{StaticResource FieldLine}">
                     <TextBlock Style="{StaticResource FieldName}" Text="Походов всего" />
                     <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.SubHoursMax}" />
                 </DockPanel>
-                <DockPanel Style="{StaticResource FieldLine}">
+                <DockPanel Visibility="{Binding Model.HasUnlimitedHours, ValidatesOnExceptions=True, Converter={StaticResource BoolEditorVisibilityConverter}}"
+                           Style="{StaticResource FieldLine}">
                     <TextBlock Style="{StaticResource FieldName}" Text="Походов осталось" />
                     <TextBox Style="{StaticResource FieldValue}" Text="{Binding Model.SubHoursLeft}" />
                 </DockPanel>

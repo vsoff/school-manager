@@ -15,15 +15,17 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 
         public DateTime BuyTime { get; set; }
 
-        public bool IsUnlimited { get; set; }
-
         public DateTime DateStart { get; set; }
 
         public DateTime DateEnd { get; set; }
 
-        public int? SubHoursMax { get; set; }
+        public int SubHoursMax { get; set; }
 
         public int SubHoursLeft { get; set; }
+
+        public bool HasUnlimitedGroup { get; set; }
+
+        public bool HasUnlimitedHours { get; set; }
 
         public virtual Group Group { get; set; }
 

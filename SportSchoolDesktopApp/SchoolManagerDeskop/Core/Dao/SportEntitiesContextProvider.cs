@@ -21,7 +21,7 @@ namespace SchoolManagerDeskop.Core.Dao
         private static string GetConnectionString()
         {
             SqlConnectionStringBuilder bldr = new SqlConnectionStringBuilder();
-            bldr.InitialCatalog = "SportManagerReborn5";
+            bldr.InitialCatalog = "SportManagerReborn7";
             bldr.DataSource = @"localhost";
             bldr.IntegratedSecurity = true;
             return bldr.ConnectionString;

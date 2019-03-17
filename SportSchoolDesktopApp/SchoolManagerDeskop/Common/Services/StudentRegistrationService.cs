@@ -77,11 +77,11 @@ namespace SchoolManagerDeskop.Common.Services
             // (то, что раньше заканчивается, должно использоваться в первом приоритете)
             Subscription[] allSubscriptions = _subscriptionsRepository.GetAllActiveSubscriptionsInTime(studentId, sessionDateTime);
             Subscription[] limitedSubscriptions = allSubscriptions
-                .Where(x => x.GroupId.HasValue && x.GroupId == session.GroupId && !x.IsUnlimited)
+                .Where(x => x.GroupId.HasValue && x.GroupId == session.GroupId && !x.HasUnlimitedGroup)
                 .OrderBy(x => x.DateEnd)
                 .ToArray();
             Subscription[] unlimitedSubscriptions = allSubscriptions
-                .Where(x => !x.GroupId.HasValue && x.IsUnlimited)
+                .Where(x => !x.GroupId.HasValue && x.HasUnlimitedGroup)
                 .OrderBy(x => x.DateEnd)
                 .ToArray();
 

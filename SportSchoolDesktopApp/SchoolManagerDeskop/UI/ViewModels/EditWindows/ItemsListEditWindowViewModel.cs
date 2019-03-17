@@ -130,6 +130,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
                 case ItemsListEditState.Creating:
                     {
                         BeforeCreate();
+                        BeforeSave();
                         _searchableRepository.Add(_entityMapper.ToCore(Model));
                         ItemsListViewModel.Refresh();
                         CurrentState = ItemsListEditState.NoSelected;
@@ -137,6 +138,7 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
                     }
                 case ItemsListEditState.Editing:
                     {
+                        BeforeSave();
                         _searchableRepository.Update(_entityMapper.ToCore(Model));
                         ItemsListViewModel.Refresh();
                         CurrentState = ItemsListEditState.NoSelected;
@@ -149,6 +151,13 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         /// Метод вызываемый перед записью нового экземпляра в БД.
         /// </summary>
         internal virtual void BeforeCreate()
+        {
+        }
+
+        /// <summary>
+        /// Метод вызываемый перед сохранением экземпляра (в том числе и нового) в БД.
+        /// </summary>
+        internal virtual void BeforeSave()
         {
         }
 

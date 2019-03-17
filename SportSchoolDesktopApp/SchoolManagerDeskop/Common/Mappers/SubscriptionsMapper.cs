@@ -24,7 +24,8 @@ namespace SchoolManagerDeskop.Common.Mappers
                 StudentId = obj.StudentId,
                 DateStart = obj.DateStart.Value,
                 SubHoursMax = obj.SubHoursMax,
-                IsUnlimited = obj.IsUnlimited,
+                HasUnlimitedGroup = obj.HasUnlimitedGroup,
+                HasUnlimitedHours = obj.HasUnlimitedHours,
                 SubHoursLeft = obj.SubHoursLeft
             };
         }
@@ -38,10 +39,11 @@ namespace SchoolManagerDeskop.Common.Mappers
             StudentId = obj.StudentId,
             DateStart = obj.DateStart,
             SubHoursMax = obj.SubHoursMax,
-            GroupCaption = $"[{obj.Group.Id}] {obj.Group.Name}",
-            IsUnlimited = obj.IsUnlimited,
+            GroupCaption = obj.HasUnlimitedGroup ? string.Empty : $"[{obj.Group.Id}] {obj.Group.Name}",
+            HasUnlimitedGroup = obj.HasUnlimitedGroup,
+            HasUnlimitedHours = obj.HasUnlimitedHours,
             SubHoursLeft = obj.SubHoursLeft,
-            TrainerCaption = $"[{obj.Group.Trainer.Id}] {obj.Group.Trainer.FullName}"
+            TrainerCaption = obj.HasUnlimitedGroup ? string.Empty : $"[{obj.Group.Trainer.Id}] {obj.Group.Trainer.FullName}"
         };
     }
 }
