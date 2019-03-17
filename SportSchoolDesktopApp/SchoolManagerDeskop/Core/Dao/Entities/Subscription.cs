@@ -11,7 +11,7 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
     {
         public long StudentId { get; set; }
 
-        public long GroupId { get; set; }
+        public long? GroupId { get; set; }
 
         public DateTime BuyTime { get; set; }
 

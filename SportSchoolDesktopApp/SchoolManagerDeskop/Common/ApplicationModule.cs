@@ -59,9 +59,13 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<IModelMapper<WeekDayCore, WeekDayModel>, WeekDaysMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<DayOfWeek, WeekDayModel>, DayOfWeekMapper>(new SingletonLifetimeManager());
 
+            // Сервисы
+            container.RegisterType<IStudentRegistrationService, StudentRegistrationService>(new SingletonLifetimeManager());
+            container.RegisterType<IDateTimeService, DefaultDateTimeService>(new SingletonLifetimeManager());
+            container.RegisterType<IDisplayService, DisplayService>(new SingletonLifetimeManager());
+
             // Другое.
             container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
-            container.RegisterType<IDisplayService, DisplayService>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);

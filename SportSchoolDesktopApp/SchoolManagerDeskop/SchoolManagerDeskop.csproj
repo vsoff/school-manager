@@ -72,7 +72,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Classes\RegistrationInfoResponse.cs" />
     <Compile Include="Common\Mappers\SubscriptionsMapper.cs" />
+    <Compile Include="Common\Services\DefaultDateTimeService.cs" />
+    <Compile Include="Common\Services\StudentRegistrationService.cs" />
     <Compile Include="Common\Validators\SubscriptionsValidator.cs" />
     <Compile Include="Core\Repositories\SubscriptionsRepository.cs" />
     <Compile Include="UI\Models\SubscriptionModel.cs" />
@@ -116,7 +119,7 @@
     <Compile Include="Core\Dao\Entities\Session.cs" />
     <Compile Include="Core\Dao\SportEntitiesContextProvider.cs" />
     <Compile Include="Core\Repositories\GroupsRepository.cs" />
-    <Compile Include="Core\Repositories\IRepository.cs" />
+    <Compile Include="Core\Repositories\Repository.cs" />
     <Compile Include="Core\Repositories\Pagination\IPaginationSearchableRepository.cs" />
     <Compile Include="Core\Repositories\Pagination\PaginationResponse.cs" />
     <Compile Include="Core\Repositories\Pagination\SearchPaginationRequest.cs" />
@@ -280,8 +283,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
