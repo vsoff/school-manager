@@ -20,8 +20,8 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        private long _groupId;
-        public long GroupId
+        private long? _groupId;
+        public long? GroupId
         {
             get { return _groupId; }
             set
@@ -42,15 +42,25 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        private bool _isUnlimited;
-        public bool IsUnlimited
+        private bool _hasUnlimitedGroup;
+        public bool HasUnlimitedGroup
         {
-            get { return _isUnlimited; }
+            get { return _hasUnlimitedGroup; }
             set
             {
-                _isUnlimited = value;
-                OnPropertyChanged(nameof(IsUnlimited));
-                OnPropertyChanged(nameof(SubscriptionTypeCaption));
+                _hasUnlimitedGroup = value;
+                OnPropertyChanged(nameof(HasUnlimitedGroup));
+            }
+        }
+
+        private bool _hasUnlimitedHours;
+        public bool HasUnlimitedHours
+        {
+            get { return _hasUnlimitedHours; }
+            set
+            {
+                _hasUnlimitedHours = value;
+                OnPropertyChanged(nameof(HasUnlimitedHours));
             }
         }
 
@@ -87,8 +97,8 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        private int? _subHoursMax;
-        public int? SubHoursMax
+        private int _subHoursMax;
+        public int SubHoursMax
         {
             get { return _subHoursMax; }
             set
@@ -131,7 +141,6 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
-        public string SubscriptionTypeCaption => IsUnlimited ? "Безлимитная" : "Лимитированная";
         public override string ItemCaption => $"[{Id}] c {DateStart?.ToShortDateString()} по {DateEnd?.ToShortDateString()} ({GroupCaption})";
     }
 }

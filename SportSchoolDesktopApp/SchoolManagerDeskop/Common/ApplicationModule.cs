@@ -59,9 +59,13 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<IModelMapper<WeekDayCore, WeekDayModel>, WeekDaysMapper>(new SingletonLifetimeManager());
             container.RegisterType<IModelMapper<DayOfWeek, WeekDayModel>, DayOfWeekMapper>(new SingletonLifetimeManager());
 
+            // Сервисы
+            container.RegisterType<IStudentRegistrationService, StudentRegistrationService>(new SingletonLifetimeManager());
+            container.RegisterType<IDateTimeService, DefaultDateTimeService>(new SingletonLifetimeManager());
+            container.RegisterType<IDisplayService, DisplayService>(new SingletonLifetimeManager());
+
             // Другое.
             container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
-            container.RegisterType<IDisplayService, DisplayService>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);
@@ -80,6 +84,7 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<IRepository<Trainer>, TrainersRepository>(new SingletonLifetimeManager());
             container.RegisterType<IRepository<Subscription>, SubscriptionsRepository>(new SingletonLifetimeManager());
             container.RegisterType<IRepository<ScheduleSubject>, ScheduleRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IRepository<StudentInSession>, StudentsInSessionsRepository>(new SingletonLifetimeManager());
 
             container.RegisterType<IGroupsRepository, GroupsRepository>(new SingletonLifetimeManager());
             container.RegisterType<IStudentsRepository, StudentsRepository>(new SingletonLifetimeManager());
@@ -87,6 +92,7 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<IScheduleRepository, ScheduleRepository>(new SingletonLifetimeManager());
             container.RegisterType<ISessionsRepository, SessionsRepository>(new SingletonLifetimeManager());
             container.RegisterType<ISubscriptionsRepository, SubscriptionsRepository>(new SingletonLifetimeManager());
+            container.RegisterType<IStudentsInSessionsRepository, StudentsInSessionsRepository>(new SingletonLifetimeManager());
         }
 
         private static void RegisterViewModels(IUnityContainer container)
@@ -97,12 +103,15 @@ namespace SchoolManagerDeskop.Common
             container.RegisterType<StudentsEditWindow>(new TransientLifetimeManager());
             container.RegisterType<TrainersEditWindow>(new TransientLifetimeManager());
             container.RegisterType<ScheduleEditWindow>(new TransientLifetimeManager());
+            container.RegisterType<RegistrationWindow>(new TransientLifetimeManager());
+            container.RegisterType<SubscriptionsWindow>(new TransientLifetimeManager());
 
             // Регистрация простых ViewModel.
             container.RegisterType<ScheduleViewModel>(new SingletonLifetimeManager());
 
             // Регистрация ViewModel для окон.
             container.RegisterType<MainWindowViewModel>(new SingletonLifetimeManager());
+            container.RegisterType<RegistrationWindowViewModel>(new TransientLifetimeManager());
             container.RegisterType<SubscriptionsWindowViewModel>(new TransientLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Group, GroupModel>, GroupsListEditWindowViewModel>(new SingletonLifetimeManager());
             container.RegisterType<ItemsListEditWindowViewModel<Student, StudentModel>>(new SingletonLifetimeManager());
@@ -127,6 +136,7 @@ namespace SchoolManagerDeskop.Common
 
             // Заносим записи в реестр о связях диалоговых окон с ViewModel, типом аргумента и типом результата.
             var dialogsRegistry = container.Resolve<IDialogsDisplayRegistry>();
+            dialogsRegistry.AddWindowType<RegistrationWindowViewModel, WpfDisplayWindow<RegistrationWindow>, ScheduleSubjectModel, object>();
             dialogsRegistry.AddWindowType<SelectEntityDialogViewModel<Group, GroupModel>, WpfDisplayWindow<SelectEntityDialog>, object, GroupModel>();
             dialogsRegistry.AddWindowType<SelectEntityDialogViewModel<Student, StudentModel>, WpfDisplayWindow<SelectEntityDialog>, object, StudentModel>();
             dialogsRegistry.AddWindowType<SelectEntityDialogViewModel<Trainer, TrainerModel>, WpfDisplayWindow<SelectEntityDialog>, object, TrainerModel>();

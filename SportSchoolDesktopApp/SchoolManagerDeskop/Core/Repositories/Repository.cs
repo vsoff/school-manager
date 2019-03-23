@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Core.Dao;
 using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Extensions;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,11 @@ namespace SchoolManagerDeskop.Core.Repositories
     public abstract class Repository<TEntity> : IRepository<TEntity>, IPaginationSearchableRepository<TEntity> where TEntity : Entity
     {
         internal ISportEntitiesContextProvider _sportEntitiesContextProvider;
-        internal abstract Expression<Func<TEntity, bool>> GetSearchExpression(string searchText);
-        internal virtual IQueryable<TEntity> GetObjectWithIncludes(DbContext context) => context.Set<TEntity>();
+
+        internal abstract Expression<Func<TEntity, bool>>[] GetSearchExpression(string searchText);
+        internal Expression<Func<TEntity, object>>[] _allIncludes = null;
+
+        #region Add, Get, Update, Delete
 
         public long Add(TEntity entity)
         {
@@ -38,7 +42,7 @@ namespace SchoolManagerDeskop.Core.Repositories
         public TEntity Get(long entityId)
         {
             using (var context = _sportEntitiesContextProvider.GetContext())
-                return GetObjectWithIncludes(context).First(x => x.Id == entityId);
+                return context.Select(_allIncludes).First(x => x.Id == entityId);
         }
 
         public void Update(TEntity entity)
@@ -69,31 +73,23 @@ namespace SchoolManagerDeskop.Core.Repositories
             }
         }
 
+        #endregion
+
         public PaginationResponse<TEntity> GetPage(SearchPaginationRequest request)
         {
             using (var context = _sportEntitiesContextProvider.GetContext())
-                return GetPageWithSearch(context, request);
+                return GetPageWithSearch<TEntity>(context, request, _allIncludes,
+                    string.IsNullOrWhiteSpace(request.SearchText) ? null : GetSearchExpression(request.SearchText));
         }
 
-        public PaginationResponse<TEntity> GetPageWithSearch(SearchPaginationRequest request)
+        internal PaginationResponse<TEntity> GetPageWithSearch<TTProperty>(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, object>>[] includes = null, Expression<Func<TEntity, bool>>[] where = null)
         {
-            using (var context = _sportEntitiesContextProvider.GetContext())
-                return GetPageWithSearch(context, request, GetSearchExpression(request.SearchText));
-        }
-
-        internal PaginationResponse<TEntity> GetPageWithSearch(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, bool>> expression = null)
-        {
-            IQueryable<TEntity> pageEntities = GetObjectWithIncludes(context)
-                    .OrderBy(x => x.Id)
-                    .Skip(request.Skip)
-                    .Take(request.Limit);
+            IQueryable<TEntity> pageEntities = context
+                .Select(includes, where)
+                .OrderBy(x => x.Id)
+                .Skip(request.Skip)
+                .Take(request.Limit);
             IQueryable<TEntity> allEntities = context.Set<TEntity>();
-
-            if (expression != null)
-            {
-                pageEntities = pageEntities.Where(expression);
-                allEntities = allEntities.Where(expression);
-            }
 
             return new PaginationResponse<TEntity>
             {

@@ -1,5 +1,6 @@
 ﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
+using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Common.Workers;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Enums;
@@ -37,6 +38,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private readonly IModelMapper<DayOfWeek, WeekDayModel> _dayOfWeekMapper;
         private readonly IScheduleRepository _scheduleRepository;
         private readonly IWorkerController _workerController;
+        private readonly IDisplayService _displayService;
 
         /// <summary>
         /// Выбранный день недели.
@@ -63,13 +65,15 @@ namespace SchoolManagerDeskop.UI.ViewModels
             IModelMapper<WeekDayCore, WeekDayModel> weekDaysMapper,
             IModelMapper<DayOfWeek, WeekDayModel> dayOfWeekMapper,
             IScheduleRepository scheduleRepository,
-            IWorkerController workerManager)
+            IWorkerController workerManager,
+            IDisplayService displayService)
         {
             _scheduleItemsMapper = scheduleItemsMapper ?? throw new ArgumentNullException(nameof(scheduleItemsMapper));
             _scheduleRepository = scheduleRepository ?? throw new ArgumentNullException(nameof(scheduleRepository));
             _dayOfWeekMapper = dayOfWeekMapper ?? throw new ArgumentNullException(nameof(dayOfWeekMapper));
             _weekDaysMapper = weekDaysMapper ?? throw new ArgumentNullException(nameof(weekDaysMapper));
             _workerController = workerManager ?? throw new ArgumentNullException(nameof(workerManager));
+            _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 
             ScheduleItems = new ObservableCollection<ScheduleSubjectItemModel>();
 
@@ -80,7 +84,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 if ((ScheduleSubjectItemModel)o != null)
                 {
                     var selectedScheduleItem = (ScheduleSubjectItemModel)o;
-                    MessageBox.Show($"Окно регистрации на занятие `{selectedScheduleItem.Item.GroupCaption}`(Id: {selectedScheduleItem.Item.GroupId}) в {selectedScheduleItem.Item.StartTime}.");
+                    _displayService.ShowDialog<RegistrationWindowViewModel, ScheduleSubjectModel, object>(selectedScheduleItem.Item);
                 }
             });
         }

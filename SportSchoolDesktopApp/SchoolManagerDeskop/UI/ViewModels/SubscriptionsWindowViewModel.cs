@@ -87,6 +87,20 @@ namespace SchoolManagerDeskop.UI.ViewModels
             Model.BuyTime = DateTime.Now;
         }
 
+        internal override void BeforeSave()
+        {
+            if (Model.HasUnlimitedGroup)
+            {
+                Model.GroupId = null;
+            }
+
+            if (Model.HasUnlimitedHours)
+            {
+                Model.SubHoursLeft = 0;
+                Model.SubHoursMax = 0;
+            }
+        }
+
         private long _selectedStudentId;
         public long SelectedStudentId
         {

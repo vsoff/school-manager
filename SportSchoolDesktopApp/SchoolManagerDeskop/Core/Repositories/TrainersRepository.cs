@@ -21,11 +21,11 @@ namespace SchoolManagerDeskop.Core.Repositories
             _sportEntitiesContextProvider = sportEntitiesContextProvider ?? throw new ArgumentNullException(nameof(sportEntitiesContextProvider));
         }
 
-        internal override Expression<Func<Trainer, bool>> GetSearchExpression(string searchText)
+        internal override Expression<Func<Trainer, bool>>[] GetSearchExpression(string searchText) => new Expression<Func<Trainer, bool>>[]
         {
-            return x => x.FirstName.Contains(searchText)
+            x => x.FirstName.Contains(searchText)
                 || x.LastName.Contains(searchText)
-                || x.MiddleName.Contains(searchText);
-        }
+                || x.MiddleName.Contains(searchText)
+        };
     }
 }

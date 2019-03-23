@@ -89,6 +89,17 @@ namespace SchoolManagerDeskop.UI.Models
             }
         }
 
+        private string _trainerCaption;
+        public string TrainerCaption
+        {
+            get { return _trainerCaption; }
+            set
+            {
+                _trainerCaption = value;
+                OnPropertyChanged(nameof(TrainerCaption));
+            }
+        }
+
         public string WeekDaysCaption => WeekDayHelper.GetWeekDayCaption(_weekDays);
 
         public override string ItemCaption => $"[{Id}] {GroupCaption} [{WeekDaysCaption}]";

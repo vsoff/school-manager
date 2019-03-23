@@ -37,7 +37,8 @@ namespace SchoolManagerDeskop.Common.Mappers
             StartTime = obj.StartTime,
             WeekDays = _weekDaysMapper.ToModel(obj.WeekDays),
             GroupId = obj.GroupId,
-            GroupCaption = $"{obj.Group.Name} ({obj.Group.Trainer.FullName})"
+            GroupCaption = obj.Group.Name,
+            TrainerCaption = obj.Group.Trainer.FullName
         };
     }
 }

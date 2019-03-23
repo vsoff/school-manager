@@ -13,6 +13,8 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 
         public long SessionId { get; set; }
 
+        public DateTime RegistrationDate { get; set; }
+
         public virtual Session Session { get; set; }
 
         public virtual Student Student { get; set; }

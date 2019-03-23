@@ -32,7 +32,7 @@
             </DockPanel>
             <DockPanel>
                 <TextBlock Style="{StaticResource FieldName}" Text="Группа"/>
-                <Button Width="60" Margin="5,5,0,5" Content="Выбрать..." Command="{Binding ChooseGroupCommand}" />
+                <Button Width="60" Margin="5,5,0,5" Content="Выбрать..." Command="{Binding SelectGroupCommand}" />
                 <TextBox Style="{StaticResource FieldValue}" IsReadOnly="True" Text="{Binding Model.GroupCaption}" />
             </DockPanel>
             <DockPanel>
