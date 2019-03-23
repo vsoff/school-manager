@@ -18,6 +18,6 @@ namespace SchoolManagerDeskop.Core.Dao.Entities
 
         public virtual Group Group { get; set; }
 
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<StudentInSession> StudentsInSessions { get; set; }
     }
 }

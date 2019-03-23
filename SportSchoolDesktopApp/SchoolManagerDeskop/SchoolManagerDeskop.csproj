@@ -77,11 +77,19 @@
     <Compile Include="Common\Services\DefaultDateTimeService.cs" />
     <Compile Include="Common\Services\StudentRegistrationService.cs" />
     <Compile Include="Common\Validators\SubscriptionsValidator.cs" />
+    <Compile Include="Core\Extensions\RepositoryExtension.cs" />
+    <Compile Include="Core\Repositories\StudentsInSessionsRepository.cs" />
     <Compile Include="Core\Repositories\SubscriptionsRepository.cs" />
+    <Compile Include="UI\Common\Converters\IsNullToVisibilityConverter.cs" />
+    <Compile Include="UI\Common\Converters\BoolToColorConverter.cs" />
     <Compile Include="UI\Models\SubscriptionModel.cs" />
+    <Compile Include="UI\ViewModels\RegistrationWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\SubscriptionsWindowViewModel.cs" />
     <Compile Include="UI\Views\ItemListView.xaml.cs">
       <DependentUpon>ItemListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\RegistrationWindow.xaml.cs">
+      <DependentUpon>RegistrationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\SubscriptionsWindow.xaml.cs">
       <DependentUpon>SubscriptionsWindow.xaml</DependentUpon>
@@ -246,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Views\ScheduleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\RegistrationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

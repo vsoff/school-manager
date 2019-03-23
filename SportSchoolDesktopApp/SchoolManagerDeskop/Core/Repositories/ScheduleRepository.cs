@@ -1,6 +1,7 @@
 ﻿using SchoolManagerDeskop.Core.Dao;
 using SchoolManagerDeskop.Core.Dao.Entities;
 using SchoolManagerDeskop.Core.Enums;
+using SchoolManagerDeskop.Core.Extensions;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,12 @@ namespace SchoolManagerDeskop.Core.Repositories
         {
             _sportEntitiesContextProvider = sportEntitiesContextProvider ?? throw new ArgumentNullException(nameof(sportEntitiesContextProvider));
             _sessionsRepository = sessionsRepository ?? throw new ArgumentNullException(nameof(sessionsRepository));
+
+            _allIncludes = new Expression<Func<ScheduleSubject, object>>[]
+            {
+                x => x.Group,
+                x => x.Group.Trainer
+            };
         }
 
         /// <inheritdoc />
@@ -38,15 +45,15 @@ namespace SchoolManagerDeskop.Core.Repositories
             using (var context = _sportEntitiesContextProvider.GetContext())
             {
                 DateTime currentDate = DateTime.Now.Date;
-                return GetObjectWithIncludes(context).Where(x => x.WeekDays.HasFlag(weekDay)).ToArray();
+                return context.Select(_allIncludes)
+                    .Where(x => x.WeekDays.HasFlag(weekDay))
+                    .ToArray();
             }
         }
 
-        internal override IQueryable<ScheduleSubject> GetObjectWithIncludes(DbContext context) => context.Set<ScheduleSubject>().Include(x => x.Group).Include(x => x.Group.Trainer);
-
-        internal override Expression<Func<ScheduleSubject, bool>> GetSearchExpression(string searchText)
+        internal override Expression<Func<ScheduleSubject, bool>>[] GetSearchExpression(string searchText) => new Expression<Func<ScheduleSubject, bool>>[]
         {
-            return x => x.Group.Name.Contains(searchText);
-        }
+            x => x.Group.Name.Contains(searchText)
+        };
     }
 }

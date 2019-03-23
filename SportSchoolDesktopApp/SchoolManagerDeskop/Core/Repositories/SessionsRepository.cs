@@ -1,6 +1,7 @@
 ﻿using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Core.Dao;
 using SchoolManagerDeskop.Core.Dao.Entities;
+using SchoolManagerDeskop.Core.Extensions;
 using SchoolManagerDeskop.Core.Repositories.Pagination;
 using System;
 using System.Collections.Generic;
@@ -29,14 +30,26 @@ namespace SchoolManagerDeskop.Core.Repositories
         {
             _sportEntitiesContextProvider = sportEntitiesContextProvider ?? throw new ArgumentNullException(nameof(sportEntitiesContextProvider));
             _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
+
+            _allIncludes = new Expression<Func<Session, object>>[]
+            {
+                x => x.Group,
+                x => x.Group.Trainer,
+                x => x.StudentsInSessions,
+                x => x.StudentsInSessions.Select(ss => ss.Student)
+            };
         }
 
         public Session GetOrCreateSession(long groupId, DateTime dateTime)
         {
             using (var context = _sportEntitiesContextProvider.GetContext())
             {
+                // TODO: тут должна быть проверка на существование такой ScheduleSubject. Если его нету, то и создать сессию мы не можем!
+
                 // Пытаемся найти сессию в БД.
-                Session existsEntity = GetObjectWithIncludes(context).FirstOrDefault(x => x.GroupId == groupId);
+                Session existsEntity = context
+                    .Select(_allIncludes)
+                    .FirstOrDefault(x => x.GroupId == groupId && x.Time == dateTime.TimeOfDay);
                 if (existsEntity != null)
                     return existsEntity;
 
@@ -80,11 +93,6 @@ namespace SchoolManagerDeskop.Core.Repositories
             }
         }
 
-        internal override IQueryable<Session> GetObjectWithIncludes(DbContext context) => context.Set<Session>().Include(x => x.Students).Include(x => x.Group).Include(x => x.Group.Trainer);
-
-        internal override Expression<Func<Session, bool>> GetSearchExpression(string searchText)
-        {
-            throw new NotImplementedException();
-        }
+        internal override Expression<Func<Session, bool>>[] GetSearchExpression(string searchText) => throw new NotImplementedException();
     }
 }

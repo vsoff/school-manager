@@ -14,6 +14,11 @@ namespace SchoolManagerDeskop.Common.Services
     public interface IStudentRegistrationService
     {
         /// <summary>
+        /// Возвращает сессию для группы.
+        /// </summary>
+        Session GetGroupSession(long groupId, DateTime dateTime);
+
+        /// <summary>
         /// Возвращает информацию о регистрации ученика на занятие и её возможности в указанное время.
         /// </summary>
         RegistrationInfoResponse GetRegistrationInfo(long studentId, long sessionId, DateTime checkDateTime);
@@ -39,7 +44,7 @@ namespace SchoolManagerDeskop.Common.Services
         /// <summary>
         /// Максимально возможная задержка регистрации на занятие, после его начала.
         /// </summary>
-        private readonly TimeSpan _maxPreregistrationPeriod = TimeSpan.FromDays(7);
+        private readonly TimeSpan _maxPreregistrationPeriod = TimeSpan.FromDays(3);
 
         private readonly ISubscriptionsRepository _subscriptionsRepository;
         private readonly ISessionsRepository _sessionsRepository;
@@ -61,15 +66,15 @@ namespace SchoolManagerDeskop.Common.Services
             DateTime sessionDateTime = session.Date.Add(session.Time);
 
             // Если ученик уже зарегистрирован, то обрабатываем по особенному.
-            bool isAlreadyRegistered = session.Students.FirstOrDefault(x => x.Id == studentId) != null;
+            bool isAlreadyRegistered = session.StudentsInSessions.FirstOrDefault(x => x.StudentId == studentId) != null;
 
             if (!isAlreadyRegistered)
             {
                 // Проверяем временные ограничения.
-                if (checkDateTime < sessionDateTime.Add(_maxRegistrationDelay))
+                if (checkDateTime > sessionDateTime.Add(_maxRegistrationDelay))
                     return GetBadRegisterResponse($"Занятие началось больше {_maxRegistrationDelay.TotalMinutes} минут назад");
 
-                if (checkDateTime.Date < sessionDateTime.Date.Add(_maxPreregistrationPeriod))
+                if (checkDateTime.Date < sessionDateTime.Date.Add(-_maxPreregistrationPeriod))
                     return GetBadRegisterResponse($"Нельзя записаться на занятие раньше чем за {_maxPreregistrationPeriod.TotalDays} дней");
             }
 
@@ -77,11 +82,11 @@ namespace SchoolManagerDeskop.Common.Services
             // (то, что раньше заканчивается, должно использоваться в первом приоритете)
             Subscription[] allSubscriptions = _subscriptionsRepository.GetAllActiveSubscriptionsInTime(studentId, sessionDateTime);
             Subscription[] limitedSubscriptions = allSubscriptions
-                .Where(x => x.GroupId.HasValue && x.GroupId == session.GroupId && !x.HasUnlimitedGroup)
+                .Where(x => !x.HasUnlimitedGroup && x.GroupId == session.GroupId)
                 .OrderBy(x => x.DateEnd)
                 .ToArray();
             Subscription[] unlimitedSubscriptions = allSubscriptions
-                .Where(x => !x.GroupId.HasValue && x.HasUnlimitedGroup)
+                .Where(x => x.HasUnlimitedGroup)
                 .OrderBy(x => x.DateEnd)
                 .ToArray();
 
@@ -97,7 +102,7 @@ namespace SchoolManagerDeskop.Common.Services
 
             // Если лимитированного нету, пытаемся найти безлимитный.
             if (selectedSubscription == null)
-                selectedSubscription = unlimitedSubscriptions.FirstOrDefault(x => x.SubHoursLeft > 0);
+                selectedSubscription = unlimitedSubscriptions.FirstOrDefault(x => x.SubHoursLeft > 0 || x.HasUnlimitedHours);
 
             if (!isAlreadyRegistered && selectedSubscription == null)
                 return GetBadRegisterResponse("У всех имеющихся абонементов ученика закончились часы");
@@ -127,6 +132,8 @@ namespace SchoolManagerDeskop.Common.Services
         public void RegisterStudentInSession(long studentId, long sessionId) => _sessionsRepository.RegisterStudentInSession(studentId, sessionId);
 
         public void UnregisterStudentInSession(long studentId, long sessionId) => _sessionsRepository.UnregisterStudentInSession(studentId, sessionId);
+
+        public Session GetGroupSession(long groupId, DateTime dateTime) => _sessionsRepository.GetOrCreateSession(groupId, dateTime);
 
         private RegistrationInfoResponse GetBadRegisterResponse(string message)
         {

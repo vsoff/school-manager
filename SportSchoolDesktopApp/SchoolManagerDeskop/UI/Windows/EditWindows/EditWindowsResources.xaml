@@ -3,8 +3,15 @@
                     xmlns:converters="clr-namespace:SchoolManagerDeskop.UI.Common.Converters"
                     xmlns:views="clr-namespace:SchoolManagerDeskop.UI.Views"
                     xmlns:local="clr-namespace:SchoolManagerDeskop.UI.Windows.EditWindows">
+
+    <!-- Конвертеры -->
+    <converters:EditorEnabledConverter x:Key="EditorEnabledConverter"/>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <converters:EditorVisibilityConverter x:Key="EditorVisibilityConverter"/>
+    <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter"/>
     <converters:BoolEditorVisibilityConverter x:Key="BoolEditorVisibilityConverter"/>
 
+    <!-- Стили -->
     <Style TargetType="{x:Type TextBlock}" x:Key="FieldName">
         <Setter Property="Margin" Value="0,5" />
         <Setter Property="VerticalAlignment" Value="Top" />
@@ -19,7 +26,7 @@
         <Setter Property="Foreground" Value="Red" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
-    
+
     <Style TargetType="{x:Type CheckBox}" x:Key="FieldCheckBox">
         <Setter Property="Margin" Value="5,2,5,2" />
     </Style>
@@ -28,10 +35,33 @@
         <Setter Property="Margin" Value="5" />
     </Style>
 
-    <!-- Конвертеры -->
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    <converters:EditorVisibilityConverter x:Key="EditorVisibilityConverter"/>
-    <converters:EditorEnabledConverter x:Key="EditorEnabledConverter"/>
+    <Style TargetType="{x:Type TextBlock}" x:Key="Edit_FieldName">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="Width" Value="120" />
+        <Setter Property="Margin" Value="2" />
+    </Style>
+    <Style TargetType="{x:Type TextBox}" x:Key="Edit_FieldValue">
+        <Setter Property="Margin" Value="2" />
+    </Style>
+    <Style TargetType="{x:Type Button}" x:Key="Edit_SelectButton">
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Width" Value="120" />
+    </Style>
+
+    <Style TargetType="{x:Type Border}" x:Key="Information_Border">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#846505" />
+        <Setter Property="Background" Value="#fff3ce" />
+        <Setter Property="Padding" Value="5,3" />
+        <Setter Property="Margin" Value="2" />
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="Information_Text">
+        <Setter Property="TextAlignment" Value="Justify" />
+        <Setter Property="Foreground" Value="#846505" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="FontStyle" Value="Italic" />
+    </Style>
 
     <!-- Стиль окна -->
     <!--<Style TargetType="{x:Type Window}" x:Key="EditWindowStyle">
@@ -42,7 +72,7 @@
         <Setter Property="WindowStyle" Value="ToolWindow"/>
     </Style>-->
 
-    <!-- Шаблон окна -->
+    <!-- Шаблон окна редактирования -->
     <ControlTemplate TargetType="Page" x:Key="EditWindowTemplate">
         <Grid>
             <Grid.RowDefinitions>

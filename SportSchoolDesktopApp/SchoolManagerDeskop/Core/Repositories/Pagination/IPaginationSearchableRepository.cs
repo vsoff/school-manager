@@ -10,6 +10,5 @@ namespace SchoolManagerDeskop.Core.Repositories.Pagination
     public interface IPaginationSearchableRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         PaginationResponse<TEntity> GetPage(SearchPaginationRequest request);
-        PaginationResponse<TEntity> GetPageWithSearch(SearchPaginationRequest request);
     }
 }

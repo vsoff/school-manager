@@ -20,17 +20,20 @@ namespace SchoolManagerDeskop.Core.Repositories
         public GroupsRepository(ISportEntitiesContextProvider sportEntitiesContextProvider)
         {
             _sportEntitiesContextProvider = sportEntitiesContextProvider ?? throw new ArgumentNullException(nameof(sportEntitiesContextProvider));
+
+            _allIncludes = new Expression<Func<Group, object>>[]
+            {
+                x => x.Trainer
+            };
         }
 
-        internal override IQueryable<Group> GetObjectWithIncludes(DbContext context) => context.Set<Group>().Include(x => x.Trainer);
-
-        internal override Expression<Func<Group, bool>> GetSearchExpression(string searchText)
+        internal override Expression<Func<Group, bool>>[] GetSearchExpression(string searchText) => new Expression<Func<Group, bool>>[]
         {
-            return x => x.Name.Contains(searchText)
+            x => x.Name.Contains(searchText)
                 || x.Description.Contains(searchText)
                 || x.Trainer.FirstName.Contains(searchText)
                 || x.Trainer.MiddleName.Contains(searchText)
-                || x.Trainer.LastName.Contains(searchText);
-        }
+                || x.Trainer.LastName.Contains(searchText)
+        };
     }
 }
