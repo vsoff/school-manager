@@ -311,7 +311,7 @@ namespace SportSchoolDesktopApp
 
         private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DateTime updateAppTime = DateTime.Parse("2018.12.14");
+            DateTime updateAppTime = DateTime.Parse("2019.08.10");
             string text = $"Дата сборки: {updateAppTime.Date.ToLongDateString()}\nВерсия программы: {Assembly.GetExecutingAssembly().GetName().Version}";
             MessageBox.Show(text, "О программе", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

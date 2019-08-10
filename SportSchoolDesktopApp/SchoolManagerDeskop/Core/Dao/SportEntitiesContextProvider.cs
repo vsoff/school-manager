@@ -20,10 +20,13 @@ namespace SchoolManagerDeskop.Core.Dao
         /// <remarks>Метод только на время отладки. Необходимо вынести в параметры бизнес логики.</remarks>
         private static string GetConnectionString()
         {
-            SqlConnectionStringBuilder bldr = new SqlConnectionStringBuilder();
-            bldr.InitialCatalog = "SportManagerReborn1";
-            bldr.DataSource = @"localhost";
-            bldr.IntegratedSecurity = true;
+            SqlConnectionStringBuilder bldr = new SqlConnectionStringBuilder
+            {
+                InitialCatalog = "SportManagerReborn1",
+                DataSource = @"localhost",
+                IntegratedSecurity = true
+            };
+
             return bldr.ConnectionString;
         }
 

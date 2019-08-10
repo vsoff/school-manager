@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TestSmartcard;
+using GemCard.Shell;
 
 namespace SportSchoolDesktopApp.Forms
 {
@@ -30,7 +30,7 @@ namespace SportSchoolDesktopApp.Forms
         private int CurrentStudentId { get; set; }
         private Subscriptions CurrentSubscription { get; set; }
         private Sessions CurrentSession { get; set; }
-        SmartReaderController SmartReader;
+        private readonly ISmartReaderListener _smartReader;
 
         public RegisterForm(int currentSessionId)
         {
@@ -38,7 +38,19 @@ namespace SportSchoolDesktopApp.Forms
             CurrentSessionId = currentSessionId;
             FillAll();
 
-            SmartReader = new SmartReaderController(SmartReaderType.Reader, UpdateUI);
+            _smartReader = new SmartReaderListener();
+            _smartReader.CardInserted += CardInserted;
+        }
+
+        private void CardInserted(object sender, CardInsertedEventArgs e)
+        {
+            if (!e.Value.HasValue)
+            {
+                MessageBox.Show("Ошибка контакта с картой. Попробуйте снова.");
+                return;
+            }
+
+            synchronizationContext.Post(o => SetCurrentStudent((int) o), e.Value.Value);
         }
 
         private void FillAll()
@@ -53,6 +65,7 @@ namespace SportSchoolDesktopApp.Forms
                 label_SessionGroup.Text = CurrentSession.Groups.Name;
                 label_SessionTime.Text = $"{CurrentSession.Date.ToShortDateString()} {CurrentSession.Time}";
             }
+
             RefreshSISList();
         }
 
@@ -67,7 +80,9 @@ namespace SportSchoolDesktopApp.Forms
                     Subscriptions sub = db.Subscriptions.Find(CurrentSubscription.SubscriptionId);
                     CurrentSubscription = sub;
                     // Регистрация и удаление с сессии
-                    StudentsInSessions presence = db.StudentsInSessions.Where(x => x.StudentId == CurrentStudentId && x.SessionId == CurrentSessionId).FirstOrDefault();
+                    StudentsInSessions presence = db.StudentsInSessions
+                        .Where(x => x.StudentId == CurrentStudentId && x.SessionId == CurrentSessionId)
+                        .FirstOrDefault();
                     if (presence == null)
                     {
                         if (sub.SubHoursLeft == 0)
@@ -75,11 +90,12 @@ namespace SportSchoolDesktopApp.Forms
                             MessageBox.Show("У ученика закончились часы посещения");
                             return;
                         }
+
                         db.StudentsInSessions.Add(new StudentsInSessions
-                        {
-                            SessionId = CurrentSessionId,
-                            StudentId = CurrentStudentId
-                        }
+                            {
+                                SessionId = CurrentSessionId,
+                                StudentId = CurrentStudentId
+                            }
                         );
                         sub.SubHoursLeft--;
                         button_Action.Text = LABEL_UNREG;
@@ -90,10 +106,12 @@ namespace SportSchoolDesktopApp.Forms
                         sub.SubHoursLeft++;
                         button_Action.Text = LABEL_REG;
                     }
+
                     db.SaveChanges();
 
                     UpdateVisitsInfo(sub.SubHoursLeft, sub.SubHoursMax);
                 }
+
                 RefreshSISList();
             }
             catch (Exception ex)
@@ -104,7 +122,7 @@ namespace SportSchoolDesktopApp.Forms
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SmartReader.DestroyObject();
+            _smartReader.Dispose();
         }
 
         private const string LABEL_REG = "Зарегистрировать ученика",
@@ -115,7 +133,8 @@ namespace SportSchoolDesktopApp.Forms
             listBox_Students.Items.Clear();
             using (var db = new SportEntities(SportProgramSettings.ConnectionString))
             {
-                var students = db.StudentsInSessions.Where(x => x.SessionId == CurrentSessionId).Join(db.Students, // второй набор
+                var students = db.StudentsInSessions.Where(x => x.SessionId == CurrentSessionId).Join(
+                    db.Students, // второй набор
                     p => p.StudentId, // свойство-селектор объекта из первого набора
                     c => c.StudentId, // свойство-селектор объекта из второго набора
                     (p, c) => new // результат
@@ -130,20 +149,6 @@ namespace SportSchoolDesktopApp.Forms
                 foreach (var s in students)
                     listBox_Students.Items.Add($"[Ид {s.StudentId}] {s.LastName} {s.FirstName} {s.MiddleName}");
             }
-        }
-
-        public void UpdateUI(int value)
-        {
-            if (value == -1)
-            {
-                MessageBox.Show("Ошибка контакта с картой. Попробуйте снова.");
-                return;
-            }
-
-            synchronizationContext.Post(new SendOrPostCallback(o =>
-            {
-                SetCurrentStudent((int)o);
-            }), value);
         }
 
         private void SetCurrentStudent(int studentId)
@@ -161,16 +166,27 @@ namespace SportSchoolDesktopApp.Forms
                     MessageBox.Show("Эта карта не привязана ни к одному ученику.");
                     return;
                 }
+
                 using (var db = new SportEntities(SportProgramSettings.ConnectionString))
                 {
                     Students student = db.Students.Find(CurrentStudentId);
+                    if (student == null)
+                    {
+                        label_StudentFullName.Text = string.Empty;
+                        label_StudentId.Text = string.Empty;
+                        label_StudentSubShort.Text = string.Empty;
+                        button_Action.Enabled = false;
+                        MessageBox.Show($"Нет ученика с ID == {CurrentStudentId}.");
+                        return;
+                    }
+
                     label_StudentId.Text = student.StudentId.ToString();
                     label_StudentFullName.Text = $"{student.FirstName} {student.MiddleName} {student.LastName}";
                     // Узнаём состояние регистрации ученика на данную пару
                     DateTime curTime = DateTime.Now;
                     List<Subscriptions> subs = db.Subscriptions.Where(
                         x => x.StudentId == CurrentStudentId //&& x.GroupId == CurrentSession.GroupId
-                        && x.DateStart <= curTime && x.DateEnd >= curTime
+                             && x.DateStart <= curTime && x.DateEnd >= curTime
                     ).ToList();
 
                     // Проверяем валидацию ученика
@@ -184,7 +200,9 @@ namespace SportSchoolDesktopApp.Forms
                     if (isSubscribeWorks)
                     {
                         // Проверка на то, отмечен ли уже ученик
-                        bool isIn = db.StudentsInSessions.Where(x => x.StudentId == CurrentStudentId && x.SessionId == CurrentSessionId).FirstOrDefault() != null;
+                        bool isIn = db.StudentsInSessions
+                                        .Where(x => x.StudentId == CurrentStudentId && x.SessionId == CurrentSessionId)
+                                        .FirstOrDefault() != null;
                         if (isIn)
                             button_Action.Text = LABEL_UNREG;
                         else
@@ -203,13 +221,13 @@ namespace SportSchoolDesktopApp.Forms
                         label_StudentSubShort.Text = $"Регистрация невозможна!\n\nПричина:\n{response}";
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка при выборе ученика. Exception: " + ex);
             }
         }
+
         // [{visitsLeft}/{visitsMax}]
         private void UpdateVisitsInfo(int? visitsLeft, int? visitsMax)
         {
@@ -219,7 +237,8 @@ namespace SportSchoolDesktopApp.Forms
                 label_VisitsInfo.Text = $"{visitsLeft} из {visitsMax}";
         }
 
-        private void ValidateStudentAction(SportEntities db, List<Subscriptions> subs, out Subscriptions CurrentSubscription, out bool isSubscribeWorks, out string response)
+        private void ValidateStudentAction(SportEntities db, List<Subscriptions> subs,
+            out Subscriptions CurrentSubscription, out bool isSubscribeWorks, out string response)
         {
             DateTime curTime = DateTime.Now;
             CurrentSubscription = null;
@@ -231,7 +250,8 @@ namespace SportSchoolDesktopApp.Forms
             if (subs.Count == 0)
                 subscribeStatus = RegisterForm.NOSUBINPERIOD;
             // Ученик опоздал?
-            else if (CurrentSession.Date == DateTime.Now.Date && CurrentSession.Time < DateTime.Now.AddMinutes(-SportProgramSettings.StudentCanLateMin).TimeOfDay)
+            else if (CurrentSession.Date == DateTime.Now.Date && CurrentSession.Time <
+                     DateTime.Now.AddMinutes(-SportProgramSettings.StudentCanLateMin).TimeOfDay)
                 subscribeStatus = RegisterForm.SOLATE;
             // Карта безлимитная?
             else if (subs.Where(x => x.IsUnlimited && x.SubHoursLeft > 0).FirstOrDefault() != null)
@@ -246,12 +266,15 @@ namespace SportSchoolDesktopApp.Forms
                 subscribeStatus = RegisterForm.WRONGGROUP;
             // Не кончилось ли кол-во посещений? (и не подписан)
             else if (subs.Where(x => x.GroupId == CurrentSession.GroupId && x.SubHoursLeft > 0).FirstOrDefault() == null
-                && db.StudentsInSessions.Where(x => x.SessionId == CurrentSession.SessionId && x.StudentId == CurrentStudentId).FirstOrDefault() == null)
+                     && db.StudentsInSessions
+                         .Where(x => x.SessionId == CurrentSession.SessionId && x.StudentId == CurrentStudentId)
+                         .FirstOrDefault() == null)
                 subscribeStatus = RegisterForm.HOURSLEFT;
             // Значит группа правильная
             else
             {
-                CurrentSubscription = subs.Where(x => x.GroupId == CurrentSession.GroupId && x.SubHoursLeft > 0).First();
+                CurrentSubscription =
+                    subs.Where(x => x.GroupId == CurrentSession.GroupId && x.SubHoursLeft > 0).First();
                 visitsLeft = CurrentSubscription.SubHoursLeft;
                 visitsMax = CurrentSubscription.SubHoursMax;
                 subscribeStatus = RegisterForm.RIGHTGROUP;

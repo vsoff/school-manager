@@ -222,17 +222,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyApp\MyApp.csproj">
-      <Project>{314a62a4-1e44-4ba0-a9db-47760c87c070}</Project>
-      <Name>MyApp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Smartcard_API\GemCard\GemCard.csproj">
       <Project>{8b10d15a-39de-4b56-8dd1-710c1eb3a697}</Project>
       <Name>GemCard</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Smartcard_API\SmartCardPlayer\SmartCardPlayer.csproj">
-      <Project>{acdd475f-e58c-41d6-a258-479ce0c5db6d}</Project>
-      <Name>SmartCardPlayer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

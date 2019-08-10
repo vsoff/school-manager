@@ -9,43 +9,43 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TestSmartcard;
+using GemCard.Shell;
 
 namespace SportSchoolDesktopApp.Forms
 {
     public partial class CardEditorPush : Form
     {
-        SmartReaderController SmartReader;
+        private readonly ISmartReaderListener _smartReader;
 
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+
+        private readonly int NewValue;
 
         public CardEditorPush(int data)
         {
             InitializeComponent();
 
-            SmartReader = new SmartReaderController(SmartReaderType.Writer, UpdateUI);
-            SmartReader.WData = data;
+            NewValue = data;
+            _smartReader = new SmartReaderListener();
+            _smartReader.CardInserted += CardInserted;
         }
 
-        public void UpdateUI(int value)
+        private void CardInserted(object sender, CardInsertedEventArgs e)
         {
-            if (value == -1)
+            if (!e.Value.HasValue)
             {
                 MessageBox.Show("Ошибка контакта с картой. Попробуйте снова.");
                 return;
             }
 
-            synchronizationContext.Post(new SendOrPostCallback(o =>
-            {
-                //labelRead.Text = ((int)o).ToString();
-                this.Close();
-            }), value);
+            _smartReader.WriteValue(NewValue);
 
+            synchronizationContext.Post(o => Close(), e.Value.Value);
         }
 
         private void CardEditor_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SmartReader.DestroyObject();
+            _smartReader.Dispose();
         }
     }
 }

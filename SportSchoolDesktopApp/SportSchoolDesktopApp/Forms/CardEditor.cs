@@ -9,13 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TestSmartcard;
+using GemCard.Shell;
 
 namespace SportSchoolDesktopApp.Forms
 {
     public partial class CardEditor : Form
     {
-        SmartReaderController SmartReader;
+        private readonly ISmartReaderListener _smartReader;
 
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
@@ -23,12 +23,13 @@ namespace SportSchoolDesktopApp.Forms
         {
             InitializeComponent();
 
-            SmartReader = new SmartReaderController(SmartReaderType.Reader, UpdateUI);
+            _smartReader = new SmartReaderListener();
+            _smartReader.CardInserted += CardInserted;
         }
 
-        public void UpdateUI(int value)
+        private void CardInserted(object sender, CardInsertedEventArgs e)
         {
-            if (value == -1)
+            if (!e.Value.HasValue)
             {
                 MessageBox.Show("Ошибка контакта с картой. Попробуйте снова.");
                 return;
@@ -36,24 +37,26 @@ namespace SportSchoolDesktopApp.Forms
 
             synchronizationContext.Post(new SendOrPostCallback(o =>
             {
-                int id = (int)o;
+                int id = (int) o;
                 if (id == 0)
                 {
                     labelRead.Text = "<Пустая карта>";
                     return;
                 }
+
                 using (var db = new SportEntities(SportProgramSettings.ConnectionString))
                 {
                     Students student = db.Students.Find(id);
-                    labelRead.Text = $"(Ид {student.StudentId}) {student.FirstName} {student.MiddleName} {student.LastName}";
+                    labelRead.Text = student == null
+                        ? $"Ученика с ID == {id} не существует"
+                        : $"(Ид {student.StudentId}) {student.FirstName} {student.MiddleName} {student.LastName}";
                 }
-            }), value);
-
+            }), e.Value.Value);
         }
 
         private void CardEditor_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SmartReader.DestroyObject();
+            _smartReader.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -64,7 +67,8 @@ namespace SportSchoolDesktopApp.Forms
             using (var db = new SportEntities(SportProgramSettings.ConnectionString))
             {
                 Students student = db.Students.Find(selectStudentForm.CheckedId);
-                labelStudent.Text = $"(Ид {student.StudentId}) {student.FirstName} {student.MiddleName} {student.LastName}";
+                labelStudent.Text =
+                    $"(Ид {student.StudentId}) {student.FirstName} {student.MiddleName} {student.LastName}";
                 CurrentStudentId = selectStudentForm.CheckedId;
             }
         }

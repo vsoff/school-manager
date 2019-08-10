@@ -28,7 +28,7 @@ namespace SchoolManagerDeskop.UI.UserControls
         private static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             TimeControl control = obj as TimeControl;
-            var newTime = (TimeSpan)e.NewValue;
+            var newTime = (TimeSpan) e.NewValue;
 
             control.Hours = newTime.Hours;
             control.Minutes = newTime.Minutes;
@@ -46,51 +46,60 @@ namespace SchoolManagerDeskop.UI.UserControls
 
         public TimeSpan Value
         {
-            get { return (TimeSpan)GetValue(ValueProperty); }
+            get { return (TimeSpan) GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
+
         public static readonly DependencyProperty ValueProperty =
-        DependencyProperty.Register("Value", typeof(TimeSpan), typeof(TimeControl),
-        new FrameworkPropertyMetadata(DateTime.Now.TimeOfDay, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnValueChanged)));
+            DependencyProperty.Register("Value", typeof(TimeSpan), typeof(TimeControl),
+                new FrameworkPropertyMetadata(DateTime.Now.TimeOfDay,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(OnValueChanged)));
 
         public int Hours
         {
-            get { return (int)GetValue(HoursProperty); }
+            get { return (int) GetValue(HoursProperty); }
             set { SetValue(HoursProperty, value); }
         }
+
         public static readonly DependencyProperty HoursProperty =
-        DependencyProperty.Register("Hours", typeof(int), typeof(TimeControl),
-        new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnTimeChanged)));
+            DependencyProperty.Register("Hours", typeof(int), typeof(TimeControl),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(OnTimeChanged)));
 
         public int Minutes
         {
-            get { return (int)GetValue(MinutesProperty); }
+            get { return (int) GetValue(MinutesProperty); }
             set { SetValue(MinutesProperty, value); }
         }
+
         public static readonly DependencyProperty MinutesProperty =
-        DependencyProperty.Register("Minutes", typeof(int), typeof(TimeControl),
-        new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnTimeChanged)));
+            DependencyProperty.Register("Minutes", typeof(int), typeof(TimeControl),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(OnTimeChanged)));
 
         public int Seconds
         {
-            get { return (int)GetValue(SecondsProperty); }
+            get { return (int) GetValue(SecondsProperty); }
             set { SetValue(SecondsProperty, value); }
         }
 
         public static readonly DependencyProperty SecondsProperty =
-        DependencyProperty.Register("Seconds", typeof(int), typeof(TimeControl),
-        new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnTimeChanged)));
+            DependencyProperty.Register("Seconds", typeof(int), typeof(TimeControl),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(OnTimeChanged)));
 
 
         public int Milliseconds
         {
-            get { return (int)GetValue(MillisecondsProperty); }
+            get { return (int) GetValue(MillisecondsProperty); }
             set { SetValue(MillisecondsProperty, value); }
         }
 
         public static readonly DependencyProperty MillisecondsProperty =
-        DependencyProperty.Register("Milliseconds", typeof(int), typeof(TimeControl),
-        new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnTimeChanged)));
+            DependencyProperty.Register("Milliseconds", typeof(int), typeof(TimeControl),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    new PropertyChangedCallback(OnTimeChanged)));
 
         #endregion
 
@@ -169,27 +178,36 @@ namespace SchoolManagerDeskop.UI.UserControls
             try
             {
                 int delta = 0;
-                String name = ((TextBox)sender).Name;
+                String name = ((TextBox) sender).Name;
 
-                if (args.Key == Key.Up) { delta = 1; }
-                else if (args.Key == Key.Down) { delta = -1; }
+                if (args.Key == Key.Up)
+                {
+                    delta = 1;
+                }
+                else if (args.Key == Key.Down)
+                {
+                    delta = -1;
+                }
 
                 UpdateTimeValue(name, delta);
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
             try
             {
-                var g = (Grid)(sender);
+                var g = (Grid) (sender);
                 var value = g.Children.OfType<TextBox>().FirstOrDefault();
 
                 UpdateTimeValue(value.Name, e.Delta / Math.Abs(e.Delta));
             }
-            catch { }
-
+            catch
+            {
+            }
         }
 
         private Boolean IsTextAllowed(String name, String text)
@@ -207,11 +225,10 @@ namespace SchoolManagerDeskop.UI.UserControls
 
                 int newValue = Convert.ToInt32(text);
 
-                if (newValue < 0 || newValue >= (Int32)maxValue)
+                if (newValue < 0 || newValue >= (Int32) maxValue)
                 {
                     return false;
                 }
-
             }
             catch
             {
@@ -226,7 +243,7 @@ namespace SchoolManagerDeskop.UI.UserControls
         {
             try
             {
-                var textBox = (TextBox)sender;
+                var textBox = (TextBox) sender;
 
                 if (!IsTextAllowed(textBox.Name, textBox.Text))
                 {
@@ -235,7 +252,9 @@ namespace SchoolManagerDeskop.UI.UserControls
                     e.Handled = true;
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
     }
 }
