@@ -15,25 +15,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using GemCard.Shell;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
     public class SubscriptionsWindowViewModel : ItemsListEditWindowViewModel<Subscription, SubscriptionModel>
     {
+        private readonly IModelMapper<Student, StudentModel> _studentMapper;
         private readonly ISubscriptionsRepository _subscriptionsRepository;
+        private readonly ISmartReaderListener _smartReaderListener;
+        private readonly IStudentsRepository _studentsRepository;
         private readonly IDisplayService _displayService;
 
         public SubscriptionsWindowViewModel(
             IPaginationSearchableRepository<Subscription> searchableRepository,
-            IModelMapper<Subscription, SubscriptionModel> entityMapper,
+            IModelMapper<Subscription, SubscriptionModel> subscriptionMapper,
             IEntityValidator<SubscriptionModel> entityValidator,
+            IModelMapper<Student, StudentModel> studentMapper,
             ISubscriptionsRepository subscriptionsRepository,
+            ISmartReaderListener smartReaderListener,
+            IStudentsRepository studentsRepository,
             IDisplayService displayService)
-            : base(searchableRepository, entityMapper, entityValidator, displayService)
+            : base(searchableRepository, subscriptionMapper, entityValidator, displayService)
         {
             _subscriptionsRepository = subscriptionsRepository ?? throw new ArgumentNullException(nameof(subscriptionsRepository));
+            _smartReaderListener = smartReaderListener ?? throw new ArgumentNullException(nameof(smartReaderListener));
+            _studentsRepository = studentsRepository ?? throw new ArgumentNullException(nameof(studentsRepository));
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
+            _studentMapper = studentMapper ?? throw new ArgumentNullException(nameof(studentMapper));
 
             SelectGroupCommand = new RelayCommand(SelectGroupAction);
             SelectStudentCommand = new RelayCommand(SelectStudentAction);
@@ -58,6 +69,34 @@ namespace SchoolManagerDeskop.UI.ViewModels
             CurrentState = ItemsListEditState.NoSelected;
         }
 
+        public override void OnOpen()
+        {
+            base.OnOpen();
+
+            _smartReaderListener.CardInserted += CardInserted;
+        }
+
+        private void CardInserted(object sender, CardInsertedEventArgs e)
+        {
+            if (!e.Value.HasValue)
+            {
+                MessageBox.Show("Не удалось прочитать карту, попробуйте ещё раз.", "Ошибка чтения карты");
+                return;
+            }
+
+            long studentId = (int) e.Value.Value;
+            var student = _studentsRepository.Get(studentId);
+            var model = _studentMapper.ToModel(student);
+            SetSelectedStudent(model);
+        }
+
+        public override void OnClose()
+        {
+            base.OnClose();
+
+            _smartReaderListener.CardInserted -= CardInserted;
+        }
+
         private void SelectGroupAction(object o)
         {
             GroupModel group = _displayService.ShowDialog<SelectEntityDialogViewModel<Group, GroupModel>, object, GroupModel>();
@@ -75,6 +114,11 @@ namespace SchoolManagerDeskop.UI.ViewModels
             if (student == null)
                 return;
 
+            SetSelectedStudent(student);
+        }
+
+        private void SetSelectedStudent(StudentModel student)
+        {
             SelectedStudentId = student.Id;
             SelectedStudentCaption = student.ItemCaption;
 
@@ -102,6 +146,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         private long _selectedStudentId;
+
         public long SelectedStudentId
         {
             get { return _selectedStudentId; }
@@ -113,6 +158,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         private string _selectedStudentCaption;
+
         public string SelectedStudentCaption
         {
             get { return _selectedStudentCaption; }

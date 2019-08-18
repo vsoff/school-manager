@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using GemCard.Shell;
 using Unity;
 
 namespace SchoolManagerDeskop
@@ -31,9 +32,15 @@ namespace SchoolManagerDeskop
             base.OnStartup(e);
 
             // Вывод главного окна.
-            _unityContainer
-                .Resolve<IDisplayService>()
-                .ShowWindow<MainWindowViewModel>();
+            _unityContainer.Resolve<IDisplayService>().ShowWindow<MainWindowViewModel>();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            // Убиваем листенер перед выходом.
+            _unityContainer.Resolve<ISmartReaderListener>().Dispose();
         }
 
         /// <summary>

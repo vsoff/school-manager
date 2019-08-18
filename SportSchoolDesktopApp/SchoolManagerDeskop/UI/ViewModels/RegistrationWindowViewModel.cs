@@ -15,100 +15,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using GemCard.Shell;
 
 namespace SchoolManagerDeskop.UI.ViewModels
 {
-    public class RegistrationModel : NotifyPropertyChanged
-    {
-        private TimeSpan _startTime;
-        public TimeSpan StartTime
-        {
-            get { return _startTime; }
-            set
-            {
-                _startTime = value;
-                OnPropertyChanged(nameof(StartTime));
-            }
-        }
-
-        private string _groupCaption;
-        public string GroupCaption
-        {
-            get { return _groupCaption; }
-            set
-            {
-                _groupCaption = value;
-                OnPropertyChanged(nameof(GroupCaption));
-            }
-        }
-
-        private string _trainerCaption;
-        public string TrainerCaption
-        {
-            get { return _trainerCaption; }
-            set
-            {
-                _trainerCaption = value;
-                OnPropertyChanged(nameof(TrainerCaption));
-            }
-        }
-
-        private string _subscriptionActivityText;
-        public string SubscriptionActivityText
-        {
-            get { return _subscriptionActivityText; }
-            set
-            {
-                _subscriptionActivityText = value;
-                OnPropertyChanged(nameof(SubscriptionActivityText));
-            }
-        }
-
-        private string _subscribeButtonText;
-        public string SubscribeButtonText
-        {
-            get { return _subscribeButtonText; }
-            set
-            {
-                _subscribeButtonText = value;
-                OnPropertyChanged(nameof(SubscribeButtonText));
-            }
-        }
-
-        private string _cancelButtonText;
-        public string CancelButtonText
-        {
-            get { return _cancelButtonText; }
-            set
-            {
-                _cancelButtonText = value;
-                OnPropertyChanged(nameof(CancelButtonText));
-            }
-        }
-
-        private bool _isSubscribeButtonActive;
-        public bool IsSubscribeButtonActive
-        {
-            get { return _isSubscribeButtonActive; }
-            set
-            {
-                _isSubscribeButtonActive = value;
-                OnPropertyChanged(nameof(IsSubscribeButtonActive));
-            }
-        }
-
-        private bool _isMessageWithWarning;
-        public bool IsMessageWithoutWarning
-        {
-            get { return _isMessageWithWarning; }
-            set
-            {
-                _isMessageWithWarning = value;
-                OnPropertyChanged(nameof(IsMessageWithoutWarning));
-            }
-        }
-    }
-
     public class RegistrationWindowViewModel : WindowViewModelBase, IDialogViewModel<ScheduleSubjectModel, object>
     {
         #region Аргумент диалогового окна
@@ -116,11 +26,9 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ScheduleSubjectModel DialogArg
         {
             get => _dialogArg;
-            set
-            {
-                _dialogArg = value;
-            }
+            set { _dialogArg = value; }
         }
+
         private ScheduleSubjectModel _dialogArg;
         public object DialogResult => null;
 
@@ -129,6 +37,8 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private readonly IStudentsInSessionsRepository _studentsInSessionsRepository;
         private readonly IStudentRegistrationService _studentRegistrationService;
         private readonly IModelMapper<Student, StudentModel> _entityMapper;
+        private readonly ISmartReaderListener _smartReaderListener;
+        private readonly IStudentsRepository _studentsRepository;
         private readonly IDateTimeService _dateTimeService;
         private readonly IDisplayService _displayService;
 
@@ -146,11 +56,15 @@ namespace SchoolManagerDeskop.UI.ViewModels
             IStudentsInSessionsRepository studentsInSessionsRepository,
             IStudentRegistrationService studentRegistrationService,
             IModelMapper<Student, StudentModel> entityMapper,
+            ISmartReaderListener smartReaderListener,
+            IStudentsRepository studentsRepository,
             IDateTimeService dateTimeService,
             IDisplayService displayService)
         {
-            _studentRegistrationService = studentRegistrationService ?? throw new ArgumentNullException(nameof(studentRegistrationService));
             _studentsInSessionsRepository = studentsInSessionsRepository ?? throw new ArgumentNullException(nameof(studentsInSessionsRepository));
+            _studentRegistrationService = studentRegistrationService ?? throw new ArgumentNullException(nameof(studentRegistrationService));
+            _smartReaderListener = smartReaderListener ?? throw new ArgumentNullException(nameof(smartReaderListener));
+            _studentsRepository = studentsRepository ?? throw new ArgumentNullException(nameof(studentsRepository));
             _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
@@ -162,7 +76,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
 
             SelectStudentCommand = new RelayCommand(SelectStudentAction);
             CancelCommand = new RelayCommand(CancelAction);
-            RegistrationCommand = new RelayCommand(RegistrationAction, _ => Model.IsSubscribeButtonActive);
+            RegistrationCommand = new RelayCommand(RegistrationAction);
         }
 
         public override void OnOpen()
@@ -184,10 +98,27 @@ namespace SchoolManagerDeskop.UI.ViewModels
             ItemsListViewModel.NewDataRequested += ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected += ItemListItemSelected;
             ItemsListViewModel.GoToPage(0);
+
+            // Подписываемся на события смарт-ридера.
+            _smartReaderListener.CardInserted += CardInserted;
+        }
+
+        private void CardInserted(object sender, CardInsertedEventArgs e)
+        {
+            if (!e.Value.HasValue)
+            {
+                MessageBox.Show("Не удалось прочитать карту, попробуйте ещё раз.", "Ошибка чтения карты");
+                return;
+            }
+
+            long studentId = (int) e.Value.Value;
+            var student = _studentsRepository.Get(studentId);
+            SelectedStudent = _entityMapper.ToModel(student);
         }
 
         public override void OnClose()
         {
+            _smartReaderListener.CardInserted -= CardInserted;
             ItemsListViewModel.NewDataRequested -= ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected -= ItemListItemSelected;
         }
@@ -231,7 +162,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private void CancelAction(object o)
         {
             if (SelectedStudent == null)
-                _displayService.Close((IDialogViewModel<ScheduleSubjectModel, object>)this);
+                _displayService.Close((IDialogViewModel<ScheduleSubjectModel, object>) this);
             else
                 ItemsListViewModel.ResetSelection();
         }
@@ -276,8 +207,8 @@ namespace SchoolManagerDeskop.UI.ViewModels
             else
             {
                 // Проверяем, возможна ли регистрация.
-                Model.SubscriptionActivityText = regInfo.IsRegistrationPossible ?
-                    $"Регистрация возможна\n({(regInfo.Subscription.HasUnlimitedGroup ? "Безлимитный" : "Лимитированный")} абонемент)"
+                Model.SubscriptionActivityText = regInfo.IsRegistrationPossible
+                    ? $"Регистрация возможна\n({(regInfo.Subscription.HasUnlimitedGroup ? "Безлимитный" : "Лимитированный")} абонемент)"
                     : $"Регистрация невозможна!\n\n{regInfo.WarningMessage}";
                 Model.IsSubscribeButtonActive = regInfo.IsRegistrationPossible;
                 Model.IsMessageWithoutWarning = regInfo.IsRegistrationPossible;
@@ -292,6 +223,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         }
 
         private StudentModel _selectedStudent;
+
         public StudentModel SelectedStudent
         {
             get { return _selectedStudent; }

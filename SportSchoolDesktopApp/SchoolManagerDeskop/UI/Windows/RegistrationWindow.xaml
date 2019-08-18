@@ -117,6 +117,7 @@
                         Grid.Row="2"
                         Style="{StaticResource RegistrationButton}"
                         Content="{Binding Model.SubscribeButtonText}"
+                        IsEnabled="{Binding Model.IsSubscribeButtonActive}"
                         Command="{Binding RegistrationCommand}"/>
                 <!-- Причина неактивности -->
                 <TextBlock DockPanel.Dock="Top"

@@ -29,14 +29,14 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
 
         public ItemsListEditWindowViewModel(
             IPaginationSearchableRepository<TEntity> searchableRepository,
-            IModelMapper<TEntity, TModel> entityMapper,
+            IModelMapper<TEntity, TModel> subscriptionMapper,
             IEntityValidator<TModel> entityValidator,
             IDisplayService displayService)
         {
             _searchableRepository = searchableRepository ?? throw new ArgumentNullException(nameof(searchableRepository));
             _entityValidator = entityValidator ?? throw new ArgumentNullException(nameof(entityValidator));
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
-            _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
+            _entityMapper = subscriptionMapper ?? throw new ArgumentNullException(nameof(subscriptionMapper));
 
             ItemsListViewModel = new ItemsListViewModel<TModel>();
 

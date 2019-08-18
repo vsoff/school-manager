@@ -47,6 +47,7 @@ namespace GemCard
         public UInt32 m_dwCurrentState;
         public UInt32 m_dwEventState;
         public UInt32 m_cbAtr;
+
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         public byte[] m_rgbAtr;
     }
@@ -58,10 +59,11 @@ namespace GemCard
     {
         private UInt32 m_hContext = 0;
         private UInt32 m_hCard = 0;
-        private UInt32 m_nProtocol = (uint)PROTOCOL.T0;
+        private UInt32 m_nProtocol = (uint) PROTOCOL.T0;
         private int m_nLastError = 0;
 
         #region PCSC_FUNCTIONS
+
         /// <summary>
         /// Native SCardGetStatusChanged from winscard.dll
         /// </summary>
@@ -159,7 +161,7 @@ namespace GemCard
             IntPtr pioRecvPci,
             [Out] byte[] pbRecvBuffer,
             out UInt32 pcbRecvLength
-            );
+        );
 
         /// <summary>
         /// Native SCardBeginTransaction function of winscard.dll
@@ -224,7 +226,7 @@ namespace GemCard
             m_nLastError = SCardListReaders(m_hContext, null, szListReaders, out pchReaders);
             if (m_nLastError == 0)
             {
-                szListReaders = Marshal.AllocHGlobal((int)pchReaders);
+                szListReaders = Marshal.AllocHGlobal((int) pchReaders);
                 m_nLastError = SCardListReaders(m_hContext, null, szListReaders, out pchReaders);
                 if (m_nLastError == 0)
                 {
@@ -232,7 +234,7 @@ namespace GemCard
                     int nbReaders = 0;
                     for (int nI = 0; nI < pchReaders; nI++)
                     {
-                        caReadersData[nI] = (char)Marshal.ReadByte(szListReaders, nI);
+                        caReadersData[nI] = (char) Marshal.ReadByte(szListReaders, nI);
 
                         if (caReadersData[nI] == 0)
                             nbReaders++;
@@ -266,7 +268,6 @@ namespace GemCard
                             ++nIdx;
                         }
                     }
-
                 }
 
                 Marshal.FreeHGlobal(szListReaders);
@@ -291,7 +292,7 @@ namespace GemCard
         {
             IntPtr hContext = Marshal.AllocHGlobal(Marshal.SizeOf(m_hContext));
 
-            m_nLastError = SCardEstablishContext((uint)Scope, IntPtr.Zero, IntPtr.Zero, hContext);
+            m_nLastError = SCardEstablishContext((uint) Scope, IntPtr.Zero, IntPtr.Zero, hContext);
             if (m_nLastError != 0)
             {
                 string msg = "SCardEstablishContext error: " + m_nLastError;
@@ -300,7 +301,7 @@ namespace GemCard
                 throw new Exception(msg);
             }
 
-            m_hContext = (uint)Marshal.ReadInt32(hContext);
+            m_hContext = (uint) Marshal.ReadInt32(hContext);
 
             Marshal.FreeHGlobal(hContext);
         }
@@ -351,8 +352,8 @@ namespace GemCard
 
             m_nLastError = SCardConnect(m_hContext,
                 Reader,
-                (uint)ShareMode,
-                (uint)PreferredProtocols,
+                (uint) ShareMode,
+                (uint) PreferredProtocols,
                 hCard,
                 pProtocol);
 
@@ -365,8 +366,8 @@ namespace GemCard
                 throw new Exception(msg);
             }
 
-            m_hCard = (uint)Marshal.ReadInt32(hCard);
-            m_nProtocol = (uint)Marshal.ReadInt32(pProtocol);
+            m_hCard = (uint) Marshal.ReadInt32(hCard);
+            m_nProtocol = (uint) Marshal.ReadInt32(pProtocol);
 
             Marshal.FreeHGlobal(hCard);
             Marshal.FreeHGlobal(pProtocol);
@@ -384,7 +385,7 @@ namespace GemCard
         {
             if (m_hCard != 0)
             {
-                m_nLastError = SCardDisconnect(m_hCard, (uint)Disposition);
+                m_nLastError = SCardDisconnect(m_hCard, (uint) Disposition);
                 m_hCard = 0;
 
                 if (m_nLastError != 0)
@@ -413,7 +414,7 @@ namespace GemCard
         /// <returns>An APDUResponse object with the response from the card</returns>
         public override APDUResponse Transmit(APDUCommand ApduCmd)
         {
-            uint RecvLength = (uint)(ApduCmd.Le + APDUResponse.SW_LENGTH);
+            uint RecvLength = (uint) (ApduCmd.Le + APDUResponse.SW_LENGTH);
             byte[] ApduBuffer = null;
             byte[] ApduResponse = new byte[ApduCmd.Le + APDUResponse.SW_LENGTH];
             SCard_IO_Request ioRequest = new SCard_IO_Request();
@@ -426,7 +427,7 @@ namespace GemCard
                 ApduBuffer = new byte[APDUCommand.APDU_MIN_LENGTH + ((ApduCmd.Le != 0) ? 1 : 0)];
 
                 if (ApduCmd.Le != 0)
-                    ApduBuffer[4] = (byte)ApduCmd.Le;
+                    ApduBuffer[4] = (byte) ApduCmd.Le;
             }
             else
             {
@@ -435,7 +436,7 @@ namespace GemCard
                 for (int nI = 0; nI < ApduCmd.Data.Length; nI++)
                     ApduBuffer[APDUCommand.APDU_MIN_LENGTH + 1 + nI] = ApduCmd.Data[nI];
 
-                ApduBuffer[APDUCommand.APDU_MIN_LENGTH] = (byte)ApduCmd.Data.Length;
+                ApduBuffer[APDUCommand.APDU_MIN_LENGTH] = (byte) ApduCmd.Data.Length;
             }
 
             ApduBuffer[0] = ApduCmd.Class;
@@ -443,7 +444,7 @@ namespace GemCard
             ApduBuffer[2] = ApduCmd.P1;
             ApduBuffer[3] = ApduCmd.P2;
 
-            m_nLastError = SCardTransmit(m_hCard, ref ioRequest, ApduBuffer, (uint)ApduBuffer.Length, IntPtr.Zero, ApduResponse, out RecvLength);
+            m_nLastError = SCardTransmit(m_hCard, ref ioRequest, ApduBuffer, (uint) ApduBuffer.Length, IntPtr.Zero, ApduResponse, out RecvLength);
             if (m_nLastError != 0)
             {
                 string msg = "SCardTransmit error: " + m_nLastError;
@@ -490,7 +491,7 @@ namespace GemCard
         {
             if (m_hCard != 0)
             {
-                m_nLastError = SCardEndTransaction(m_hCard, (UInt32)Disposition);
+                m_nLastError = SCardEndTransaction(m_hCard, (UInt32) Disposition);
                 if (m_nLastError != 0)
                 {
                     string msg = "SCardEndTransaction error: " + m_nLastError;
@@ -531,6 +532,7 @@ namespace GemCard
 
             return attr;
         }
+
         #endregion
 
         /// <summary>
@@ -543,21 +545,21 @@ namespace GemCard
         protected override void RunCardDetection(object Reader)
         {
             bool bFirstLoop = true;
-            UInt32 hContext = 0;    // Local context
+            UInt32 hContext = 0; // Local context
             IntPtr phContext;
 
             phContext = Marshal.AllocHGlobal(Marshal.SizeOf(hContext));
 
-            if (SCardEstablishContext((uint)SCOPE.User, IntPtr.Zero, IntPtr.Zero, phContext) == 0)
+            if (SCardEstablishContext((uint) SCOPE.User, IntPtr.Zero, IntPtr.Zero, phContext) == 0)
             {
-                hContext = (uint)Marshal.ReadInt32(phContext);
+                hContext = (uint) Marshal.ReadInt32(phContext);
                 Marshal.FreeHGlobal(phContext);
 
                 UInt32 nbReaders = 1;
                 SCard_ReaderState[] readerState = new SCard_ReaderState[nbReaders];
 
-                readerState[0].m_dwCurrentState = (UInt32)CARD_STATE.UNAWARE;
-                readerState[0].m_szReader = (string)Reader;
+                readerState[0].m_dwCurrentState = (UInt32) CARD_STATE.UNAWARE;
+                readerState[0].m_szReader = (string) Reader;
 
                 UInt32 eventState;
                 UInt32 currentState = readerState[0].m_dwCurrentState;
@@ -566,29 +568,29 @@ namespace GemCard
                 do
                 {
                     if (SCardGetStatusChange(hContext, WAIT_TIME
-                        , readerState, nbReaders) == 0)
+                            , readerState, nbReaders) == 0)
                     {
                         eventState = readerState[0].m_dwEventState;
                         currentState = readerState[0].m_dwCurrentState;
 
                         // Check state
-                        if (((eventState & (uint)CARD_STATE.CHANGED) == (uint)CARD_STATE.CHANGED) && !bFirstLoop)
+                        if (((eventState & (uint) CARD_STATE.CHANGED) == (uint) CARD_STATE.CHANGED) && !bFirstLoop)
                         {
                             // State has changed
-                            if ((eventState & (uint)CARD_STATE.EMPTY) == (uint)CARD_STATE.EMPTY)
+                            if ((eventState & (uint) CARD_STATE.EMPTY) == (uint) CARD_STATE.EMPTY)
                             {
                                 // There is no card, card has been removed -> Fire CardRemoved event
                                 CardRemoved();
                             }
 
-                            if (((eventState & (uint)CARD_STATE.PRESENT) == (uint)CARD_STATE.PRESENT) &&
-                                ((eventState & (uint)CARD_STATE.PRESENT) != (currentState & (uint)CARD_STATE.PRESENT)))
+                            if (((eventState & (uint) CARD_STATE.PRESENT) == (uint) CARD_STATE.PRESENT) &&
+                                ((eventState & (uint) CARD_STATE.PRESENT) != (currentState & (uint) CARD_STATE.PRESENT)))
                             {
                                 // There is a card in the reader -> Fire CardInserted event
                                 CardInserted();
                             }
 
-                            if ((eventState & (uint)CARD_STATE.ATRMATCH) == (uint)CARD_STATE.ATRMATCH)
+                            if ((eventState & (uint) CARD_STATE.ATRMATCH) == (uint) CARD_STATE.ATRMATCH)
                             {
                                 // There is a card in the reader and it matches the ATR we were expecting-> Fire CardInserted event
                                 CardInserted();
@@ -605,13 +607,13 @@ namespace GemCard
 
                     if (m_bRunCardDetection == false)
                         break;
-                }
-                while (true);    // Exit on request
+                } while (true); // Exit on request
             }
             else
             {
                 Marshal.FreeHGlobal(phContext);
 
+                // TODO Раскомментировать и отлавливать этот момент.
                 //throw new Exception("PC/SC error");
             }
 

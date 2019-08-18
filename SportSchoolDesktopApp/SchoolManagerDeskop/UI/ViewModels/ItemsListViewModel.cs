@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SchoolManagerDeskop.UI.ViewModels
@@ -33,14 +34,14 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ItemsListViewModel()
         {
             Items = new ObservableCollection<T>();
-            LimitsList = new int[] { 20, 50, 100 };
+            LimitsList = new int[] {20, 50, 100};
             Limit = LimitsList.First();
 
             FirstPageCommand = new RelayCommand(o => GoToPage(0), o => CurrentPageIndex > 0);
             PrevPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex - 1), o => CurrentPageIndex > 0);
             NextPageCommand = new RelayCommand(o => GoToPage(CurrentPageIndex + 1), o => CurrentPageIndex < PagesCount - 1);
             LastPageCommand = new RelayCommand(o => GoToPage(PagesCount - 1), o => CurrentPageIndex < PagesCount - 1);
-            ItemLeftDoubleClick = new RelayCommand(o => { ItemListItemSelected?.Invoke((T)o); });
+            ItemLeftDoubleClick = new RelayCommand(o => { ItemListItemSelected?.Invoke((T) o); });
         }
 
         /// <summary>
@@ -76,12 +77,15 @@ namespace SchoolManagerDeskop.UI.ViewModels
         /// <param name="data">Данные списка.</param>
         public void SetResult(ItemsListData<T> data)
         {
-            Items.Clear();
-            foreach (var model in data.Items)
-                Items.Add(model);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Items.Clear();
+                foreach (var model in data.Items)
+                    Items.Add(model);
 
-            PagesCount = data.PagesCount;
-            CurrentPageIndex = data.CurrentPageIndex;
+                PagesCount = data.PagesCount;
+                CurrentPageIndex = data.CurrentPageIndex;
+            });
         }
 
         /// <summary>
@@ -139,6 +143,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
+
         private T _selectedItem;
 
         /// <summary>
@@ -148,7 +153,8 @@ namespace SchoolManagerDeskop.UI.ViewModels
         {
             get
             {
-                return PagesCount == 0 ? Resources.ItemsList_PaginationEmptyCaption
+                return PagesCount == 0
+                    ? Resources.ItemsList_PaginationEmptyCaption
                     : string.Format(Resources.ItemsList_PaginationCaption, CurrentPageIndex + 1, PagesCount);
             }
         }
@@ -166,6 +172,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 OnPropertyChanged(nameof(CurrentPageText));
             }
         }
+
         private int _pagesCount;
 
         /// <summary>
@@ -181,6 +188,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 OnPropertyChanged(nameof(CurrentPageText));
             }
         }
+
         private int _pageCurrentIndex;
 
         /// <summary>
@@ -196,6 +204,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
                 ItemsPerPageChanged(value);
             }
         }
+
         private int _limit;
 
         #endregion

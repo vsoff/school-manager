@@ -22,9 +22,9 @@ namespace SchoolManagerDeskop.UI.ViewModels.EditWindows
         public GroupsListEditWindowViewModel(
             IPaginationSearchableRepository<Group> searchableRepository,
             IEntityValidator<GroupModel> entityValidator,
-            IModelMapper<Group, GroupModel> entityMapper,
+            IModelMapper<Group, GroupModel> subscriptionMapper,
             IDisplayService displayService)
-            : base(searchableRepository, entityMapper, entityValidator, displayService)
+            : base(searchableRepository, subscriptionMapper, entityValidator, displayService)
         {
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
 

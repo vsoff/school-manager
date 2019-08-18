@@ -83,6 +83,7 @@
     <Compile Include="UI\Common\Converters\IsNullToVisibilityConverter.cs" />
     <Compile Include="UI\Common\Converters\BoolToColorConverter.cs" />
     <Compile Include="UI\Models\SubscriptionModel.cs" />
+    <Compile Include="UI\Models\RegistrationModel.cs" />
     <Compile Include="UI\ViewModels\RegistrationWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\SubscriptionsWindowViewModel.cs" />
     <Compile Include="UI\Views\ItemListView.xaml.cs">
@@ -295,6 +296,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Smartcard_API\GemCard\GemCard.csproj">
+      <Project>{8B10D15A-39DE-4B56-8DD1-710C1EB3A697}</Project>
+      <Name>GemCard</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

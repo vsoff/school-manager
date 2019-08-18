@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GemCard.Shell;
 using Unity;
 using Unity.Lifetime;
 
@@ -66,6 +67,7 @@ namespace SchoolManagerDeskop.Common
 
             // Другое.
             container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
+            container.RegisterType<ISmartReaderListener, SmartReaderListener>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);

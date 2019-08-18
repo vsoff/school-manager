@@ -49,7 +49,7 @@ namespace SchoolManagerDeskop.Core.Repositories
                 // Пытаемся найти сессию в БД.
                 Session existsEntity = context
                     .Select(_allIncludes)
-                    .FirstOrDefault(x => x.GroupId == groupId && x.Time == dateTime.TimeOfDay);
+                    .FirstOrDefault(x => x.GroupId == groupId && x.Time == dateTime.TimeOfDay && x.Date == dateTime.Date);
                 if (existsEntity != null)
                     return existsEntity;
 
