@@ -1,5 +1,4 @@
-﻿
-using SchoolManagerDeskop.Common.DisplayRegisters;
+﻿using SchoolManagerDeskop.Common.DisplayRegisters;
 using SchoolManagerDeskop.Common.Mappers;
 using SchoolManagerDeskop.Common.Services;
 using SchoolManagerDeskop.Core.Dao.Entities;
@@ -37,8 +36,11 @@ namespace SchoolManagerDeskop.UI.ViewModels
             TrainersEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<Trainer, TrainerModel>>());
             ScheduleEditCommand = new RelayCommand(_ => _displayService.ShowDialog<ItemsListEditWindowViewModel<ScheduleSubject, ScheduleSubjectModel>>());
 
-            OpenReportsCommand = new RelayCommand(_ => MessageBox.Show("Окно отчётов."));
             OpenSubscriptionsCommand = new RelayCommand(_ => _displayService.ShowDialog<SubscriptionsWindowViewModel>());
+            OpenCardEditCommand = new RelayCommand(_ => _displayService.ShowDialog<CardEditorWindowViewModel>());
+            OpenReportsCommand = new RelayCommand(_ => _displayService.ShowDialog<ReportWindowViewModel>());
+            OpenAboutCommand = new RelayCommand(_ => _displayService.ShowDialog<AboutWindowViewModel>());
+            CloseCommand = new RelayCommand(_ => _displayService.Close(this));
         }
 
         public override void OnOpen()
@@ -55,7 +57,10 @@ namespace SchoolManagerDeskop.UI.ViewModels
         public ICommand TrainersEditCommand { get; }
         public ICommand ScheduleEditCommand { get; }
         public ICommand GroupsEditCommand { get; }
+        public ICommand OpenCardEditCommand { get; }
         public ICommand OpenReportsCommand { get; }
+        public ICommand OpenAboutCommand { get; }
         public ICommand OpenSubscriptionsCommand { get; }
+        public ICommand CloseCommand { get; }
     }
 }

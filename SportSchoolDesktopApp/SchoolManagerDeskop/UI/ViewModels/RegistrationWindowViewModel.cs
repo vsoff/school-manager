@@ -37,7 +37,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
         private readonly IStudentsInSessionsRepository _studentsInSessionsRepository;
         private readonly IStudentRegistrationService _studentRegistrationService;
         private readonly IModelMapper<Student, StudentModel> _entityMapper;
-        private readonly ISmartReaderListener _smartReaderListener;
+        private readonly ICardStudentAuthoriser _cardStudentAuthoriser;
         private readonly IStudentsRepository _studentsRepository;
         private readonly IDateTimeService _dateTimeService;
         private readonly IDisplayService _displayService;
@@ -56,18 +56,18 @@ namespace SchoolManagerDeskop.UI.ViewModels
             IStudentsInSessionsRepository studentsInSessionsRepository,
             IStudentRegistrationService studentRegistrationService,
             IModelMapper<Student, StudentModel> entityMapper,
-            ISmartReaderListener smartReaderListener,
+            ICardStudentAuthoriser cardStudentAuthoriser,
             IStudentsRepository studentsRepository,
             IDateTimeService dateTimeService,
             IDisplayService displayService)
         {
             _studentsInSessionsRepository = studentsInSessionsRepository ?? throw new ArgumentNullException(nameof(studentsInSessionsRepository));
             _studentRegistrationService = studentRegistrationService ?? throw new ArgumentNullException(nameof(studentRegistrationService));
-            _smartReaderListener = smartReaderListener ?? throw new ArgumentNullException(nameof(smartReaderListener));
             _studentsRepository = studentsRepository ?? throw new ArgumentNullException(nameof(studentsRepository));
             _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             _entityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
+            _cardStudentAuthoriser = cardStudentAuthoriser ?? throw new ArgumentNullException(nameof(cardStudentAuthoriser));
 
             ItemsListViewModel = new ItemsListViewModel<StudentModel>();
 
@@ -100,25 +100,23 @@ namespace SchoolManagerDeskop.UI.ViewModels
             ItemsListViewModel.GoToPage(0);
 
             // Подписываемся на события смарт-ридера.
-            _smartReaderListener.CardInserted += CardInserted;
+            _cardStudentAuthoriser.CardInserted += CardInserted;
         }
 
-        private void CardInserted(object sender, CardInsertedEventArgs e)
+        private void CardInserted(object sender, StudentCardEventArgs e)
         {
-            if (!e.Value.HasValue)
+            if (!e.IsSuccess)
             {
-                MessageBox.Show("Не удалось прочитать карту, попробуйте ещё раз.", "Ошибка чтения карты");
+                MessageBox.Show(e.ErrorMessage, "Ошибка");
                 return;
             }
 
-            long studentId = (int) e.Value.Value;
-            var student = _studentsRepository.Get(studentId);
-            SelectedStudent = _entityMapper.ToModel(student);
+            SelectedStudent = _entityMapper.ToModel(e.Student);
         }
 
         public override void OnClose()
         {
-            _smartReaderListener.CardInserted -= CardInserted;
+            _cardStudentAuthoriser.CardInserted -= CardInserted;
             ItemsListViewModel.NewDataRequested -= ItemsListUpdateData;
             ItemsListViewModel.ItemListItemSelected -= ItemListItemSelected;
         }

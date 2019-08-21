@@ -42,7 +42,7 @@ namespace SchoolManagerDeskop.Core.Repositories
         public TEntity Get(long entityId)
         {
             using (var context = _sportEntitiesContextProvider.GetContext())
-                return context.Select(_allIncludes).First(x => x.Id == entityId);
+                return context.Select(_allIncludes).FirstOrDefault(x => x.Id == entityId);
         }
 
         public void Update(TEntity entity)
@@ -82,7 +82,8 @@ namespace SchoolManagerDeskop.Core.Repositories
                     string.IsNullOrWhiteSpace(request.SearchText) ? null : GetSearchExpression(request.SearchText));
         }
 
-        internal PaginationResponse<TEntity> GetPageWithSearch<TTProperty>(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, object>>[] includes = null, Expression<Func<TEntity, bool>>[] where = null)
+        internal PaginationResponse<TEntity> GetPageWithSearch<TTProperty>(DbContext context, SearchPaginationRequest request, Expression<Func<TEntity, object>>[] includes = null,
+            Expression<Func<TEntity, bool>>[] where = null)
         {
             IQueryable<TEntity> pageEntities = context
                 .Select(includes, where)

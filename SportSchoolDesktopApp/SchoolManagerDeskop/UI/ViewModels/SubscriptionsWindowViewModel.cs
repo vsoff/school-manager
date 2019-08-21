@@ -25,7 +25,7 @@ namespace SchoolManagerDeskop.UI.ViewModels
     {
         private readonly IModelMapper<Student, StudentModel> _studentMapper;
         private readonly ISubscriptionsRepository _subscriptionsRepository;
-        private readonly ISmartReaderListener _smartReaderListener;
+        private readonly ICardStudentAuthoriser _cardStudentAuthoriser;
         private readonly IStudentsRepository _studentsRepository;
         private readonly IDisplayService _displayService;
 
@@ -35,13 +35,13 @@ namespace SchoolManagerDeskop.UI.ViewModels
             IEntityValidator<SubscriptionModel> entityValidator,
             IModelMapper<Student, StudentModel> studentMapper,
             ISubscriptionsRepository subscriptionsRepository,
-            ISmartReaderListener smartReaderListener,
+            ICardStudentAuthoriser cardStudentAuthoriser,
             IStudentsRepository studentsRepository,
             IDisplayService displayService)
             : base(searchableRepository, subscriptionMapper, entityValidator, displayService)
         {
             _subscriptionsRepository = subscriptionsRepository ?? throw new ArgumentNullException(nameof(subscriptionsRepository));
-            _smartReaderListener = smartReaderListener ?? throw new ArgumentNullException(nameof(smartReaderListener));
+            _cardStudentAuthoriser = cardStudentAuthoriser ?? throw new ArgumentNullException(nameof(cardStudentAuthoriser));
             _studentsRepository = studentsRepository ?? throw new ArgumentNullException(nameof(studentsRepository));
             _displayService = displayService ?? throw new ArgumentNullException(nameof(displayService));
             _studentMapper = studentMapper ?? throw new ArgumentNullException(nameof(studentMapper));
@@ -69,32 +69,30 @@ namespace SchoolManagerDeskop.UI.ViewModels
             CurrentState = ItemsListEditState.NoSelected;
         }
 
+        private void CardInserted(object sender, StudentCardEventArgs e)
+        {
+            if (!e.IsSuccess)
+            {
+                MessageBox.Show(e.ErrorMessage, "Ошибка");
+                return;
+            }
+
+            var model = _studentMapper.ToModel(e.Student);
+            SetSelectedStudent(model);
+        }
+
         public override void OnOpen()
         {
             base.OnOpen();
 
-            _smartReaderListener.CardInserted += CardInserted;
-        }
-
-        private void CardInserted(object sender, CardInsertedEventArgs e)
-        {
-            if (!e.Value.HasValue)
-            {
-                MessageBox.Show("Не удалось прочитать карту, попробуйте ещё раз.", "Ошибка чтения карты");
-                return;
-            }
-
-            long studentId = (int) e.Value.Value;
-            var student = _studentsRepository.Get(studentId);
-            var model = _studentMapper.ToModel(student);
-            SetSelectedStudent(model);
+            _cardStudentAuthoriser.CardInserted += CardInserted;
         }
 
         public override void OnClose()
         {
             base.OnClose();
 
-            _smartReaderListener.CardInserted -= CardInserted;
+            _cardStudentAuthoriser.CardInserted -= CardInserted;
         }
 
         private void SelectGroupAction(object o)

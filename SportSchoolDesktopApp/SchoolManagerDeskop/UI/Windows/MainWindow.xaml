@@ -12,32 +12,32 @@
         Width="800" WindowStartupLocation="CenterScreen">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Path=WindowOpenCommand}"/>
+            <i:InvokeCommandAction Command="{Binding Path=WindowOpenCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding Path=WindowCloseCommand}"/>
+            <i:InvokeCommandAction Command="{Binding Path=WindowCloseCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="25" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!-- Меню -->
         <Menu Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="Файл">
                 <!--<Separator />-->
-                <MenuItem Header="Выход" />
+                <MenuItem Header="Выход" Command="{Binding CloseCommand}" />
             </MenuItem>
             <MenuItem Header="Система">
-                <MenuItem Header="Выдать карту" />
+                <MenuItem Header="Выдать карту" Command="{Binding OpenCardEditCommand}" />
             </MenuItem>
-            <MenuItem Header="О программе" />
+            <MenuItem Header="О программе" Command="{Binding OpenAboutCommand}" />
         </Menu>
         <!-- Панель управления -->
         <Border Grid.Column="0"

@@ -75,6 +75,7 @@
     <Compile Include="Common\Classes\RegistrationInfoResponse.cs" />
     <Compile Include="Common\Mappers\SubscriptionsMapper.cs" />
     <Compile Include="Common\Services\DefaultDateTimeService.cs" />
+    <Compile Include="Common\Services\CardStudentAuthoriser.cs" />
     <Compile Include="Common\Services\StudentRegistrationService.cs" />
     <Compile Include="Common\Validators\SubscriptionsValidator.cs" />
     <Compile Include="Core\Extensions\RepositoryExtension.cs" />
@@ -84,13 +85,25 @@
     <Compile Include="UI\Common\Converters\BoolToColorConverter.cs" />
     <Compile Include="UI\Models\SubscriptionModel.cs" />
     <Compile Include="UI\Models\RegistrationModel.cs" />
+    <Compile Include="UI\ViewModels\AboutWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\CardEditorWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\RegistrationWindowViewModel.cs" />
+    <Compile Include="UI\ViewModels\ReportWindowViewModel.cs" />
     <Compile Include="UI\ViewModels\SubscriptionsWindowViewModel.cs" />
     <Compile Include="UI\Views\ItemListView.xaml.cs">
       <DependentUpon>ItemListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\CardEditorWindow.xaml.cs">
+      <DependentUpon>CardEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Windows\RegistrationWindow.xaml.cs">
       <DependentUpon>RegistrationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Windows\ReportWindow.xaml.cs">
+      <DependentUpon>ReportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Windows\SubscriptionsWindow.xaml.cs">
       <DependentUpon>SubscriptionsWindow.xaml</DependentUpon>
@@ -196,6 +209,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Windows\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\CardEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Windows\Dialogs\SelectEntityDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Windows\RegistrationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Windows\ReportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

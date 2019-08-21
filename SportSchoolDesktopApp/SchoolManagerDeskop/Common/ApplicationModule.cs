@@ -68,6 +68,7 @@ namespace SchoolManagerDeskop.Common
             // Другое.
             container.RegisterType<IWorkerController, DefaultWorkerController>(new SingletonLifetimeManager());
             container.RegisterType<ISmartReaderListener, SmartReaderListener>(new SingletonLifetimeManager());
+            container.RegisterType<ICardStudentAuthoriser, CardStudentAuthoriser>(new SingletonLifetimeManager());
 
             RegisterViewModels(container);
             ConfigureDisplayRegisters(container);
@@ -130,6 +131,9 @@ namespace SchoolManagerDeskop.Common
             // Заносим записи в реестр о связях окон с ViewModel.
             var windowsRegistry = container.Resolve<IWindowsDisplayRegistry>();
             windowsRegistry.AddWindowType<MainWindowViewModel, WpfDisplayWindow<MainWindow>>();
+            windowsRegistry.AddWindowType<AboutWindowViewModel, WpfDisplayWindow<AboutWindow>>();
+            windowsRegistry.AddWindowType<ReportWindowViewModel, WpfDisplayWindow<ReportWindow>>();
+            windowsRegistry.AddWindowType<CardEditorWindowViewModel, WpfDisplayWindow<CardEditorWindow>>();
             windowsRegistry.AddWindowType<SubscriptionsWindowViewModel, WpfDisplayWindow<SubscriptionsWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Group, GroupModel>, WpfDisplayWindow<GroupsEditWindow>>();
             windowsRegistry.AddWindowType<ItemsListEditWindowViewModel<Student, StudentModel>, WpfDisplayWindow<StudentsEditWindow>>();
